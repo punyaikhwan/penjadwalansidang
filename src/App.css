@@ -1,0 +1,45 @@
+.barTop {
+  height: 120px;
+  background-color: rgb(33, 150, 243);
+  color: white;
+}
+.logoApp {
+  width: 250px;
+  height: 250px;
+  margin-top: 50px;
+  text-align: center;
+}
+
+.logoItb {
+  width: 100px;
+  height: 100px;
+  margin-left: 20px;
+  margin-top: 10px;
+}
+.container {
+  margin-top: 50px;
+  text-align: center;
+}
+
+
+.loginBtnContainer {
+  margin-top: 30px;
+  align-items: 'left';
+}
+
+.loginBtn {
+  height: 50px;
+}
+
+.googleLogo {
+  width: 50px;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
