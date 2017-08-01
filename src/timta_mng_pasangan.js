@@ -19,7 +19,7 @@ import {
 } from 'material-ui/Table';
 import imgProfile from './public/images/imgprofile.jpg';
 
-class timta_mng_user extends Component {
+class timta_mng_pasangan extends Component {
 
   constructor(props) {
     super(props);
@@ -35,7 +35,7 @@ class timta_mng_user extends Component {
       <MuiThemeProvider>
       <div>
         <AppBar
-          title="Dashboard Tim TA - Manajemen Pengguna"
+          title="Dashboard Tim TA - Daftar Pasangan"
           iconElementLeft={
             <IconButton tooltip="Menu" onClick = {()=>this.handleToggle()}>
               <i className="material-icons" style={{color: 'white'}}>menu</i>
@@ -50,7 +50,7 @@ class timta_mng_user extends Component {
           }
         />
 
-        <p className="tableTitle">Daftar Pengguna</p>
+        <p className="tableTitle">Daftar Pasangan</p>
         <div className="tableUser">
           <RaisedButton
             label="Tambah User"
@@ -70,7 +70,7 @@ class timta_mng_user extends Component {
                 <TableHeaderColumn></TableHeaderColumn>
               </TableRow>
             </TableHeader>
-            <TableBody displayRowCheckbox = {false}>
+            <TableBody displayRowCheckbox = {false} >
               <TableRow>
                 <TableRowColumn>1</TableRowColumn>
                 <TableRowColumn>Ikhwanul Muslimin</TableRowColumn>
@@ -152,8 +152,8 @@ class timta_mng_user extends Component {
           </div>
           <hr/>
           <p className="menuTitle">Manajemen Pengguna</p>
-          <MenuItem insetChildren={true} style={{backgroundColor:'#b0bec5'}} onTouchTap={this.handleClose}>Daftar Pengguna</MenuItem>
-          <MenuItem insetChildren={true} onTouchTap={this.handleClose}>Daftar Pasangan</MenuItem>
+          <MenuItem insetChildren={true} onTouchTap={this.handleClose}>Daftar Pengguna</MenuItem>
+          <MenuItem insetChildren={true} style={{backgroundColor:'#b0bec5'}} onTouchTap={this.handleClose}>Daftar Pasangan</MenuItem>
           <br/>
           <p className="menuTitle">Manajemen Jadwal</p>
           <MenuItem insetChildren={true} onTouchTap={this.handleClose}>Seminar KP</MenuItem>
@@ -167,4 +167,4 @@ class timta_mng_user extends Component {
   }
 }
 
-export default timta_mng_user;
+export default timta_mng_pasangan;
