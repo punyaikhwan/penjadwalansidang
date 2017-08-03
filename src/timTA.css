@@ -38,3 +38,24 @@
   margin-left: auto;
   margin-right: auto;
 }
+
+.containerBody {
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.containerCalendar {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  height: 500px;
+  margin-top: 30px;
+}
+.calendar {
+  height: 100%
+}
+
+.listItem {
+  font-size: 14;
+}

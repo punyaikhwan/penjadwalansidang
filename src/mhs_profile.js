@@ -126,12 +126,12 @@ class timta_mng_pasangan extends Component {
           </div>
           <hr/>
           <p className="menuTitle">Jadwal</p>
-          <MenuItem insetChildren={true} onTouchTap={this.handleClose}>Seminar KP</MenuItem>
-          <MenuItem insetChildren={true} onTouchTap={this.handleClose}>Seminar TA 1</MenuItem>
-          <MenuItem insetChildren={true} onTouchTap={this.handleClose}>Seminar TA 2</MenuItem>
-          <MenuItem insetChildren={true} onTouchTap={this.handleClose}>Sidang Akhir</MenuItem>
+          <MenuItem insetChildren={true} href="/mhs_jadwal_seminarKP">Seminar KP</MenuItem>
+          <MenuItem insetChildren={true} href="/mhs_jadwal_seminarTA1">Seminar TA 1</MenuItem>
+          <MenuItem insetChildren={true} href="/mhs_jadwal_seminarTA2">Seminar TA 2</MenuItem>
+          <MenuItem insetChildren={true} href="/mhs_jadwal_sidangTA">Sidang Akhir</MenuItem>
           <hr/>
-          <MenuItem onTouchTap={this.handleClose}>Profil</MenuItem>
+          <MenuItem style={{backgroundColor:'#b0bec5'}} >Profil</MenuItem>
 
           <br/>
         </Drawer>

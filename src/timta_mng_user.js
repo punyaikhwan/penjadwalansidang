@@ -152,14 +152,14 @@ class timta_mng_user extends Component {
           </div>
           <hr/>
           <p className="menuTitle">Manajemen Pengguna</p>
-          <MenuItem insetChildren={true} style={{backgroundColor:'#b0bec5'}} onTouchTap={this.handleClose}>Daftar Pengguna</MenuItem>
-          <MenuItem insetChildren={true} onTouchTap={this.handleClose}>Daftar Pasangan</MenuItem>
+          <MenuItem insetChildren={true} style={{backgroundColor:'#b0bec5'}}>Daftar Pengguna</MenuItem>
+          <MenuItem insetChildren={true} href="/timta_mng_pasangan">Daftar Pasangan</MenuItem>
           <br/>
           <p className="menuTitle">Manajemen Jadwal</p>
-          <MenuItem insetChildren={true} onTouchTap={this.handleClose}>Seminar KP</MenuItem>
-          <MenuItem insetChildren={true} onTouchTap={this.handleClose}>Seminar TA 1</MenuItem>
-          <MenuItem insetChildren={true} onTouchTap={this.handleClose}>Seminar TA 2</MenuItem>
-          <MenuItem insetChildren={true} onTouchTap={this.handleClose}>Sidang Akhir</MenuItem>
+          <MenuItem insetChildren={true} href="/timta_mng_jadwal_seminarKP">Seminar KP</MenuItem>
+          <MenuItem insetChildren={true} href="/timta_mng_jadwal_seminarTA1">Seminar TA 1</MenuItem>
+          <MenuItem insetChildren={true} href="/timta_mng_jadwal_seminarTA2">Seminar TA 2</MenuItem>
+          <MenuItem insetChildren={true} href="/timta_mng_jadwal_sidangTA">Sidang Akhir</MenuItem>
         </Drawer>
       </div>
       </MuiThemeProvider>
