@@ -1,0 +1,70 @@
+ .barTop {
+  height: 120px;
+  background-color: rgb(33, 150, 243);
+  color: white;
+}
+.logoApp {
+  width: 250px;
+  height: 250px;
+  margin-top: 50px;
+  text-align: center;
+}
+
+.logoItb {
+  width: 100px;
+  height: 100px;
+  margin-left: 20px;
+  margin-top: 10px;
+}
+.container {
+  margin-top: 50px;
+  text-align: center;
+  background-image: url('./public/images/bg.jpg')
+}
+
+.containerNotFound {
+  text-align: center;
+  background-image: url('./public/images/bg.jpg');
+  height: 1000px;
+  max-height: 600px;
+}
+
+.oops {
+  color: #250FC7;
+  font-size: 50px;
+}
+.forzerofor {
+  color: #C70F22;
+  font-size: 40px;
+}
+.notfound {
+  color: #000;
+  font-size: 80px;
+}
+
+.loginBtnContainer {
+  margin-top: 30px;
+  align-items: 'left';
+}
+
+.loginBtn {
+  height: 50px;
+}
+
+.googleLogo {
+  width: 50px;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+.googleLoginBtn {
+  background-color: transparent;
+  color: white;
+  border-width: 0;
+}
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
