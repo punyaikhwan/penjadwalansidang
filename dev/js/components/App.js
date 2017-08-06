@@ -19,6 +19,8 @@ import {
   Link,
   Switch
 } from 'react-router-dom'
+var injectTapEventPlugin = require("react-tap-event-plugin");
+injectTapEventPlugin();
 
 const App = () => (
 
