@@ -8,9 +8,13 @@ import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import FontIcon from 'material-ui/FontIcon';
 import Dialog from 'material-ui/Dialog';
+import TextField from 'material-ui/TextField';
 import '../../scss/timTA.scss';
 import Row from 'muicss/lib/react/row';
 import Col from 'muicss/lib/react/col';
+import {List, ListItem} from 'material-ui/List';
+import SelectField from 'material-ui/SelectField';
+
 import {
   Table,
   TableBody,
@@ -36,35 +40,31 @@ class timta_mng_user extends Component {
       dataUser: [
         {
           nama: "Ikhwanul Muslimin",
+          nim: "13514020",
           email: "13514020@std.stei.itb.ac.id",
-          access_token: "ghgxdschgvbjmnvngdcfgc",
           refresh_token: "1/7kjgvfcdvhgbjhgv",
-          expires_at: 45678967,
-          peran: 1
-        },
-        {
-          nama: "Naufal Malik Rabbani",
-          email: "13514052@std.stei.itb.ac.id",
-          access_token: "gjgfhvnvngdcfgc",
-          refresh_token: "1/7hjygtbhgbjhgv",
-          expires_at: 4698967,
           peran: 0
         },
         {
+          nama: "Naufal Malik Rabbani",
+          nim: "13514052",
+          email: "13514052@std.stei.itb.ac.id",
+          refresh_token: "1/7hjygtbhgbjhgv",
+          peran: 0,
+        },
+        {
           nama: "Nur Ulfa Maulidevi",
+          nim: null,
           email: "ulfa@informatika.org",
-          access_token: "gnbbh454dcfgc",
           refresh_token: "1/4kjhnhgbjhgv",
-          expires_at: 4876367,
-          peran: 1
+          peran: 1,
         },
         {
           nama: "Desy Puji",
+          nim: null,
           email: "desy@informatika.org",
-          access_token: "gjhjgvcvkljuhgdcfgc",
           refresh_token: "1/5kjhgfvbnmjv",
-          expires_at: 45609899,
-          peran: 2
+          peran: 2,
         }
       ]
     };
@@ -73,7 +73,10 @@ class timta_mng_user extends Component {
   handleToggle(){this.setState({open: !this.state.open})};
   handleClose(){this.setState({open: false})};
 
-  handleOpenTambahUser(){this.setState({modalTambahUser:true})};
+  handleOpenTambahUser(){
+    this.setState({nama: "", email: "", peran: "", dosen: ""});
+    this.setState({modalTambahUser:true})
+  };
   handleCloseTambahUser(){this.setState({modalTambahUser:false})};
 
   handleTambahUser() {
@@ -89,6 +92,7 @@ class timta_mng_user extends Component {
     tempDataUser.push(tempUserBaru);
     console.log("data User:",i," ", tempDataUser);
     this.setState({dataUser: tempDataUser});
+    this.handleCloseTambahUser();
   }
 
   handleDeleteUser(i) {
@@ -99,21 +103,50 @@ class timta_mng_user extends Component {
   }
 
   handleOpenEditUser(i){
+    this.setState({editedMhs: i});
     this.setState({nama: this.state.dataUser[i].nama});
+    this.setState({nim: this.state.dataUser[i].nim});
     this.setState({email: this.state.dataUser[i].email});
-    this.setState({peran: this.state.dataUser[i].peran});
+    this.setState({peran: this.state.dataUser[i].peran.toString()});
+    console.log("peran:", this.state.peran);
     this.setState({modalEditUser:true});
   };
   handleCloseEditUser(){this.setState({modalEditUser:false})};
-  handleEditUser(i) {
+  handleEditUser() {
     let tempDataUser = this.state.dataUser;
-    tempDataUser[i].nama = this.state.user.nama;
-    tempDataUser[i].email = this.state.user.email;
-    tempDataUser[i].peran = this.state.user.peran;
-    console.log("data User:",i," ", tempDataUser);
+    tempDataUser[this.state.editedMhs].nama = this.state.nama;
+    tempDataUser[this.state.editedMhs].nim = this.state.nim;
+    tempDataUser[this.state.editedMhs].email = this.state.email;
+    tempDataUser[this.state.editedMhs].peran = this.state.peran;
+    console.log("data User:",this.state.editedMhs," ", tempDataUser);
     this.setState({dataUser: tempDataUser});
+    this.handleCloseEditUser();
   }
 
+  isEmpty(str) {
+    return (str.length === 0)
+  }
+
+  isErrorEmail(str) {
+    let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return (str.length === 0 || !re.test(str))
+  }
+
+  handleChangeNama(event) {
+    this.setState({nama: event.target.value});
+  }
+
+  handleChangeNIM(event) {
+    this.setState({nim: event.target.value});
+  }
+
+  handleChangeEmail(event) {
+    this.setState({email: event.target.value});
+  }
+
+  handleChangePeran(event, index, peran) {
+    this.setState({peran});
+  }
   render() {
     const actionsTambahUser = [
       <FlatButton
@@ -139,7 +172,7 @@ class timta_mng_user extends Component {
         label="Submit"
         primary={true}
         keyboardFocused={true}
-        onClick={()=>this.handleEditUser(i)}
+        onClick={()=>this.handleEditUser()}
       />,
     ];
 
@@ -168,16 +201,15 @@ class timta_mng_user extends Component {
             label="Tambah User"
             labelPosition="after"
             icon={<i className="material-icons" style={{color:'black'}}>create</i>}
+            onClick = {()=>this.handleOpenTambahUser()}
           />
           <Table fixedHeader={true}>
             <TableHeader displaySelectAll={false} enableSelectAll={false}>
               <TableRow>
-                <TableHeaderColumn>ID</TableHeaderColumn>
                 <TableHeaderColumn>Nama</TableHeaderColumn>
+                <TableHeaderColumn>NIM</TableHeaderColumn>
                 <TableHeaderColumn>Email</TableHeaderColumn>
-                <TableHeaderColumn>Oauth Token</TableHeaderColumn>
                 <TableHeaderColumn>Refresh Token</TableHeaderColumn>
-                <TableHeaderColumn>Expires at</TableHeaderColumn>
                 <TableHeaderColumn>Peran</TableHeaderColumn>
                 <TableHeaderColumn></TableHeaderColumn>
               </TableRow>
@@ -185,12 +217,11 @@ class timta_mng_user extends Component {
             <TableBody displayRowCheckbox = {false}>
               {this.state.dataUser.map((user, i) => (
                 <TableRow key={i}>
-                  <TableRowColumn>{i}</TableRowColumn>
+                  <TableRowColumn style={{width:3}}></TableRowColumn>
                   <TableRowColumn>{user.nama}</TableRowColumn>
+                  <TableRowColumn>{user.nim}</TableRowColumn>
                   <TableRowColumn>{user.email}</TableRowColumn>
-                  <TableRowColumn>{user.access_token}</TableRowColumn>
                   <TableRowColumn>{user.refresh_token}</TableRowColumn>
-                  <TableRowColumn>{user.expires_at}</TableRowColumn>
                   <TableRowColumn>{this.state.listperan[user.peran]}</TableRowColumn>
                   <TableRowColumn>
                       <IconButton style={{color:'blue'}}  onClick={()=>this.handleOpenEditUser(i)}>
@@ -243,10 +274,118 @@ class timta_mng_user extends Component {
           title="Tambah Pengguna"
           actions= {actionsTambahUser}
           modal={false}
+          contentStyle={{width: 400}}
           open={this.state.modalTambahUser}
           onRequestClose={()=>this.handleCloseTambahUser()}
         >
+          <TextField
+            hintText="Masukkan nama"
+            floatingLabelText="Nama Pengguna"
+            floatingLabelFixed={true}
+            errorText = {this.isEmpty(this.state.nama) ? "Tidak boleh kosong" : ""}
+            onChange = {(event)=> this.handleChangeNama(event)}
+            style = {{width: 350}}
+          />
+          <br />
+          <TextField
+            hintText="NIM (untuk mahasiswa)"
+            floatingLabelText="NIM"
+            floatingLabelFixed={true}
+            onChange = {(event)=>this.handleChangeNIM(event)}
+            style = {{width: 350}}
+          />
+          <br />
+          <TextField
+            hintText="Email (untuk login)"
+            floatingLabelText="Email"
+            floatingLabelFixed={true}
+            errorText = {this.isErrorEmail(this.state.email) ? "Email tidak valid" : ""}
+            onChange = {(event)=>this.handleChangeEmail(event)}
+            style = {{width: 350}}
+          />
+          <br />
+          <SelectField
+            multiple={false}
+            hintText="Select a name"
+            value={this.state.peran}
+            onChange={(event, index, peran)=>this.handleChangePeran(event, index, peran)}
+            style = {{width: 350}}
+          >
+            <MenuItem
+            insetChildren={true}
+            value="0"
+            primaryText="Mahasiswa"
+            /><MenuItem
+            insetChildren={true}
+            value="1"
+            primaryText="Dosen"
+            /><MenuItem
+            insetChildren={true}
+            value="2"
+            primaryText="Tim TA"
+            />
+          </SelectField>
+        </Dialog>
 
+        <Dialog
+          title="Edit Pengguna"
+          actions= {actionsEditUser}
+          modal={false}
+          contentStyle={{width: 400}}
+          open={this.state.modalEditUser}
+          onRequestClose={()=>this.handleCloseEditUser()}
+        >
+          <TextField
+            hintText="Masukkan nama"
+            defaultValue = {this.state.nama}
+            floatingLabelText="Nama Pengguna"
+            floatingLabelFixed={true}
+            errorText = {this.isEmpty(this.state.nama) ? "Tidak boleh kosong" : ""}
+            onChange = {(event)=> this.handleChangeNama(event)}
+            style = {{width: 350}}
+          />
+          <br />
+          <TextField
+            hintText="NIM (untuk mahasiswa)"
+            defaultValue = {this.state.nim}
+            floatingLabelText="NIM"
+            floatingLabelFixed={true}
+            onChange = {(event)=>this.handleChangeNIM(event)}
+            style = {{width: 350}}
+          />
+          <br />
+          <TextField
+            hintText="Email (untuk login)"
+            defaultValue = {this.state.email}
+            floatingLabelText="Email"
+            floatingLabelFixed={true}
+            errorText = {this.isErrorEmail(this.state.email) ? "Email tidak valid" : ""}
+            onChange = {(event)=>this.handleChangeEmail(event)}
+            style = {{width: 350}}
+          />
+          <br />
+          <SelectField
+            multiple={false}
+            hintText="Select a name"
+            defaultValue = {this.state.peran}
+            value={this.state.peran}
+            onChange={(event, index, peran)=>this.handleChangePeran(event, index, peran)}
+            style = {{width: 350}}
+          >
+            <MenuItem
+            insetChildren={true}
+            value="0"
+            primaryText="Mahasiswa"
+            /><MenuItem
+            insetChildren={true}
+            value="1"
+            primaryText="Dosen"
+            /><MenuItem
+            insetChildren={true}
+            value="2"
+            primaryText="Tim TA"
+            />
+          </SelectField>
         </Dialog>
       </div>
       </MuiThemeProvider>
