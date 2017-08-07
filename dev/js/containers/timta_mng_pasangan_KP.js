@@ -16,6 +16,8 @@ import ScrollArea from 'react-scrollbar';
 import SelectField from 'material-ui/SelectField';
 import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 
 import {
   Table,
@@ -39,60 +41,7 @@ class timta_mng_pasangan_KP extends Component {
       topic: "",
       dosen: "",
       selectedKelompok: 0,
-        daftarMahasiswa : [
-          'Oliver Hansen',
-          'Van Henry',
-          'April Tucker',
-          'Ralph Hubbard',
-          'Omar Alexander',
-          'Carlos Abbott',
-          'Miriam Wagner',
-          'Bradley Wilkerson',
-          'Virginia Andrews',
-          'Kelly Snyder',
-        ],
-      daftarDosen: [
-        'Rinaldi Munir',
-        'Masayu',
-        'Ayu Purwarianti',
-        'Bayu Hendrajaya',
-      ],
-      dataKelompok: [
-        {
-          anggota: [
-            'Ikhwanul Muslimin',
-            'Febi Agil Ifdillah',
-            'Hasna Nur Karimah'
-          ],
-          topik: "Implementasi X pada YYYY",
-          dosen: [
-            'Rinaldi Munir'
-          ]
-        },
-        {
-          anggota: [
-            'Dani Sirait',
-            'Hendrikus Bimawan',
-            'Naufal Malik Rabbani'
-          ],
-          topik: "Penggunaan Sistem X pada Komputer",
-          dosen: [
-            'Masayu'
-          ]
-        },
-        {
-          anggota: [
-            'Fachrudin Muhlis',
-            'Harfi Maulana',
-            'Fahmi Kurniawan'
-          ],
-          topik: "Perbandingan Algoritma X dan Y untuk Sistem Z",
-          dosen: [
-            'Ayu Purwarianti',
-            'Bayu Hendrajaya'
-          ]
-        },
-      ]
+      dataKelompok: this.props.kelompok,
     };
   }
 
@@ -137,8 +86,10 @@ class timta_mng_pasangan_KP extends Component {
   }
 
   handleDeleteKelompok(i) {
-    this.state.dataKelompok.splice(this.state.selectedKelompok,1)
+    let tempDataKelompok = this.state.dataKelompok;
+    tempDataKelompok.splice(i,1)
     console.log(this.state.dataKelompok);
+    this.setState({dataKelompok: tempDataKelompok});
   }
 
   handleTambahMahasiswa() {
@@ -420,7 +371,7 @@ class timta_mng_pasangan_KP extends Component {
             value={this.state.values}
             onChange={(event, index, values)=>this.handleChangeMahasiswa(event, index, values)}
           >
-          {this.state.daftarMahasiswa.map((item) => (
+          {this.props.mahasiswa.map((item) => (
             <MenuItem
               key={item}
               insetChildren={true}
@@ -461,7 +412,7 @@ class timta_mng_pasangan_KP extends Component {
             value = {this.state.dosen}
             onChange={(event, index, dosen)=>this.handleChangeDosen(event, index, dosen)}
           >
-          {this.state.daftarDosen.map((item) => (
+          {this.props.dosen.map((item) => (
             <MenuItem
               key={item}
               insetChildren={true}
@@ -479,4 +430,16 @@ class timta_mng_pasangan_KP extends Component {
   }
 }
 
-export default timta_mng_pasangan_KP;
+function mapStateToProps(state) {
+    return {
+        mahasiswa: state.mahasiswaKP,
+        dosen: state.dosen,
+        kelompok: state.kelompokKP,
+    };
+}
+
+function matchDispatchToProps(dispatch){
+    return bindActionCreators({}, dispatch);
+}
+
+export default connect(mapStateToProps, matchDispatchToProps)(timta_mng_pasangan_KP);

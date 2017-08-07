@@ -25,6 +25,8 @@ import {
   TableRowColumn,
 } from 'material-ui/Table';
 import imgProfile from '../../scss/public/images/imgprofile.jpg';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 
 class timta_mng_pasangan_TA extends Component {
 
@@ -43,72 +45,7 @@ class timta_mng_pasangan_TA extends Component {
       dosenPembimbing: "",
       dosenPengujiTA1: "",
       dosenPengujiAkhir: "",
-      daftarMahasiswa : [
-        'Oliver Hansen',
-        'Van Henry',
-        'April Tucker',
-        'Ralph Hubbard',
-        'Omar Alexander',
-        'Carlos Abbott',
-        'Miriam Wagner',
-        'Bradley Wilkerson',
-        'Virginia Andrews',
-        'Kelly Snyder',
-      ],
-      daftarDosen: [
-        'Rinaldi Munir',
-        'Masayu',
-        'Ayu Purwarianti',
-        'Bayu Hendrajaya',
-      ],
-      dataTA : [
-        {
-          nama: "Ikhwanul Muslimin",
-          topik: "Implementasi XXXX untuk YYYYY",
-          dosenPembimbing: [
-            'Ayu Purwarianti',
-            'Rinaldi Munir'
-          ],
-          dosenPengujiTA1: [
-            'Bayu Hendrajaya',
-            'Inggriani Liem'
-          ],
-          dosenPengujiAkhir: [
-            'Mesayu',
-            'Bayu Hendrajaya'
-          ]
-        },
-        {
-          nama: "Dani Sirait",
-          topik: "Pemanfaatan Algoritma X untuk Deteksi Y",
-          dosenPembimbing: [
-            'Nur Ulfa Maulidevi'
-          ],
-          dosenPengujiTA1: [
-            'Muhammad',
-            'Fulan bin Fulan'
-          ],
-          dosenPengujiAkhir: [
-            'Fulanah bin Fulanah',
-            'Ada aja deh'
-          ]
-        },
-        {
-          nama: "Hanif Islam",
-          topik: "Mungkinkah Aku Mengerti ini semua?",
-          dosenPembimbing: [
-            'Dosen serius mulu',
-            'Dosen banyak senyum'
-          ],
-          dosenPengujiTA1: [
-            'Dosen killer',
-            'Dosen pelit nilai'
-          ],
-          dosenPengujiAkhir: [
-            'Dosen lucu',
-          ]
-        }
-      ]
+      dataTA : this.props.dataTA
     };
   }
 
@@ -547,7 +484,7 @@ class timta_mng_pasangan_TA extends Component {
             value={this.state.mahasiswa}
             onChange={(event, index, mahasiswa)=>this.handleChangeMahasiswa(event, index, mahasiswa)}
           >
-          {this.state.daftarMahasiswa.map((item) => (
+          {this.props.mahasiswa.map((item) => (
             <MenuItem
               key={item}
               insetChildren={true}
@@ -588,7 +525,7 @@ class timta_mng_pasangan_TA extends Component {
             value = {this.state.dosenPembimbing}
             onChange={(event, index, dosenPembimbing)=>this.handleChangeDosenPembimbing(event, index, dosenPembimbing)}
           >
-          {this.state.daftarDosen.map((item) => (
+          {this.props.dosen.map((item) => (
             <MenuItem
               key={item}
               insetChildren={true}
@@ -614,7 +551,7 @@ class timta_mng_pasangan_TA extends Component {
             value = {this.state.dosenPengujiTA1}
             onChange={(event, index, dosenPengujiTA1) =>this.handleChangeDosenPengujiTA1(event, index, dosenPengujiTA1) }
           >
-          {this.state.daftarDosen.map((item) => (
+          {this.props.dosen.map((item) => (
             <MenuItem
               key={item}
               insetChildren={true}
@@ -640,7 +577,7 @@ class timta_mng_pasangan_TA extends Component {
             value = {this.state.dosenPengujiAkhir}
             onChange={(event, index, dosenPengujiAkhir) =>this.handleChangeDosenPenguji(event, index, dosenPengujiAkhir) }
           >
-          {this.state.daftarDosen.map((item) => (
+          {this.props.dosen.map((item) => (
             <MenuItem
               key={item}
               insetChildren={true}
@@ -658,4 +595,16 @@ class timta_mng_pasangan_TA extends Component {
   }
 }
 
-export default timta_mng_pasangan_TA;
+function mapStateToProps(state) {
+    return {
+        mahasiswa: state.mahasiswaTA,
+        dosen: state.dosen,
+        dataTA: state.dataTA,
+    };
+}
+
+function matchDispatchToProps(dispatch){
+    return bindActionCreators({}, dispatch);
+}
+
+export default connect(mapStateToProps, matchDispatchToProps)(timta_mng_pasangan_TA);
