@@ -24,6 +24,8 @@ import {
   TableRowColumn,
 } from 'material-ui/Table';
 import imgProfile from '../../scss/public/images/imgprofile.jpg';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 
 class timta_mng_user extends Component {
 
@@ -37,36 +39,7 @@ class timta_mng_user extends Component {
       nama: "",
       email: "",
       peran: "",
-      dataUser: [
-        {
-          nama: "Ikhwanul Muslimin",
-          nim: "13514020",
-          email: "13514020@std.stei.itb.ac.id",
-          refresh_token: "1/7kjgvfcdvhgbjhgv",
-          peran: 0
-        },
-        {
-          nama: "Naufal Malik Rabbani",
-          nim: "13514052",
-          email: "13514052@std.stei.itb.ac.id",
-          refresh_token: "1/7hjygtbhgbjhgv",
-          peran: 0,
-        },
-        {
-          nama: "Nur Ulfa Maulidevi",
-          nim: null,
-          email: "ulfa@informatika.org",
-          refresh_token: "1/4kjhnhgbjhgv",
-          peran: 1,
-        },
-        {
-          nama: "Desy Puji",
-          nim: null,
-          email: "desy@informatika.org",
-          refresh_token: "1/5kjhgfvbnmjv",
-          peran: 2,
-        }
-      ]
+      dataUser: this.props.user,
     };
   }
 
@@ -393,4 +366,14 @@ class timta_mng_user extends Component {
   }
 }
 
-export default timta_mng_user;
+function mapStateToProps(state) {
+    return {
+        user: state.user
+    };
+}
+
+function matchDispatchToProps(dispatch){
+    return bindActionCreators({}, dispatch);
+}
+
+export default connect(mapStateToProps, matchDispatchToProps)(timta_mng_user);
