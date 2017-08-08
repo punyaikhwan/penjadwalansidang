@@ -1,8 +1,16 @@
 let helper = require('./db.js');
+require('./pasangan_ta.js')
+require('./user.js')
 
 Model = helper.bookshelf.Model.extend({
     tableName: 'anggota_pasangan_ta',
-    hasTimestamps: true
+    hasTimestamps: true,
+    kelompok: function() {
+	    return this.belongsTo('PasanganTA')
+	},
+	user: function() {
+	    return this.belongsTo('User')
+	}
 });	
 model = helper.bookshelf.model('AnggotaPasanganTA', Model);
 
