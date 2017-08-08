@@ -1,5 +1,5 @@
 let User = require('../db/models/user.js')
-
+let Promise = require('bluebird')
 
 //===============================================================================
 var DeleteUser = function(id){
@@ -7,14 +7,18 @@ var DeleteUser = function(id){
 }
 //===============================================================================
 var NewUser = function(obj){
-	return new User.model({obj}).save()
+	return new User.model(obj).save()
 }
 //===============================================================================
 var EditUser = function(ids, objs){
+	var task = []
 	for(var i=0; i<ids.length; i++){
-		return new User.model({id: ids[i]})
-		 .save({objs[i]}, {patch: true})
+		task.push(
+			new User.model({id: ids[i]})
+		 	.save(objs[i], {patch: true})
+		)
 	}
+	return Promise.each(task, function(){})
 }
 //===============================================================================
 var FetchUser = function(){
@@ -46,7 +50,8 @@ var test = async function(){
 		await NewUser(myobj)
 		var result = await FetchUser()
 		console.log(result.toJSON())
-		var lasti = result.pop().ids
+		var lasti = result.pop().id
+		console.log(lasti)
 
 		//test edit
 		console.log("EDIT===============================")
