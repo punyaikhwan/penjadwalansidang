@@ -1,2 +1,4 @@
 .idea
 node_modules
+/dev/js/node/db/knexfile.js
+/dev/js/node/db/models/db.js
