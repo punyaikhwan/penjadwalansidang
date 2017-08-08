@@ -1,5 +1,6 @@
 let helper = require('./db.js');
 require('./anggota_pasangan_kp.js')
+require('./user.js')
 
 Model = helper.bookshelf.Model.extend({
     tableName: 'pasangan_kp',
@@ -17,10 +18,10 @@ module.exports = {
 	model
 }
 //testing====================================================
-Model.fetchAll({withRelated:['dosen', 'anggota']}).then(function(data){
-	console.log("==kp=================")
-	console.log(JSON.stringify(data))
-})
+// Model.fetchAll({withRelated:['dosen', 'anggota']}).then(function(data){
+// 	console.log("==kp=================")
+// 	console.log(JSON.stringify(data))
+// })
 
 
 

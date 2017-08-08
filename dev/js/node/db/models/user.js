@@ -1,8 +1,9 @@
 let helper = require('./db.js');
+require('./pasangan_ta.js')
 
 Model = helper.bookshelf.Model.extend({
     tableName: 'user',
-    hasTimestamps: true
+    hasTimestamps: true,
 });	
 model = helper.bookshelf.model('User', Model);
 
