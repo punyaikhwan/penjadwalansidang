@@ -1,6 +1,7 @@
 export default function () {
     return [
         {
+            id: 1,
             anggota: [
                 'Ikhwanul Muslimin',
                 'Febi Agil Ifdillah',
@@ -12,6 +13,7 @@ export default function () {
             ]
         },
         {
+            id: 2,
             anggota: [
                 'Dani Sirait',
                 'Hendrikus Bimawan',
@@ -23,6 +25,7 @@ export default function () {
             ]
         },
         {
+            id: 3,
             anggota: [
                 'Fachrudin Muhlis',
                 'Harfi Maulana',
