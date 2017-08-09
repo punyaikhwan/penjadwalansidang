@@ -11,6 +11,7 @@ import '../../scss/mahasiswa.scss';
 import Row from 'muicss/lib/react/row';
 import Col from 'muicss/lib/react/col';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import dateFormat from 'dateformat';
 import {
   Table,
   TableBody,
@@ -21,11 +22,33 @@ import {
 } from 'material-ui/Table';
 import imgProfile from '../../scss/public/images/imgprofile.jpg';
 
-class timta_mng_pasangan extends Component {
+class mhs_jadwal_seminarTA1 extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {open: false};
+    this.state = {
+      open: false,
+      myDataTA: {
+        rincian: {
+          topik: "Implementasi X untuk Y",
+          nama: "Ikhwanul Muslimin",
+          nim: 13514020,
+          dosenPembimbing: [
+            'Rinaldi Munir',
+            'Mesayu'
+          ],
+          dosenPengujiAkhir: [
+            'Inggriani Liem',
+            'Bayu Hendrajaya'
+          ]
+        },
+        jadwal: {
+          dateTimeStart: "2010-06-09T15:20:00+07:00",
+          dateTimeEnd: "2010-06-09T16:20:00+07:00",
+          ruang: "7602"
+        }
+      }
+    };
   }
 
   handleToggle() {this.setState({open: !this.state.open})};
@@ -37,7 +60,7 @@ class timta_mng_pasangan extends Component {
       <MuiThemeProvider>
       <div>
         <AppBar
-          title="Halaman Mahasiswa - Jadwal Sidang"
+          title="Halaman Mahasiswa - Jadwal Sidang Akhir"
           iconElementLeft={
             <IconButton tooltip="Menu" onClick = {()=>this.handleToggle()}>
               <i className="material-icons" style={{color: 'white'}}>menu</i>
@@ -52,7 +75,7 @@ class timta_mng_pasangan extends Component {
           }
         />
 
-        <p className="tableTitle">Jadwal Sidang Anda</p>
+        <p className="tableTitle">Jadwal Sidang Akhir Anda</p>
         <br/>
         <Row className="infoSidang">
           <Col md="6" xs="12">
@@ -63,28 +86,33 @@ class timta_mng_pasangan extends Component {
                   <TableBody displayRowCheckbox={false}>
                     <TableRow>
                       <TableRowColumn className="attributeTable">Topik</TableRowColumn>
-                      <TableRowColumn>Implementasi Algoritma X untuk YY</TableRowColumn>
+                      <TableRowColumn>{this.state.myDataTA.rincian.topik}</TableRowColumn>
                     </TableRow>
                     <TableRow>
                       <TableRowColumn className="attributeTable">Nama</TableRowColumn>
-                      <TableRowColumn>Ikhwanul Muslimin</TableRowColumn>
+                      <TableRowColumn>{this.state.myDataTA.rincian.nama}</TableRowColumn>
                     </TableRow>
                     <TableRow>
                       <TableRowColumn className="attributeTable">NIM</TableRowColumn>
-                      <TableRowColumn>13514020</TableRowColumn>
+                      <TableRowColumn>{this.state.myDataTA.rincian.nim}</TableRowColumn>
                     </TableRow>
-                    <TableRow>
-                      <TableRowColumn className="attributeTable">Pembimbing 1</TableRowColumn>
-                      <TableRowColumn>Rinaldi Munir</TableRowColumn>
+                    {this.state.myDataTA.rincian.dosenPembimbing.map((item, i)=>(
+                    <TableRow key={i}>
+                      <TableRowColumn className="attributeTable">{"Pembimbing "+(i+1)}</TableRowColumn>
+                      <TableRowColumn>{item}</TableRowColumn>
                     </TableRow>
-                    <TableRow>
-                      <TableRowColumn className="attributeTable">Pembimbing 2</TableRowColumn>
-                      <TableRowColumn>-</TableRowColumn>
+                    ))}
+                    {this.state.myDataTA.rincian.dosenpengujiAkhir.map((item, i)=>(
+                    <TableRow key={i}>
+                      <TableRowColumn className="attributeTable">{"Penguji "+(i+1)}</TableRowColumn>
+                      <TableRowColumn>{item}</TableRowColumn>
                     </TableRow>
+                    ))}
                   </TableBody>
                 </Table>
               </CardText>
             </Card>
+            <br/>
           </Col>
           <Col md="6" xs="12">
             <Card>
@@ -94,11 +122,11 @@ class timta_mng_pasangan extends Component {
                   <TableBody displayRowCheckbox={false}>
                     <TableRow>
                       <TableRowColumn className="attributeTable">Tanggal Sidang</TableRowColumn>
-                      <TableRowColumn>Senin, 31 Juli 2017</TableRowColumn>
+                      <TableRowColumn>{dateFormat(this.state.myDataTA.jadwal.dateTimeStart, "dddd, dd mmmm yyyy")}</TableRowColumn>
                     </TableRow>
                     <TableRow>
                       <TableRowColumn className="attributeTable">Waktu</TableRowColumn>
-                      <TableRowColumn>08.00-09.00</TableRowColumn>
+                      <TableRowColumn>{dateFormat(this.state.myDataTA.jadwal.dateTimeStart, "HH.MM")+"-"+dateFormat(this.state.myDataTA.jadwal.dateTimeEnd, "HH.MM")}</TableRowColumn>
                     </TableRow>
                     <TableRow>
                       <TableRowColumn className="attributeTable">Ruang</TableRowColumn>
@@ -149,4 +177,4 @@ class timta_mng_pasangan extends Component {
   }
 }
 
-export default timta_mng_pasangan;
+export default mhs_jadwal_seminarTA1;
