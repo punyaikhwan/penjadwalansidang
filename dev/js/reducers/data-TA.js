@@ -2,6 +2,7 @@ export default function () {
     return [
         {
             nama: "Ikhwanul Muslimin",
+            nim: 13514020,
             topik: "Implementasi XXXX untuk YYYYY",
             dosenPembimbing: [
                 'Ayu Purwarianti',
@@ -18,6 +19,7 @@ export default function () {
         },
         {
             nama: "Dani Sirait",
+            nim: 13514001,
             topik: "Pemanfaatan Algoritma X untuk Deteksi Y",
             dosenPembimbing: [
                 'Nur Ulfa Maulidevi'
@@ -33,6 +35,7 @@ export default function () {
         },
         {
             nama: "Hanif Islam",
+            nim: 13514090,
             topik: "Mungkinkah Aku Mengerti ini semua?",
             dosenPembimbing: [
                 'Dosen serius mulu',

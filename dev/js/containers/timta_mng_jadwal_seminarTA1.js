@@ -36,6 +36,7 @@ class timta_mng_jadwal_seminarTA1 extends Component {
     this.state = {
       open: false,
       dataTA: this.props.dataTA,
+      selectAll: false,
       checkBoxTA: [],
       listDosen: [],
       additionalCalender: "",
@@ -81,6 +82,25 @@ class timta_mng_jadwal_seminarTA1 extends Component {
     this.setState({listDosen: tempListDosen});
   }
 
+  handleSelectAll() {
+    let tempcheckBoxTA = this.state.checkBoxTA;
+    let tempdataTA = this.state.dataTA;
+    let tempListDosen = this.state.listDosen;
+    if (this.state.selectAll === false) {
+      this.setState({selectAll: true});
+      for (var i=0; i<this.state.checkBoxTA.length; i++) {
+        tempcheckBoxTA[i] = 1;
+        this.union_arrays(tempListDosen, tempdataTA[i].dosenPembimbing);
+        this.union_arrays(tempListDosen, tempdataTA[i].dosenPengujiTA1);
+      }
+      this.setState({checkBoxTA:tempcheckBoxTA});
+      this.setState({listDosen: tempListDosen});
+    } else {
+      this.setState({selectAll: false});
+      this.setState({listDosen: []});
+    }
+  }
+
   handleSelectMahasiswa(i) {
     let tempcheckBoxTA = this.state.checkBoxTA;
     let tempdataTA = this.state.dataTA;
@@ -92,6 +112,7 @@ class timta_mng_jadwal_seminarTA1 extends Component {
       this.setState({checkBoxTA: tempcheckBoxTA});
     } else {
       tempcheckBoxTA[i] = 0;
+      this.setState({selectAll: false});
       this.setState({checkBoxTA: tempcheckBoxTA});
       console.log("Checkbox:", this.state.checkBoxTA);
       setTimeout(()=> {
@@ -143,8 +164,11 @@ class timta_mng_jadwal_seminarTA1 extends Component {
               speed={0.8}
             >
               <List>
+                <ListItem leftCheckbox={<Checkbox checked={this.state.selectAll}/>} primaryText="Pilih semua" onClick={()=>this.handleSelectAll()}/>
+              </List>
+              <List>
                 {this.state.dataTA.map((item, i) => (
-                  <ListItem key={i} primaryText={item.nama} leftCheckbox={<Checkbox onCheck={()=>this.handleSelectMahasiswa(i)}/>}/>
+                  <ListItem key={i} primaryText={item.nim+"\t"+item.nama} leftCheckbox={<Checkbox checked={(this.state.checkBoxTA[i] === 1 || this.state.selectAll === true) ? true:false} onCheck={()=>this.handleSelectMahasiswa(i)}/>}/>
                 ))}
               </List>
             </ScrollArea>
