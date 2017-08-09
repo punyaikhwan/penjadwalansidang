@@ -37,6 +37,7 @@ class timta_mng_jadwal_seminarKP extends Component {
       open: false,
       dataKelompok: this.props.kelompok,
       checkBoxKelompok: [],
+      selectAll: false,
       listDosen: [],
       additionalCalender: "",
       startDate: null,
@@ -80,6 +81,27 @@ class timta_mng_jadwal_seminarKP extends Component {
     this.setState({listDosen: tempListDosen});
   }
 
+  handleSelectAll() {
+    let tempcheckBoxKelompok = this.state.checkBoxKelompok;
+    let tempdataKelompok = this.state.dataKelompok;
+    let tempListDosen = this.state.listDosen;
+    if (this.state.selectAll === false) {
+      this.setState({selectAll: true});
+      for (var i=0; i<this.state.checkBoxKelompok.length; i++) {
+        tempcheckBoxKelompok[i] = 1;
+        this.union_arrays(tempListDosen, tempdataKelompok[i].dosen);
+      }
+      this.setState({listDosen: tempListDosen});
+    } else {
+      this.setState({selectAll: false});
+      for (var i=0; i<this.state.checkBoxKelompok.length; i++) {
+        tempcheckBoxKelompok[i] = 0;
+      }
+      this.setState({listDosen: []});
+    }
+    this.setState({checkBoxKelompok:tempcheckBoxKelompok});
+  }
+
   handleSelectKelompok(i) {
     let tempCheckBoxKelompok = this.state.checkBoxKelompok;
     let tempDataKelompok = this.state.dataKelompok;
@@ -90,6 +112,7 @@ class timta_mng_jadwal_seminarKP extends Component {
       this.setState({checkBoxKelompok: tempCheckBoxKelompok});
     } else {
       tempCheckBoxKelompok[i] = 0;
+      this.setState({selectAll: false});
       this.setState({checkBoxKelompok: tempCheckBoxKelompok});
       console.log("Checkbox:", this.state.checkBoxKelompok);
       setTimeout(()=> {
@@ -141,8 +164,11 @@ class timta_mng_jadwal_seminarKP extends Component {
               speed={0.8}
             >
               <List>
+                <ListItem leftCheckbox={<Checkbox checked={this.state.selectAll}/>} primaryText="Pilih semua" onClick={()=>this.handleSelectAll()}/>
+              </List>
+              <List>
                 {this.state.dataKelompok.map((item, i) => (
-                  <ListItem key={i} primaryText={"Kelompok "+item.id} leftCheckbox={<Checkbox onCheck={()=>this.handleSelectKelompok(i)}/>}/>
+                  <ListItem key={i} primaryText={"Kelompok "+item.id} leftCheckbox={<Checkbox checked={this.state.checkBoxKelompok[i] === 1 ? true:false} onCheck={()=>this.handleSelectKelompok(i)}/>}/>
                 ))}
               </List>
             </ScrollArea>

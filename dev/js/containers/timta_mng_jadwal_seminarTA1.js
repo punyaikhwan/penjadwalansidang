@@ -93,12 +93,15 @@ class timta_mng_jadwal_seminarTA1 extends Component {
         this.union_arrays(tempListDosen, tempdataTA[i].dosenPembimbing);
         this.union_arrays(tempListDosen, tempdataTA[i].dosenPengujiTA1);
       }
-      this.setState({checkBoxTA:tempcheckBoxTA});
       this.setState({listDosen: tempListDosen});
     } else {
       this.setState({selectAll: false});
+      for (var i=0; i<this.state.checkBoxTA.length; i++) {
+        tempcheckBoxTA[i] = 0;
+      }
       this.setState({listDosen: []});
     }
+    this.setState({checkBoxTA: tempcheckBoxTA});
   }
 
   handleSelectMahasiswa(i) {
