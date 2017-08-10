@@ -171,7 +171,7 @@ class timta_mng_jadwal_seminarTA1 extends Component {
               </List>
               <List>
                 {this.state.dataTA.map((item, i) => (
-                  <ListItem key={i} primaryText={item.nim+"\t"+item.nama} leftCheckbox={<Checkbox checked={(this.state.checkBoxTA[i] === 1 || this.state.selectAll === true) ? true:false} onCheck={()=>this.handleSelectMahasiswa(i)}/>}/>
+                  <ListItem key={i} primaryText={item.nim+"\t"+item.nama} leftCheckbox={<Checkbox checked={this.state.checkBoxTA[i] === 1 ? true:false} onCheck={()=>this.handleSelectMahasiswa(i)}/>}/>
                 ))}
               </List>
             </ScrollArea>

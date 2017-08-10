@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
@@ -9,6 +10,7 @@ import FontIcon from 'material-ui/FontIcon';
 import Row from 'muicss/lib/react/row';
 import Col from 'muicss/lib/react/col';
 import TextField from 'material-ui/TextField';
+import Dialog from 'material-ui/Dialog';
 import {
   Table,
   TableBody,
@@ -28,6 +30,7 @@ import imgProfile from '../../scss/public/images/imgprofile.jpg';
 import '../../scss/timTA.scss';
 import events from './events';
 import moment from 'moment';
+import dateFormat from 'dateformat';
 
 BigCalendar.setLocalizer(
   BigCalendar.momentLocalizer(moment)
@@ -40,7 +43,9 @@ class timta_mng_calendar extends Component {
     super(props);
     this.state = {
       open: false,
-      events: events
+      events: events.result,
+      selectedEvent: null,
+      modalEvent: false,
     };
     this.moveEvent = this.moveEvent.bind(this)
   }
@@ -68,7 +73,20 @@ class timta_mng_calendar extends Component {
     alert(`${event.title} was dropped onto ${event.start}`);
   }
 
+  handleSelectedEvent(event) {
+    this.setState({selectedEvent: event});
+    this.setState({modalEvent: true});
+  }
+
   render() {
+    const actionsModalEvent = [
+      <FlatButton
+        label="OK"
+        primary={true}
+        onClick={()=>this.setState({modalEvent: false})}
+      />
+    ];
+
     return (
       <MuiThemeProvider>
       <div>
@@ -134,10 +152,51 @@ class timta_mng_calendar extends Component {
             events={this.state.events}
             onEventDrop={this.moveEvent}
             defaultView='month'
-            defaultDate={new Date(2015, 3, 12)}
+            defaultDate={new Date(2017, 5, 12)}
+            onSelectEvent= {event => this.handleSelectedEvent(event)}
           />
         </div>
 
+        {this.state.selectedEvent !== null &&
+          <Dialog
+            title={this.state.selectedEvent.title}
+            actions= {actionsModalEvent}
+            modal={false}
+            contentStyle={{width: 600}}
+            open={this.state.modalEvent}
+            onRequestClose={()=>this.setState({modalEvent: false})}
+            autoScrollBodyContent={true}
+          >
+            <Table selectable={false}>
+              <TableBody displayRowCheckbox={false}>
+              <TableRow displayBorder={false}>
+                <TableRowColumn className="attributeTable">Hari</TableRowColumn>
+                <TableRowColumn>{dateFormat(this.state.selectedEvent.start, "dddd, dd mmmm yyyy")}</TableRowColumn>
+              </TableRow>
+                <TableRow displayBorder={false}>
+                  <TableRowColumn className="attributeTable">Waktu</TableRowColumn>
+                  <TableRowColumn>{dateFormat(this.state.selectedEvent.start, "HH.MM")}</TableRowColumn>
+                </TableRow>
+                <TableRow displayBorder={false}>
+                  <TableRowColumn className="attributeTable">Topik</TableRowColumn>
+                  <TableRowColumn>{this.state.selectedEvent.topik}</TableRowColumn>
+                </TableRow>
+                {this.state.selectedEvent.anggota.map((item, i) => (
+                  <TableRow key={i} displayBorder={false}>
+                    <TableRowColumn className="attributeTable">{i===0 ? "Mahasiswa":""}</TableRowColumn>
+                    <TableRowColumn>{item}</TableRowColumn>
+                  </TableRow>
+                ))}
+                {this.state.selectedEvent.dosen.map((item, i) => (
+                <TableRow key={i} displayBorder={false}>
+                  <TableRowColumn className="attributeTable">{i === 0 ? "Dosen": ""}</TableRowColumn>
+                  <TableRowColumn>{item}</TableRowColumn>
+                </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Dialog>
+        }
       </div>
       </MuiThemeProvider>
     );
