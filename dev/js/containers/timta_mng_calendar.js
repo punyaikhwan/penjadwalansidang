@@ -46,6 +46,7 @@ class timta_mng_calendar extends Component {
       events: events.result,
       selectedEvent: null,
       modalEvent: false,
+      openSnackbar: false,
     };
     this.moveEvent = this.moveEvent.bind(this)
   }
@@ -66,11 +67,7 @@ class timta_mng_calendar extends Component {
     const nextEvents = events
     nextEvents.splice(idx, 1, updatedEvent)
 
-    this.setState({
-      events: nextEvents
-    })
-
-    alert(`${event.title} was dropped onto ${event.start}`);
+    this.setState({events: nextEvents})
   }
 
   handleSelectedEvent(event) {
@@ -152,7 +149,7 @@ class timta_mng_calendar extends Component {
             events={this.state.events}
             onEventDrop={this.moveEvent}
             defaultView='month'
-            defaultDate={new Date(2017, 5, 12)}
+            defaultDate={this.state.events[1].start}
             onSelectEvent= {event => this.handleSelectedEvent(event)}
           />
         </div>

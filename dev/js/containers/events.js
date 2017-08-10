@@ -14,16 +14,16 @@ export default {
           'Rinaldi Munir',
           'Ayu Purwarianti'
       ],
-      end:"2017-05-01T10:20:00",
+      end: new Date("2017-05-01T10:20:00"),
       room:"7602",
-      start:"2017-05-01T09:40:00",
+      start: new Date("2017-05-01T09:40:00"),
     },
     {
       "idEvent":"59073e7f6f23e457b45319ab",
       title: "Seminar KP Kelompok 2",
-      "end":"2017-05-22T11:40:00",
+      "end": new Date("2017-05-22T11:40:00"),
        room:"7606",
-      "start":"2017-05-22T11:00:00",
+      "start": new Date("2017-05-22T11:00:00"),
       id: 2,
       anggota: [
           'Dani Sirait',
@@ -37,9 +37,9 @@ export default {
     },
     {
       "idStudent":"59073e7f8e9b83bcf82aabb8",
-      "end":"2017-05-24T11:40:00",
+      "end":new Date("2017-05-24T11:40:00"),
       "room":"590740f3ae5d1d7bf5f32468",
-      "start":"2017-05-24T11:00:00",
+      "start": new Date("2017-05-24T11:00:00"),
       title: "Seminar KP Kelompok 3",
       id: 1,
       anggota: [
