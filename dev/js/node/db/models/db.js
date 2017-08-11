@@ -15,7 +15,7 @@ function connectDb() {
       host : 'localhost',
       user : 'root',
       password : '',
-      database : 'ppl-devasdfllll000000'
+      database : 'ppl-dev'
     }
   });
   console.log("----- DB Ready -----");
