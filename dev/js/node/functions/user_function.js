@@ -76,7 +76,12 @@ var test = async function(){
 //main program
 // test()
 
-
+module.exports = {
+  DeleteUser, 
+  NewUser,
+  EditUser,
+  FetchUser
+}
 
 
 

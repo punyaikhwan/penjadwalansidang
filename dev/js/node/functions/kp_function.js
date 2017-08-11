@@ -150,3 +150,10 @@ var test = async function(){
 //===============================================================================
 //main program
 // test()
+
+module.exports = {
+  DeleteKP, 
+  NewKP,
+  EditKP,
+  FetchKP
+}

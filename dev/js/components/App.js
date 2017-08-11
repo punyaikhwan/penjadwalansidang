@@ -16,8 +16,9 @@ import mhsJadwalSeminarTA2 from '../containers/mhs_jadwal_seminarTA2';
 import mhsJadwalSidangAkhir from '../containers/mhs_jadwal_sidangTA';
 import mngCalendar from '../containers/timta_mng_calendar';
 import notFound from '../containers/not_found';
-require('../../scss/style.scss');
-require('../../scss/index.scss');
+import '../../scss/style.scss';
+import '../../scss/index.scss';
+import injectTapEvent from "react-tap-event-plugin"
 
 import {
   BrowserRouter as Router,
@@ -25,7 +26,7 @@ import {
   Link,
   Switch
 } from 'react-router-dom'
-var injectTapEventPlugin = require("react-tap-event-plugin");
+var injectTapEventPlugin = injectTapEvent
 injectTapEventPlugin();
 
 const App = () => (

@@ -161,3 +161,9 @@ var test = async function(){
 //===============================================================================
 //main program
 // test()
+module.exports = {
+  DeleteTA, 
+  NewTA,
+  EditTA,
+  FetchTA
+}
