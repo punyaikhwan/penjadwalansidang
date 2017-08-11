@@ -39,6 +39,16 @@ var getToken = function(code){
   })
 };
 
+let saveToken = function(email, token){
+  //cek email
+
+  //if belum ada new user
+
+  //else update email
+}
+
+console.log(url)
+
 
 module.exports = {
   url,

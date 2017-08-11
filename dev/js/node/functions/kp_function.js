@@ -8,7 +8,6 @@ var DeleteKP = async function(id){
 
 		//delete pasangan kp
 		task.push(new KP.model({"id": id}).destroy())
-		
 		//delete anggota pasangan
 		var old = await Anggota.model.where({pasangan_id: id}).fetchAll()
 		old = old.toJSON();
