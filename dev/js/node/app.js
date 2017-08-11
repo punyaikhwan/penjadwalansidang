@@ -29,6 +29,16 @@ app.get('/user', function(request, response){
 	})
 })
 
+/*
+{
+	"obj":{
+		"nama": "test1",
+		"email": "email@1.com",
+		"peran": 2,
+		"NIM": "09875"
+	}
+}
+*/
 app.post('/user/new', function(request, response){
 	user.NewUser(request.body.obj).then(function(result){
 		response.send('success')
@@ -37,7 +47,17 @@ app.post('/user/new', function(request, response){
 		response.send(err)
 	})
 })
-
+/*
+{
+	"ids": [3],
+	"objs":[{
+		"nama": "test2",
+		"email": "email@2.com",
+		"peran": 1,
+		"NIM": "09875111"
+	}]
+}
+*/
 app.post('/user/edit', function(request, response){
 	user.EditUser(request.body.ids, request.body.objs).then(function(result){
 		response.send('success')
@@ -46,7 +66,11 @@ app.post('/user/edit', function(request, response){
 		response.send(err)
 	})
 })
-
+/*
+{
+	"id": 1
+}
+*/
 app.post('/user/delete', function(request, response){
 	user.DeleteUser(request.body.id).then(function(result){
 		response.send('success')
