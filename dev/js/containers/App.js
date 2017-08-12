@@ -9,7 +9,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
 import Row from 'muicss/lib/react/row';
 import Col from 'muicss/lib/react/col';
-import GoogleLogin from 'react-google-login';
 
 const responseGoogle = (response) => {
   console.log(response);
@@ -17,6 +16,7 @@ const responseGoogle = (response) => {
 
 class App extends Component {
   render() {
+    console.log(googleLoginUrl)
     return (
       <MuiThemeProvider>
         <div>
@@ -35,13 +35,6 @@ class App extends Component {
           <div className="container">
             <img src={logo} className="logoApp" />
             <p style={{fontFamily: "Lato", fontSize: 30, paddingTop: 20, paddingLeft: 20}}>APLIKASI PENJADWALAN SIDANG</p>
-            <GoogleLogin
-              clientId="806339176753-cmb1mv9g8itmir0p4ucqh0ibuhbl6s0k.apps.googleusercontent.com"
-              onSuccess={responseGoogle}
-              onFailure={responseGoogle}
-              scope= {'profile', 'email', 'https://www.googleapis.com/auth/calendar'}
-              className="googleLoginBtn"
-            >
             <RaisedButton
               href="/timta_mng_user"
               labelPosition="before"
@@ -52,7 +45,6 @@ class App extends Component {
               style={{height: 50}}
               icon={<FontIcon className="muidocs-icon-custom-github" />}
             />
-            </GoogleLogin>
             <div className="loginBtnContainer">
 
             </div>

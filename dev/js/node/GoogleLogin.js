@@ -22,3 +22,25 @@ var url = oauth2Client.generateAuthUrl({
   // Optional property that passes state parameters to redirect URI
   // state: { foo: 'bar' }
 });
+
+var getToken = function(code){
+    oauth2Client.getToken(code, function (err, tokens) {
+    // Now tokens contains an access_token and an optional refresh_token. Save them.
+    console.log(tokens)
+    console.log(err)
+    if (!err) {
+      console.log("===============================")
+      console.log(tokens)
+      oauth2Client.setCredentials(tokens);
+    }
+    else{
+      console.log(err)
+    }
+  })
+};
+
+
+module.exports = {
+  url,
+  getToken
+}
