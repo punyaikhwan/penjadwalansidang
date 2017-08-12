@@ -10,6 +10,7 @@ import mngJadwalSeminarKP from '../containers/timta_mng_jadwal_seminarKP';
 import mngJadwalSeminarTA1 from '../containers/timta_mng_jadwal_seminarTA1';
 import mngJadwalSeminarTA2 from '../containers/timta_mng_jadwal_seminarTA2';
 import mngJadwalSidangAkhir from '../containers/timta_mng_jadwal_sidangTA';
+import mngRuangan from '../containers/timta_mng_ruangan';
 import mhsJadwalSeminarKP from '../containers/mhs_jadwal_seminarKP';
 import mhsJadwalSeminarTA1 from '../containers/mhs_jadwal_seminarTA1';
 import mhsJadwalSeminarTA2 from '../containers/mhs_jadwal_seminarTA2';
@@ -40,6 +41,7 @@ const App = () => (
         <Route exact path="/timta_mng_jadwal_seminarTA1" component={mngJadwalSeminarTA1}/>
         <Route exact path="/timta_mng_jadwal_seminarTA2" component={mngJadwalSeminarTA2}/>
         <Route exact path="/timta_mng_jadwal_sidangTA" component={mngJadwalSidangAkhir}/>
+        <Route exact path="/timta_mng_ruangan" component={mngRuangan}/>
         <Route exact path="/mhs_jadwal_seminarKP" component={mhsJadwalSeminarKP}/>
         <Route exact path="/mhs_jadwal_seminarTA1" component={mhsJadwalSeminarTA1}/>
         <Route exact path="/mhs_jadwal_seminarTA2" component={mhsJadwalSeminarTA2}/>

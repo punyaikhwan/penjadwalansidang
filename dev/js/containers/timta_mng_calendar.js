@@ -45,6 +45,7 @@ class timta_mng_calendar extends Component {
       open: false,
       events: events.result,
       selectedEvent: null,
+      selectedDate: events.result[1].start,
       modalEvent: false,
       openSnackbar: false,
     };
@@ -149,8 +150,12 @@ class timta_mng_calendar extends Component {
             events={this.state.events}
             onEventDrop={this.moveEvent}
             defaultView='month'
-            defaultDate={this.state.events[1].start}
+            defaultDate={this.state.selectedDate}
             onSelectEvent= {event => this.handleSelectedEvent(event)}
+            onSelectSlot={(slotInfo) => {
+              this.setState({selectedDate: slotInfo.start});
+              console.log(this.state.selectedDate);
+            }}
           />
         </div>
 

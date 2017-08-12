@@ -18,6 +18,7 @@ import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import windowDimensions from 'react-window-dimensions';
 
 import {
   Table,
@@ -164,6 +165,18 @@ class timta_mng_pasangan_KP extends Component {
     return (
       <MuiThemeProvider>
       <div>
+        <RaisedButton
+          style={{
+            position: 'fixed',
+            marginTop: this.props.height-50,
+            marginLeft: this.props.width-200,
+            alignItems: 'center'
+          }}
+          backgroundColor="#F1D600"
+          label="SAVE"
+          labelPosition="after"
+          icon={<i className="material-icons" style={{color:'black'}}>save</i>}
+        />
         <AppBar
           title="Dashboard Tim TA - Daftar Pasangan Kerja Praktik"
           iconElementLeft={
@@ -185,18 +198,19 @@ class timta_mng_pasangan_KP extends Component {
             <Col md="4" xs="12">
               <div>
                 <Subheader>Daftar Kelompok</Subheader>
+                <RaisedButton
+                  label="Tambah kelompok"
+                  labelPosition="after"
+                  backgroundColor="rgb(166, 233, 255)"
+                  icon={<i className="material-icons" style={{color:'black'}}>add</i>}
+                  onTouchTap={()=>this.handleTambahKelompok()}
+                />
+                {this.state.dataKelompok.length !== 0 &&
                 <ScrollArea
                   horizontal={false}
                   style={{height: 500, borderLeftWidth: 2}}
                   speed={0.8}
                 >
-                  <RaisedButton
-                    label="Tambah kelompok"
-                    labelPosition="after"
-                    backgroundColor="rgb(166, 233, 255)"
-                    icon={<i className="material-icons" style={{color:'black'}}>add</i>}
-                    onTouchTap={()=>this.handleTambahKelompok()}
-                  />
                   <List>
                     {this.state.dataKelompok.map((item, i) => (
                       <Row>
@@ -217,27 +231,32 @@ class timta_mng_pasangan_KP extends Component {
                     }
                   </List>
                 </ScrollArea>
+                }
+                {this.state.dataKelompok.length === 0 &&
+                  <p><i>Tidak ada kelompok</i></p>
+                }
               </div>
             </Col>
             <Col md="8" xs="12">
-              <p style={{fontSize:20, fontWight:'bold', textAlign: 'center'}}>{"Kelompok "+(this.state.selectedKelompok+1)}</p>
-              <br/>
-              <p style={{fontSize:16}}>Daftar Mahasiswa</p>
+              {this.state.dataKelompok.length !== 0 &&
               <div>
-                <ScrollArea
-                  horizontal={false}
-                  style={{height: 250}}
-                  speed={0.8}
-                >
-                  <RaisedButton
-                    label="Tambah mahasiswa"
-                    labelPosition="after"
-                    backgroundColor="rgb(166, 233, 255)"
-                    icon={<i className="material-icons" style={{color:'black'}}>add</i>}
-                    onClick={()=>this.handleOpenTambahMahasiswa()}
-                  />
+                <p style={{fontSize:20, fontWight:'bold', textAlign: 'center'}}>{"Kelompok "+(this.state.selectedKelompok+1)}</p>
+                <br/>
+                <p style={{fontSize:16}}>Daftar Mahasiswa</p>
+                <div>
+                  <ScrollArea
+                    horizontal={false}
+                    style={{height: 250}}
+                    speed={0.8}
+                  >
+                    <RaisedButton
+                      label="Tambah mahasiswa"
+                      labelPosition="after"
+                      backgroundColor="rgb(166, 233, 255)"
+                      icon={<i className="material-icons" style={{color:'black'}}>add</i>}
+                      onClick={()=>this.handleOpenTambahMahasiswa()}
+                    />
 
-                  {this.state.dataKelompok.length > 0 &&
                     <List>
                     {this.state.dataKelompok[this.state.selectedKelompok].anggota.map((item, i)=> (
                         <Row>
@@ -254,73 +273,60 @@ class timta_mng_pasangan_KP extends Component {
                             />
                           </Col>
                         </Row>
-                    ))}
-                    </List>
-                  }
-                  {this.state.dataKelompok.length == 0 &&
-                    <p style={{fontSize:14}}><i>Tidak ada mahasiswa</i></p>
-                  }
-                </ScrollArea>
-              </div>
-              <br/>
-              <br/>
-              <p style={{fontSize:16}}>Topik Kerja Praktik</p>
-              <Row>
-                <Col md="10" xs="10">
-                {this.state.dataKelompok.length > 0 &&
-                  <p style={{fontSize: 20}}>{this.state.dataKelompok[this.state.selectedKelompok].topik}</p>
-                }
-                {this.state.dataKelompok.length == 0 &&
-                  <p style={{fontSize:14}}><i>Tidak ada kelompok</i></p>
-                }
-                </Col>
-                <Col md="2" xs ="2">
-                  <FlatButton
-                    icon={<i className="material-icons" style={{color:'black'}}>edit</i>}
-                    onClick={() => this.handleOpenEditTopic()}
+                      ))}
+                      </List>
+                  </ScrollArea>
+                </div>
+                <br/>
+                <br/>
+                <p style={{fontSize:16}}>Topik Kerja Praktik</p>
+                <Row>
+                  <Col md="10" xs="10">
+                    <p style={{fontSize: 20}}>{this.state.dataKelompok[this.state.selectedKelompok].topik}</p>
+                  </Col>
+                  <Col md="2" xs ="2">
+                    <FlatButton
+                      icon={<i className="material-icons" style={{color:'black'}}>edit</i>}
+                      onClick={() => this.handleOpenEditTopic()}
+                    />
+                  </Col>
+                </Row>
+                <br/>
+                <br/>
+                <p style={{fontSize:16}}>Dosen Pembimbing</p>
+                {this.state.dataKelompok[this.state.selectedKelompok].dosen.length < 2 &&
+                  <RaisedButton
+                    label="Tambah Dosen"
+                    labelPosition="after"
+                    backgroundColor="rgb(166, 233, 255)"
+                    icon={<i className="material-icons" style={{color:'black'}}>add</i>}
+                    onClick={()=>this.handleOpenTambahDosen()}
                   />
-                </Col>
-              </Row>
-              <br/>
-              <br/>
-              <p style={{fontSize:16}}>Dosen Pembimbing</p>
-              {this.state.dataKelompok[this.state.selectedKelompok].dosen.length < 2 &&
-                <RaisedButton
-                  label="Tambah Dosen"
-                  labelPosition="after"
-                  backgroundColor="rgb(166, 233, 255)"
-                  icon={<i className="material-icons" style={{color:'black'}}>add</i>}
-                  onClick={()=>this.handleOpenTambahDosen()}
-                />
-              }
-
-              {this.state.dataKelompok.length > 0 &&
-                this.state.dataKelompok[this.state.selectedKelompok].dosen.length > 0 &&
-                <List>
-                  {this.state.dataKelompok[this.state.selectedKelompok].dosen.map((item, i) =>(
-                    <Row>
-                      <Col md="8" xs="8">
-                        <ListItem key={i}>
-                          {item}
-                        </ListItem>
-                      </Col>
-                      <Col md="4" xs ="4" style={{marginTop:7}}>
-                        <FlatButton
-                          icon={<i className="material-icons" style={{color:'black', fontSize:'14px'}}>close</i>}
-                          onClick={()=>this.handleDeleteDosen(i)}
-                        />
-                      </Col>
-                    </Row>
-                  ))}
-                </List>
-              }
-              {this.state.dataKelompok.length > 0 &&
-                this.state.dataKelompok[this.state.selectedKelompok].dosen.length == 0 &&
-                  <p style={{fontSize:14}}><i>Belum ada dosen.</i></p>
-              }
-              {this.state.dataKelompok.length == 0 &&
-                <p style={{fontSize:14}}><i>Tidak ada kelompok</i></p>
-              }
+                }
+                {this.state.dataKelompok[this.state.selectedKelompok].dosen.length > 0 &&
+                  <List>
+                    {this.state.dataKelompok[this.state.selectedKelompok].dosen.map((item, i) =>(
+                      <Row>
+                        <Col md="8" xs="8">
+                          <ListItem key={i}>
+                            {item}
+                          </ListItem>
+                        </Col>
+                        <Col md="4" xs ="4" style={{marginTop:7}}>
+                          <FlatButton
+                            icon={<i className="material-icons" style={{color:'black', fontSize:'14px'}}>close</i>}
+                            onClick={()=>this.handleDeleteDosen(i)}
+                          />
+                        </Col>
+                      </Row>
+                    ))}
+                  </List>
+                }
+                {this.state.dataKelompok[this.state.selectedKelompok].dosen.length == 0 &&
+                    <p style={{fontSize:14}}><i>Belum ada dosen.</i></p>
+                }
+              </div>
+            }
             </Col>
           </Row>
         </div>
@@ -442,4 +448,4 @@ function matchDispatchToProps(dispatch){
     return bindActionCreators({}, dispatch);
 }
 
-export default connect(mapStateToProps, matchDispatchToProps)(timta_mng_pasangan_KP);
+export default connect(mapStateToProps, matchDispatchToProps)(windowDimensions()(timta_mng_pasangan_KP));
