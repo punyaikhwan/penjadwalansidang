@@ -7,8 +7,8 @@ module.exports = {
     connection: {
       host : 'localhost',
       user : 'root',
-      password : '',
-      database : 'ppl-dev'
+      password : 'root',
+      database : 'ppldev'
     }
   },
 
