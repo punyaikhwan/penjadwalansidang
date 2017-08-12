@@ -14,7 +14,6 @@ import Row from 'muicss/lib/react/row';
 import Col from 'muicss/lib/react/col';
 import {List, ListItem} from 'material-ui/List';
 import SelectField from 'material-ui/SelectField';
-
 import {
   Table,
   TableBody,
@@ -26,6 +25,7 @@ import {
 import imgProfile from '../../scss/public/images/imgprofile.jpg';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import {fetchUser} from '../actions/fetch-user'
 
 class timta_mng_user extends Component {
 
@@ -41,6 +41,10 @@ class timta_mng_user extends Component {
       peran: "",
       dataUser: this.props.user,
     };
+  }
+
+  componentDidMount(){
+    this.props.fetchUser()
   }
 
   handleToggle(){this.setState({open: !this.state.open})};
@@ -188,13 +192,13 @@ class timta_mng_user extends Component {
               </TableRow>
             </TableHeader>
             <TableBody displayRowCheckbox = {false}>
-              {this.state.dataUser.map((user, i) => (
+              {this.props.user.map((user, i) => (
                 <TableRow key={i}>
                   <TableRowColumn style={{width:3}}></TableRowColumn>
                   <TableRowColumn>{user.nama}</TableRowColumn>
-                  <TableRowColumn>{user.nim}</TableRowColumn>
+                  <TableRowColumn>{user.NIM}</TableRowColumn>
                   <TableRowColumn>{user.email}</TableRowColumn>
-                  <TableRowColumn>{user.refresh_token}</TableRowColumn>
+                  <TableRowColumn>{user.token}</TableRowColumn>
                   <TableRowColumn>{this.state.listperan[user.peran]}</TableRowColumn>
                   <TableRowColumn>
                       <IconButton style={{color:'blue'}}  onClick={()=>this.handleOpenEditUser(i)}>
@@ -373,7 +377,7 @@ function mapStateToProps(state) {
 }
 
 function matchDispatchToProps(dispatch){
-    return bindActionCreators({}, dispatch);
+    return bindActionCreators({fetchUser:fetchUser}, dispatch);
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(timta_mng_user);
