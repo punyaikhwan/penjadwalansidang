@@ -11,7 +11,7 @@ export const fetchUser= () => {
             console.log(data.data)
 
             dispatch({
-                type: "DONE FETCHING USER",
+                type: "DONE FETCH USER",
                 payload: data.data
 
             })

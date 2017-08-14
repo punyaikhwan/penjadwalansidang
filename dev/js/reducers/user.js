@@ -1,6 +1,6 @@
 export default function (state = [], action) {
     switch (action.type) {
-        case 'DONE FETCHING USER':
+        case 'DONE FETCH USER':
             return action.payload;
             break;
     }
