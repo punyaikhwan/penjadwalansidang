@@ -28,6 +28,12 @@ class mhs_jadwal_seminarKP extends Component {
     super(props);
     this.state = {
       open: false,
+      userInfo: {
+       id: "hfvcggf",
+       nama: "Ikhwanul Muslimin",
+       email: "13514020@std.stei.itb.ac.id",
+       peran: "Mahasiswa"
+      },
       myDataSeminar: {
         rincian: {
           idKelompok: 1,
@@ -149,8 +155,9 @@ class mhs_jadwal_seminarKP extends Component {
               </Col>
               <Col md="9" xs="10" className="textProfile">
                 <Row>
-                  <Col className="nameProfile">Ikhwanul Muslimin</Col>
-                  <Col className="emailProfile">ikhwan.m1996@gmail.com</Col>
+                  <Col className="nameProfile">{this.state.userInfo.nama}</Col>
+                  <Col className="emailProfile">{this.state.userInfo.email}</Col>
+                  <Col className="emailProfile">{this.state.userInfo.peran}</Col>
                 </Row>
               </Col>
             </Row>

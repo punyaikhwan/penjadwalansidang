@@ -162,8 +162,8 @@ class mhs_jadwal_seminarTA1 extends Component {
           </div>
           <hr/>
           <p className="menuTitle">Jadwal</p>
-          <MenuItem insetChildren={true} href="/mhs_jadwal_seminarKP" style={{backgroundColor:'#b0bec5'}}>Seminar KP</MenuItem>
-          <MenuItem insetChildren={true} href="/mhs_jadwal_seminarTA1">Seminar TA 1</MenuItem>
+          <MenuItem insetChildren={true} href="/mhs_jadwal_seminarKP">Seminar KP</MenuItem>
+          <MenuItem insetChildren={true} href="/mhs_jadwal_seminarTA1" style={{backgroundColor:'#b0bec5'}}>Seminar TA 1</MenuItem>
           <MenuItem insetChildren={true} href="/mhs_jadwal_seminarTA2">Seminar TA 2</MenuItem>
           <MenuItem insetChildren={true} href="/mhs_jadwal_sidangTA">Sidang Akhir</MenuItem>
           <hr/>
