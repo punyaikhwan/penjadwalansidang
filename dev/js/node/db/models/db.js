@@ -14,8 +14,8 @@ function connectDb() {
     connection: {
       host : 'localhost',
       user : 'root',
-      password : 'root',
-      database : 'ppldev'
+      password : '',
+      database : 'ppl-dev'
     }
   });
   console.log("----- DB Ready -----");

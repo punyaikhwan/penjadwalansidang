@@ -18,9 +18,9 @@ var DeleteTA = async function(id){
 	return Promise.each(task, function(){})
 }
 //===============================================================================
-var NewTA = function(){
+var NewTA = function(nama){
 	//bikin record kosong
-	return new TA.model().save()
+	return new TA.model({'nama': nama}).save()
 }
 //===============================================================================
 var EditTA = async function(ids, objs){
@@ -92,6 +92,21 @@ var FetchTA = function(){
 	return TA.model.fetchAll({withRelated:['pembimbing.user', 'penguji.user', 'akhir.user']})
 }
 //===============================================================================
+var FetchSpecificStudentTA = function(id){
+	return TA.model.where({'mahasiswa_id': id}).fetchAll({withRelated:['pembimbing.user', 'penguji.user', 'akhir.user']})
+}
+//===============================================================================
+var FetchSpecificTeacherTA = async function(nama){
+	try{
+		let temp = await TA.model.fetchAll({withRelated:['pembimbing.user', 'penguji.user', 'akhir.user']})
+		console.log(temp.toJSON())
+
+		//loop ilangin yang ngga sesuai nama
+	}catch(err){
+		console.log(err)
+	}
+}
+//===============================================================================
 var CreateTAObj = function(mahasiswa_id, topik, pembimbings, pengujis, akhirs){
 	var obj = {
 		"mahasiswa_id": mahasiswa_id,
@@ -122,8 +137,12 @@ var test = async function(){
 
 		//test fetch
 		console.log("FETCH===============================")
+		var result = await FetchSpecificTeacherTA('A')
+
+		console.log("FETCH===============================")
 		var result = await FetchTA()
-		console.log(result.toJSON())
+		console.log(JSON.stringify(result))
+		return 
 
 		//test new
 		console.log("NEW===============================")
@@ -160,7 +179,8 @@ var test = async function(){
 }
 //===============================================================================
 //main program
-// test()
+test()
+
 module.exports = {
   DeleteTA, 
   NewTA,
