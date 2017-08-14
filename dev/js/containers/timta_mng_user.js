@@ -178,21 +178,25 @@ class timta_mng_user extends Component {
             </TableHeader>
             <TableBody displayRowCheckbox = {false}>
               {this.props.user.map((user, i) => (
-                <TableRow key={i}>
+
+                  <TableRow key={i}>
+
                   <TableRowColumn style={{width:3}}></TableRowColumn>
                   <TableRowColumn>{user.nama}</TableRowColumn>
                   <TableRowColumn>{user.NIM}</TableRowColumn>
                   <TableRowColumn>{user.email}</TableRowColumn>
                   <TableRowColumn>{user.token}</TableRowColumn>
                   <TableRowColumn>{this.state.listperan[user.peran]}</TableRowColumn>
-                  <TableRowColumn>
-                      <IconButton style={{color:'blue'}}  onClick={()=>this.handleOpenEditUser(user)}>
-                      <i className="material-icons">edit</i>
-                      </IconButton>
-                      <IconButton style={{color:'red'}}  onClick={()=>this.handleDeleteUser(user)}>
-                      <i className="material-icons" >delete</i>
-                      </IconButton>
-                  </TableRowColumn>
+                      {user.nama !== "Ruangan" &&
+                      <TableRowColumn>
+                        <IconButton style={{color: 'blue'}} onClick={() => this.handleOpenEditUser(user)}>
+                          <i className="material-icons">edit</i>
+                        </IconButton>
+                        <IconButton style={{color: 'red'}} onClick={() => this.handleDeleteUser(user)}>
+                          <i className="material-icons">delete</i>
+                        </IconButton>
+                      </TableRowColumn>
+                      }
                 </TableRow>
               ))}
             </TableBody>
