@@ -406,7 +406,7 @@ class timta_mng_pasangan_KP extends Component {
         </Dialog>
 
         <Dialog
-          title="Tambah Dosen Penguji"
+          title="Tambah Dosen Pemboimbing"
           actions= {actionsTambahDosen}
           modal={false}
           open={this.state.modalTambahDosen}

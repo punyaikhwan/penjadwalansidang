@@ -16,6 +16,7 @@ import ScrollArea from 'react-scrollbar';
 import SelectField from 'material-ui/SelectField';
 import TextField from 'material-ui/TextField';
 import Dialog from 'material-ui/Dialog';
+import windowDimensions from 'react-window-dimensions';
 import {
   Table,
   TableBody,
@@ -228,6 +229,18 @@ class timta_mng_pasangan_TA extends Component {
     return (
       <MuiThemeProvider>
       <div>
+        <RaisedButton
+          style={{
+            position: 'fixed',
+            marginTop: this.props.height-50,
+            marginLeft: this.props.width-200,
+            alignItems: 'center'
+          }}
+          backgroundColor="#F1D600"
+          label="SAVE"
+          labelPosition="after"
+          icon={<i className="material-icons" style={{color:'black'}}>save</i>}
+        />
         <AppBar
           title="Dashboard Tim TA - Daftar Pasangan Tugas Akhir"
           iconElementLeft={
@@ -562,7 +575,7 @@ class timta_mng_pasangan_TA extends Component {
           title="Tambah Dosen Penguji Sidang Akhir"
           actions= {actionsTambahDosenPengujiAkhir}
           modal={false}
-          open={this.state.modalTambahDosenPenguji}
+          open={this.state.modalTambahDosenPengujiAkhir}
           onRequestClose={()=>this.handleCloseTambahDosenPenguji()}
         >
           <SelectField
@@ -601,4 +614,4 @@ function matchDispatchToProps(dispatch){
     return bindActionCreators({}, dispatch);
 }
 
-export default connect(mapStateToProps, matchDispatchToProps)(timta_mng_pasangan_TA);
+export default connect(mapStateToProps, matchDispatchToProps)(windowDimensions()(timta_mng_pasangan_TA));

@@ -16,7 +16,7 @@ const responseGoogle = (response) => {
 
 class App extends Component {
   render() {
-    console.log(googleLoginUrl)
+    // console.log(googleLoginUrl)
     return (
       <MuiThemeProvider>
         <div>
