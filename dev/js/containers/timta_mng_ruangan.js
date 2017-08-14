@@ -20,6 +20,8 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import windowDimensions from 'react-window-dimensions';
 import dateFormat from 'dateformat';
+import DatePicker from 'material-ui/DatePicker';
+import TimePicker from 'material-ui/TimePicker';
 import {
   Table,
   TableBody,
@@ -41,9 +43,8 @@ class timta_mng_ruangan extends Component {
       titleEvent: "",
       startDate: null,
       endDate: null,
-      startHour: null,
-      endHour: null,
       selectedRuangan: 0,
+      idRuangan: "",
       dataRuangan: [
         {
           id: "7606",
@@ -105,21 +106,23 @@ class timta_mng_ruangan extends Component {
   }
 
   handleOpenTambahEvent () {this.setState({modalTambahEvent: true})};
-  handleCloseTambahEvent () { this.setState({modalTambahEvent: false})};
+  handleCloseTambahEvent () {
+    this.setState({modalTambahEvent: false});
+    this.setState({startDate: null, endDate: null, titleEvent: ""})
+  };
   handleChangeTitleEvent(event) {this.setState({titleEvent: event.target.value})};
   handleChangeEventStartDate(event, date) {this.setState({startDate: date})};
-  handleChangeEventStartHour(event, date) {this.setState({startHour: date})};
   handleChangeEventEndDate(event, date) {this.setState({endDate: date})};
-  handleChangeEventEndHour(event, date) {this.setState({endHour: date})};
   handleTambahEvent() {
     let tempDataRuangan = this.state.dataRuangan;
     let dataEvent = {
       title: this.state.titleEvent,
-      start: this.state.startDate+this.state.startHour,
-      end: this.state.endDate+this.state.endHour,
+      start: this.state.startDate,
+      end: this.state.endDate,
     }
     console.log("new data event:", dataEvent);
-    tempDateRuangan[this.state.selectedRuangan].events.push(dataEvent);
+    console.log(tempDataRuangan[this.state.selectedRuangan].events);
+    tempDataRuangan[this.state.selectedRuangan].events.push(dataEvent);
     this.setState({dataRuangan: tempDataRuangan});
     this.handleCloseTambahEvent();
   }
@@ -132,15 +135,24 @@ class timta_mng_ruangan extends Component {
   }
 
   handleOpenEditEvent(i) {
-    // this.setState({editedEvent: i});
-    // this.setState({title: this.state.dataRuangan[this.state.selectedRuangan].events[i].title});
+    this.setState({editedEvent: i});
+    this.setState({titleEvent: this.state.dataRuangan[this.state.selectedRuangan].events[i].title});
     let startDateFull = new Date(this.state.dataRuangan[this.state.selectedRuangan].events[i].start);
+    let endDateFull = new Date(this.state.dataRuangan[this.state.selectedRuangan].events[i].end);
     console.log(startDateFull);
-    // this.setState({startHour: this.state.dataRuangan[this.state.selectedRuangan].events[i].email});
+    this.setState({startDate: startDateFull});
+    this.setState({endDate: endDateFull});
     this.setState({modalEditEvent:true});
   }
 
-  handleCloseEditEvent(){this.setState({modalEditEvent:false})};
+  handleCloseEditEvent(){
+    this.setState({modalEditEvent:false});
+    this.setState({startDate: null, endDate: null, titleEvent: ""})
+  };
+
+  isEmpty(str) {
+    return (str.length === 0)
+  }
 
   render() {
     const actionsTambahRuangan = [
@@ -217,11 +229,11 @@ class timta_mng_ruangan extends Component {
 
         <div className="containerBodyWide" style={{marginTop: 20}}>
           <Row>
-            <Col md="4" xs="12">
+            <Col md="2" xs="12">
               <div>
                 <Subheader>Daftar Ruangan</Subheader>
                 <RaisedButton
-                  label="Tambah Ruangan"
+                  label="Tambah"
                   labelPosition="after"
                   backgroundColor="rgb(166, 233, 255)"
                   icon={<i className="material-icons" style={{color:'black'}}>add</i>}
@@ -236,17 +248,15 @@ class timta_mng_ruangan extends Component {
                   <List>
                     {this.state.dataRuangan.map((item, i) => (
                       <Row>
-                        <Col md="8" xs="8">
+                        <Col md="6" xs="8">
                           <ListItem key={i} onTouchTap={()=>this.setState({selectedRuangan:i})}>
-                            {"Ruang "+item.id}
+                            {item.id}
                           </ListItem>
                         </Col>
-                        <Col md="4" xs ="4" style={{marginTop:7}}>
-                          <FlatButton
-                            labelPosition="after"
-                            icon={<i className="material-icons" style={{color:'black'}}>close</i>}
-                            onClick={()=>this.handleDeleteRuangan(i)}
-                          />
+                        <Col md="6" xs ="4" style={{marginTop:7}}>
+                          <IconButton style={{color:'black'}}  onClick={()=>this.handleDeleteRuangan(i)}>
+                                <i className="material-icons">close</i>
+                          </IconButton>
                         </Col>
                       </Row>
                     ))
@@ -259,7 +269,7 @@ class timta_mng_ruangan extends Component {
                 }
               </div>
             </Col>
-            <Col md="8" xs="12">
+            <Col md="10" xs="12">
               {this.state.dataRuangan.length !== 0 &&
               <div>
                 <p style={{fontSize:20, fontWight:'bold', textAlign: 'center'}}>{"Ruangan "+(this.state.dataRuangan[this.state.selectedRuangan].id)}</p>
@@ -284,7 +294,7 @@ class timta_mng_ruangan extends Component {
                       <Table fixedHeader={true}>
                         <TableHeader displaySelectAll={false} enableSelectAll={false}>
                           <TableRow>
-                            <TableHeaderColumn>Judul Acara</TableHeaderColumn>
+                            <TableHeaderColumn style={{width:200}}>Judul Acara</TableHeaderColumn>
                             <TableHeaderColumn>Waktu Mulai</TableHeaderColumn>
                             <TableHeaderColumn>Waktu Selesai</TableHeaderColumn>
                             <TableHeaderColumn></TableHeaderColumn>
@@ -294,9 +304,11 @@ class timta_mng_ruangan extends Component {
                         {this.state.dataRuangan[this.state.selectedRuangan].events.map((item, i)=> (
                             <TableRow key={i}>
                               <TableRowColumn style={{width:3}}></TableRowColumn>
-                              <TableRowColumn>{item.title}</TableRowColumn>
-                              <TableRowColumn>{item.start}</TableRowColumn>
-                              <TableRowColumn>{item.start}</TableRowColumn>
+                              <TableRowColumn style={{width:200}}>{item.title}</TableRowColumn>
+                              <TableRowColumn style={{width:60}}>{dateFormat(item.start, "dd/mm/yy")}</TableRowColumn>
+                              <TableRowColumn style={{width:50}}>{dateFormat(item.start, "HH.MM")}</TableRowColumn>
+                              <TableRowColumn style={{width:60}}>{dateFormat(item.end, "dd/mm/yy")}</TableRowColumn>
+                              <TableRowColumn style={{width:50}}>{dateFormat(item.end, "HH.MM")}</TableRowColumn>
                               <TableRowColumn>
                                 <IconButton style={{color:'blue'}}  onClick={()=>this.handleOpenEditEvent(i)}>
                                 <i className="material-icons">edit</i>
@@ -374,9 +386,66 @@ class timta_mng_ruangan extends Component {
           actions= {actionsTambahEvent}
           modal={false}
           open={this.state.modalTambahEvent}
-          contentStyle={{width: 400}}
+          contentStyle={{width: 700}}
           onRequestClose={()=>this.handleCloseTambahEvent()}
         >
+          <TextField
+            hintText="Masukkan nama event"
+            floatingLabelText="Nama Event"
+            floatingLabelFixed={true}
+            errorText = {this.isEmpty(this.state.titleEvent) ? "Tidak boleh kosong" : ""}
+            onChange = {(event)=> this.handleChangeTitleEvent(event)}
+            style = {{width: 350}}
+          />
+          <Row>
+            <Col md="5" xs="5">
+              <Row>
+                <Col md="12" xs="12">
+                  <Subheader>Tanggal mulai</Subheader>
+                  <DatePicker
+                    hintText="Pilih tanggal mulai"
+                    mode="landscape"
+                    value = {this.state.startDate}
+                    onChange={(event, date)=>this.handleChangeEventStartDate(event, date)}
+                  />
+                </Col>
+                <Col md="12" xs="12">
+                  <Subheader>Jam Mulai</Subheader>
+                  <TimePicker
+                    format="24hr"
+                    hintText="Pilih waktu mulai"
+                    value={this.state.startDate}
+                    onChange={(event, date) =>this.handleChangeEventStartDate(event, date)}
+                  />
+                </Col>
+              </Row>
+            </Col>
+            <Col md="2" xs="2">
+
+            </Col>
+            <Col md="5" xs="5">
+              <Row>
+                <Col md="12" xs="12">
+                  <Subheader>Tanggal akhir</Subheader>
+                  <DatePicker
+                    hintText="Pilih tanggal akhir"
+                    mode="landscape"
+                    value = {this.state.endDate}
+                    onChange={(event, date)=>this.handleChangeEventEndDate(event, date)}
+                  />
+                </Col>
+                <Col md="12" xs="12">
+                  <Subheader>Jam Akhir</Subheader>
+                  <TimePicker
+                    format="24hr"
+                    hintText="Pilih waktu akhir"
+                    value={this.state.endDate}
+                    onChange={(event, date) =>this.handleChangeEventEndDate(event, date)}
+                  />
+                </Col>
+              </Row>
+            </Col>
+          </Row>
         </Dialog>
 
         <Dialog
@@ -384,9 +453,67 @@ class timta_mng_ruangan extends Component {
           actions= {actionsEditEvent}
           modal={false}
           open={this.state.modalEditEvent}
-          contentStyle={{width: 400}}
+          contentStyle={{width: 700}}
           onRequestClose={()=>this.handleCloseEditEvent()}
         >
+          <TextField
+            hintText="Masukkan nama event"
+            floatingLabelText="Nama Event"
+            floatingLabelFixed={true}
+            defaultValue = {this.state.titleEvent}
+            errorText = {this.isEmpty(this.state.titleEvent) ? "Tidak boleh kosong" : ""}
+            onChange = {(event)=> this.handleChangeTitleEvent(event)}
+            style = {{width: 350}}
+          />
+          <Row>
+            <Col md="5" xs="5">
+              <Row>
+                <Col md="12" xs="12">
+                  <Subheader>Tanggal mulai</Subheader>
+                  <DatePicker
+                    hintText="Pilih tanggal mulai"
+                    mode="landscape"
+                    value = {this.state.startDate}
+                    onChange={(event, date)=>this.handleChangeEventStartDate(event, date)}
+                  />
+                </Col>
+                <Col md="12" xs="12">
+                  <Subheader>Jam Mulai</Subheader>
+                  <TimePicker
+                    format="24hr"
+                    hintText="Pilih waktu mulai"
+                    value={this.state.startDate}
+                    onChange={(event, date) =>this.handleChangeEventStartDate(event, date)}
+                  />
+                </Col>
+              </Row>
+            </Col>
+            <Col md="2" xs="2">
+
+            </Col>
+            <Col md="5" xs="5">
+              <Row>
+                <Col md="12" xs="12">
+                  <Subheader>Tanggal akhir</Subheader>
+                  <DatePicker
+                    hintText="Pilih tanggal akhir"
+                    mode="landscape"
+                    value = {this.state.endDate}
+                    onChange={(event, date)=>this.handleChangeEventEndDate(event, date)}
+                  />
+                </Col>
+                <Col md="12" xs="12">
+                  <Subheader>Jam Akhir</Subheader>
+                  <TimePicker
+                    format="24hr"
+                    hintText="Pilih waktu akhir"
+                    value={this.state.endDate}
+                    onChange={(event, date) =>this.handleChangeEventEndDate(event, date)}
+                  />
+                </Col>
+              </Row>
+            </Col>
+          </Row>
         </Dialog>
       </div>
       </MuiThemeProvider>
