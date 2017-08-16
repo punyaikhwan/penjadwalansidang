@@ -1,4 +1,5 @@
 let TA = require('../db/models/pasangan_ta.js')
+let User = require('../db/models/user.js')
 let Anggota = require('../db/models/anggota_pasangan_ta.js')
 let Promise = require('bluebird')
 //===============================================================================
@@ -89,19 +90,60 @@ var EditTA = async function(ids, objs){
 }
 //===============================================================================
 var FetchTA = function(){
-	return TA.model.fetchAll({withRelated:['pembimbing.user', 'penguji.user', 'akhir.user']})
+	return TA.model.fetchAll({withRelated:['pembimbing.user', 'penguji.user', 'akhir.user', 'mahasiswa']})
 }
 //===============================================================================
-var FetchSpecificStudentTA = function(id){
-	return TA.model.where({'mahasiswa_id': id}).fetchAll({withRelated:['pembimbing.user', 'penguji.user', 'akhir.user']})
+var FetchSpecificStudentTA = function(mahasiswa){
+	return User.model.where({'nama': mahasiswa}).fetch().then(function(data){
+		console.log(data.toJSON())
+		var id = data.id
+		return TA.model.where({'id': id}).fetchAll({withRelated:['pembimbing.user', 'penguji.user', 'akhir.user', 'mahasiswa']})
+	})
+	
 }
 //===============================================================================
 var FetchSpecificTeacherTA = async function(nama){
 	try{
-		let temp = await TA.model.fetchAll({withRelated:['pembimbing.user', 'penguji.user', 'akhir.user']})
-		console.log(temp.toJSON())
+		let temp = await TA.model.fetchAll({withRelated:['pembimbing.user', 'penguji.user', 'akhir.user', 'mahasiswa']})
+		temp = temp.toJSON()
 
 		//loop ilangin yang ngga sesuai nama
+		var n = nama
+		var mark = []
+		for(var i=0; i<temp.length; i++){
+			//check pembimbing
+			for(var j1=0; j1<temp[i].pembimbing.length; j1++){
+				if(temp[i].pembimbing[j1].user.nama == n){
+					mark.push(i)
+					break
+				}
+			}
+
+			//check penguji
+			for(var j2=0; j2<temp[i].penguji.length; j2++){
+				if(temp[i].penguji[j2].user.nama == n){
+					mark.push(i)
+					break
+				}
+			}
+
+			//check akhir
+			for(var j3=0; j3<temp[i].akhir.length; j3++){
+				if(temp[i].akhir[j3].user.nama == n){
+					mark.push(i)
+					break
+				}
+			}
+		}
+
+		let result = []
+
+		for(var i=0; i<mark.length; i++){
+			result.push(temp[mark[i]])
+		}
+		return result
+		
+		
 	}catch(err){
 		console.log(err)
 	}
@@ -136,12 +178,11 @@ var test = async function(){
 		var obj2 = CreateTAObj(mahasiswa_id2, topik2, pembimbings2, pengujis2, akhirs2)
 
 		//test fetch
+		
+		var result = await FetchSpecificStudentTA('Madison')
 		console.log("FETCH===============================")
-		var result = await FetchSpecificTeacherTA('A')
+		console.log(result.toJSON())
 
-		console.log("FETCH===============================")
-		var result = await FetchTA()
-		console.log(JSON.stringify(result))
 		return 
 
 		//test new
@@ -179,7 +220,7 @@ var test = async function(){
 }
 //===============================================================================
 //main program
-test()
+// test()
 
 module.exports = {
   DeleteTA, 
