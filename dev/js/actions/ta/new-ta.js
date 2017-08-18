@@ -7,7 +7,7 @@ export const newTA= (id) => {
             type: "NEW TA"
         })
         axios.post('http://localhost:3001/ta/new', {
-            mahasiswa_id: id
+            mahasiswa_id: id.id
         }).then(function (data) {
 
             dispatch({

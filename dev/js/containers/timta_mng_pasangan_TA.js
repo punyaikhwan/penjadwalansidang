@@ -506,7 +506,7 @@ class timta_mng_pasangan_TA extends Component {
               key={item.id}
               insetChildren={true}
               checked={this.state.mahasiswa && this.state.mahasiswa.indexOf(item) > -1}
-              value={item.id}
+              value={item}
               primaryText={item.nama}
             />
           ))
@@ -547,7 +547,7 @@ class timta_mng_pasangan_TA extends Component {
               key={item.id}
               insetChildren={true}
               checked={this.state.dosenPembimbing === item}
-              value={item.id}
+              value={item}
               primaryText={item.nama}
             />
           ))
@@ -573,7 +573,7 @@ class timta_mng_pasangan_TA extends Component {
               key={item.id}
               insetChildren={true}
               checked={this.state.dosenPengujiTA1 === item}
-              value={item.id}
+              value={item}
               primaryText={item.nama}
             />
           ))
@@ -596,11 +596,11 @@ class timta_mng_pasangan_TA extends Component {
           >
           {this.props.dosen.map((item) => (
             <MenuItem
-              key={item}
+              key={item.id}
               insetChildren={true}
               checked={this.state.dosenPengujiAkhir === item}
               value={item}
-              primaryText={item}
+              primaryText={item.nama}
             />
           ))
           }

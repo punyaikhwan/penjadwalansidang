@@ -36,7 +36,6 @@ class timta_mng_jadwal_seminarKP extends Component {
     super(props);
     this.state = {
       open: false,
-      dataKelompok: this.props.kelompok,
       checkBoxKelompok: [],
       selectAll: false,
       listDosen: [],
@@ -77,7 +76,7 @@ class timta_mng_jadwal_seminarKP extends Component {
     var tempListDosen = [];
     for (var i=0; i<this.state.checkBoxKelompok.length; i++) {
       if (this.state.checkBoxKelompok[i] === 1) {
-        this.union_arrays(tempListDosen, this.state.dataKelompok[i].dosen);
+        this.union_arrays(tempListDosen, this.props.kelompok[i].dosen);
       }
     }
     this.setState({listDosen: tempListDosen});
@@ -85,7 +84,7 @@ class timta_mng_jadwal_seminarKP extends Component {
 
   handleSelectAll() {
     let tempcheckBoxKelompok = this.state.checkBoxKelompok;
-    let tempdataKelompok = this.state.dataKelompok;
+    let tempdataKelompok = this.props.kelompok;
     let tempListDosen = this.state.listDosen;
     if (this.state.selectAll === false) {
       this.setState({selectAll: true});
@@ -106,7 +105,7 @@ class timta_mng_jadwal_seminarKP extends Component {
 
   handleSelectKelompok(i) {
     let tempCheckBoxKelompok = this.state.checkBoxKelompok;
-    let tempDataKelompok = this.state.dataKelompok;
+    let tempDataKelompok = this.props.kelompok;
     let tempListDosen = this.state.listDosen;
     if (tempCheckBoxKelompok[i] === 0) {
       tempCheckBoxKelompok[i] = 1;
@@ -169,8 +168,8 @@ class timta_mng_jadwal_seminarKP extends Component {
                 <ListItem leftCheckbox={<Checkbox checked={this.state.selectAll}/>} primaryText="Pilih semua" onClick={()=>this.handleSelectAll()}/>
               </List>
               <List>
-                {this.state.dataKelompok.map((item, i) => (
-                  <ListItem key={i} primaryText={"Kelompok "+item.id} leftCheckbox={<Checkbox checked={this.state.checkBoxKelompok[i] === 1 ? true:false} onCheck={()=>this.handleSelectKelompok(i)}/>}/>
+                {this.props.kelompok.map((item, i) => (
+                  <ListItem key={i} primaryText={"Kelompok "+ item.id} leftCheckbox={<Checkbox checked={this.state.checkBoxKelompok[i] === 1 ? true:false} onCheck={()=>this.handleSelectKelompok(i)}/>}/>
                 ))}
               </List>
             </ScrollArea>
@@ -193,8 +192,8 @@ class timta_mng_jadwal_seminarKP extends Component {
                   {this.state.listDosen.map((item, i) => (
                     <TableRow key={i}>
                       <TableRowColumn></TableRowColumn>
-                      <TableRowColumn>{item}</TableRowColumn>
-                      <TableRowColumn>Yes</TableRowColumn>
+                      <TableRowColumn>{item.user.nama}</TableRowColumn>
+                      <TableRowColumn>{item.user.status_kalender}</TableRowColumn>
                     </TableRow>
                   ))}
               </TableBody>
