@@ -45,7 +45,7 @@ class timta_mng_pasangan_KP extends Component {
       topic: "",
       dosen: "",
       selectedKelompok: 0,
-      dataKelompok: this.props.kelompok,
+      dataKelompok: {},
     };
   }
 
@@ -69,7 +69,7 @@ class timta_mng_pasangan_KP extends Component {
 
   handleDeleteDosen(i) {
     let tempDataKelompok = this.state.dataKelompok;
-    tempDataKelompok[this.state.selectedKelompok].dosen.splice(i,1);
+    tempDataKelompok.dosen.splice(i,1);
     console.log("data Kelompok:", tempDataKelompok);
     this.setState({dataKelompok: tempDataKelompok});
   }
@@ -77,7 +77,7 @@ class timta_mng_pasangan_KP extends Component {
   handleEditTopic() {
     let tempDataKelompok = this.state.dataKelompok;
     console.log(this.state.topic);
-    tempDataKelompok[this.state.selectedKelompok].topik = this.state.topic;
+    tempDataKelompok.topik = this.state.topic;
     this.setState({dataKelompok: tempDataKelompok});
     this.handleCloseEditTopic();
   }
@@ -92,9 +92,9 @@ class timta_mng_pasangan_KP extends Component {
 
   handleTambahMahasiswa() {
     let tempDataKelompok = this.state.dataKelompok;
-    console.log(tempDataKelompok[this.state.selectedKelompok].anggota);
+    console.log(tempDataKelompok.anggota);
     console.log(this.state.values);
-    tempDataKelompok[this.state.selectedKelompok].anggota = tempDataKelompok[this.state.selectedKelompok].anggota.concat(this.state.values);
+    tempDataKelompok.anggota = tempDataKelompok.anggota.concat(this.state.values);
     console.log("data Kelompok:", tempDataKelompok);
     this.setState({dataKelompok: tempDataKelompok});
     this.handleCloseTambahMahasiswa();
@@ -102,7 +102,7 @@ class timta_mng_pasangan_KP extends Component {
 
   handleDeleteMahasiswa(i) {
     let tempDataKelompok = this.state.dataKelompok;
-    tempDataKelompok[this.state.selectedKelompok].anggota.splice(i,1);
+    tempDataKelompok.anggota.splice(i,1);
     console.log("data Kelompok:", tempDataKelompok);
     this.setState({dataKelompok: tempDataKelompok});
     this.setState({values: []})
@@ -111,12 +111,22 @@ class timta_mng_pasangan_KP extends Component {
   handleTambahDosen() {
     let tempDataKelompok = this.state.dataKelompok;
     console.log("Dosen tmbah:", this.state.dosen);
-    tempDataKelompok[this.state.selectedKelompok].dosen.push(this.state.dosen);
+    tempDataKelompok.dosen.push(this.state.dosen);
     console.log("data Kelompok:", tempDataKelompok);
     this.setState({dataKelompok: tempDataKelompok});
     this.setState({dosen: ""});
     this.handleCloseTambahDosen();
   }
+
+  handleSelect(i, data){
+      this.setState({selectedKelompok:i});
+      this.setState({dataKelompok: data})
+  }
+
+  handleSave(){
+    this.props.editKP(this.state.dataKelompok);
+  }
+
   render() {
     const actionsTambahMahasiswa = [
       <FlatButton
@@ -173,6 +183,7 @@ class timta_mng_pasangan_KP extends Component {
           label="SAVE"
           labelPosition="after"
           icon={<i className="material-icons" style={{color:'black'}}>save</i>}
+          onTouchTap={()=>this.handleSave()}
         />
         <AppBar
           title="Dashboard Tim TA - Daftar Pasangan Kerja Praktik"
@@ -212,7 +223,7 @@ class timta_mng_pasangan_KP extends Component {
                     {this.props.kelompok.map((item, i) => (
                       <Row>
                         <Col md="8" xs="8">
-                          <ListItem key={i} onTouchTap={()=>this.setState({selectedKelompok:i})}>
+                          <ListItem key={i} onTouchTap={()=>this.handleSelect(i, item)}>
                             {"Kelompok "+ item.id}
                           </ListItem>
                         </Col>
@@ -396,7 +407,7 @@ class timta_mng_pasangan_KP extends Component {
         >
         <TextField
           hintText="Tulis topik di sini..."
-          defaultValue = {this.state.dataKelompok.length !== 0 ? this.state.dataKelompok[this.state.selectedKelompok].topik : ""}
+          defaultValue = {this.state.dataKelompok !== null ? this.state.dataKelompok.topik : ""}
           style={{width:500}}
           onChange={(event)=>this.handleChangeTopic(event)}
         />

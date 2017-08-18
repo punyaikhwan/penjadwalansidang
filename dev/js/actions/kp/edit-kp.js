@@ -1,17 +1,17 @@
 import axios from 'axios'
 
-export const editKP= (id, anggota, topik, dosen) => {
+export const editKP= (item) => {
     return function(dispatch) {
 
         dispatch({
             type: "EDIT KP"
         })
         axios.post('http://localhost:3001/kp/edit', {
-            ids : [id],
+            ids : [item.id],
             objs : [{
-                topik: topik,
-                anggotas: anggota,
-                pembimbings: dosen
+                topik: item.topik,
+                anggotas: item.anggota,
+                pembimbings: item.dosen
             }]
         }).then(function (data) {
 

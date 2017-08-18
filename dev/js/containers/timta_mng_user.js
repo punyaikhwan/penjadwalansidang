@@ -36,7 +36,7 @@ class timta_mng_user extends Component {
     super(props);
     this.state = {
       open: false,
-      listperan: ['Mahasiswa', 'Dosen', 'Tim TA'],
+      listperan: ['Tim TA', 'Mahasiswa', 'Dosen'],
       modalTambahUser: false,
       modalEditUser: false,
       nama: "",
