@@ -32,6 +32,8 @@ import {fetchTA} from '../actions/ta/fetch-ta'
 import {editTA} from '../actions/ta/edit-ta'
 import {newTA} from '../actions/ta/new-ta'
 import {deleteTA} from '../actions/ta/delete-ta'
+import {fetchMahasiswa} from '../actions/user/fetch-mahasiswa'
+import {fetchDosen} from '../actions/user/fetch-dosen'
 
 class timta_mng_pasangan_TA extends Component {
 
@@ -50,7 +52,7 @@ class timta_mng_pasangan_TA extends Component {
       dosenPembimbing: "",
       dosenPengujiTA1: "",
       dosenPengujiAkhir: "",
-      dataTA : this.props.dataTA
+      dataTA : {}
     };
   }
 
@@ -74,7 +76,7 @@ class timta_mng_pasangan_TA extends Component {
 
   handleEditTopic() {
     let tempDataTA = this.state.dataTA;
-    tempDataTA[this.state.selectedMhs].topik = this.state.topic;
+    tempDataTA.topik = this.state.topic;
     this.setState({dataTA: tempDataTA});
     this.setState({topic: ""});
     this.handleCloseEditTopic();
@@ -82,27 +84,19 @@ class timta_mng_pasangan_TA extends Component {
 
   handleTambahMahasiswa() {
     let tempDataElemenMhs = [];
+    var id;
     this.state.mahasiswa.forEach(function(item, i) {
-      let tempMhs = {
-        nama: item,
-        topik: "",
-        dosenPembimbing: [],
-        dosenPengujiTA1: [],
-        dosenPengujiAkhir: []
-      }
-      tempDataElemenMhs.push(tempMhs);
-      console.log("tempDataElemenMhs:", tempDataElemenMhs);
+      id = item.id;
     })
-    let tempDataTA = this.state.dataTA;
-    tempDataTA = tempDataTA.concat(tempDataElemenMhs);
-    console.log("data Mhs:", tempDataTA);
-    this.setState({dataTA: tempDataTA});
+      this.props.newTA(id)
     this.setState({mahasiswa: []});
     this.handleCloseTambahMahasiswa();
   }
 
   componentDidMount(){
     this.props.fetchTA();
+    this.props.fetchMahasiswa();
+    this.props.fetchDosen();
   }
 
   handleDeleteMahasiswa(i) {
@@ -158,6 +152,16 @@ class timta_mng_pasangan_TA extends Component {
     tempDataTA[this.state.selectedMhs].dosenPengujiAkhir.splice(i,1);
     console.log("data Mhs:",i," ", tempDataTA);
     this.setState({dataTA: tempDataTA});
+  }
+
+  handleSelect(i, data){
+      this.setState({selectedMhs:i});
+      this.setState({dataTA: data})
+  }
+
+  handleSave(){
+    console.log(this.state.dataTA);
+      this.props.editTA(this.state.dataTA);
   }
 
   render() {
@@ -287,7 +291,7 @@ class timta_mng_pasangan_TA extends Component {
                       {this.props.dataTA.map((mhs, i) => (
                         <Row>
                           <Col md="8" xs="8">
-                            <ListItem key={i} onTouchTap={()=>this.setState({selectedMhs:i})}>
+                            <ListItem key={i} onTouchTap={()=>this.handleSelect(i,mhs)}>
                             {mhs.mahasiswa.nama}
                             </ListItem>
                           </Col>
@@ -498,11 +502,11 @@ class timta_mng_pasangan_TA extends Component {
           >
           {this.props.mahasiswa.map((item) => (
             <MenuItem
-              key={item}
+              key={item.id}
               insetChildren={true}
               checked={this.state.mahasiswa && this.state.mahasiswa.indexOf(item) > -1}
-              value={item}
-              primaryText={item}
+              value={item.id}
+              primaryText={item.nama}
             />
           ))
           }
@@ -518,7 +522,7 @@ class timta_mng_pasangan_TA extends Component {
         >
         <TextField
           hintText="Tulis topik di sini..."
-          defaultValue = {this.state.dataTA.length !== 0 ? this.state.dataTA[this.state.selectedMhs].topik : ""}
+          defaultValue = {this.state.dataTA.length !== 0 ? this.state.dataTA.topik : ""}
           style={{width:500}}
           onChange={(event)=>this.handleChangeTopic(event)}
         />
@@ -539,11 +543,11 @@ class timta_mng_pasangan_TA extends Component {
           >
           {this.props.dosen.map((item) => (
             <MenuItem
-              key={item}
+              key={item.id}
               insetChildren={true}
               checked={this.state.dosenPembimbing === item}
-              value={item}
-              primaryText={item}
+              value={item.id}
+              primaryText={item.nama}
             />
           ))
           }
@@ -565,11 +569,11 @@ class timta_mng_pasangan_TA extends Component {
           >
           {this.props.dosen.map((item) => (
             <MenuItem
-              key={item}
+              key={item.id}
               insetChildren={true}
               checked={this.state.dosenPengujiTA1 === item}
-              value={item}
-              primaryText={item}
+              value={item.id}
+              primaryText={item.nama}
             />
           ))
           }
@@ -587,7 +591,7 @@ class timta_mng_pasangan_TA extends Component {
             multiple={false}
             hintText="Select a name"
             value = {this.state.dosenPengujiAkhir}
-            onChange={(event, index, dosenPengujiAkhir) =>this.handleChangeDosenPenguji(event, index, dosenPengujiAkhir) }
+            onChange={(event, index, dosenPengujiAkhir) =>this.handleChangeDosenPengujiAkhir(event, index, dosenPengujiAkhir) }
           >
           {this.props.dosen.map((item) => (
             <MenuItem
@@ -620,7 +624,9 @@ function matchDispatchToProps(dispatch){
         fetchTA: fetchTA,
         newTA: newTA,
         deleteTA: deleteTA,
-        editTA: editTA
+        editTA: editTA,
+        fetchMahasiswa: fetchMahasiswa,
+        fetchDosen: fetchDosen
     }, dispatch);
 }
 

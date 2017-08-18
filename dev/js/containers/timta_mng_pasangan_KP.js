@@ -98,7 +98,10 @@ class timta_mng_pasangan_KP extends Component {
     let tempDataKelompok = this.state.dataKelompok;
     console.log(tempDataKelompok.anggota);
     console.log(this.state.values);
-    tempDataKelompok.anggota = tempDataKelompok.anggota.concat(this.state.values);
+    let tempNewMhs = {
+      user : this.state.values
+    }
+    tempDataKelompok.anggota = tempDataKelompok.anggota.concat(tempNewMhs);
     console.log("data Kelompok:", tempDataKelompok);
     this.setState({dataKelompok: tempDataKelompok});
     this.handleCloseTambahMahasiswa();
@@ -115,7 +118,10 @@ class timta_mng_pasangan_KP extends Component {
   handleTambahDosen() {
     let tempDataKelompok = this.state.dataKelompok;
     console.log("Dosen tmbah:", this.state.dosen);
-    tempDataKelompok.dosen.push(this.state.dosen);
+      let tempNewDosen = {
+          user : this.state.dosen
+      }
+    tempDataKelompok.dosen.push(tempNewDosen);
     console.log("data Kelompok:", tempDataKelompok);
     this.setState({dataKelompok: tempDataKelompok});
     this.setState({dosen: ""});
@@ -394,7 +400,7 @@ class timta_mng_pasangan_KP extends Component {
               key={item.id}
               insetChildren={true}
               checked={this.state.values && this.state.values.indexOf(item) > -1}
-              value={item.id}
+              value={item}
               primaryText={item.nama}
             />
           ))
@@ -435,7 +441,7 @@ class timta_mng_pasangan_KP extends Component {
               key={item.id}
               insetChildren={true}
               checked={this.state.dosen && this.state.values.indexOf(item) > -1}
-              value={item.id}
+              value={item}
               primaryText={item.nama}
             />
           ))
