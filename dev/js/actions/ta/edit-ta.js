@@ -1,19 +1,19 @@
 import axios from 'axios'
 
-export const editTA= (id, idmhs, topik, dosbing, dosji, akhir) => {
+export const editTA= (item) => {
     return function(dispatch) {
 
         dispatch({
             type: "EDIT TA"
         })
         axios.post('http://localhost:3001/ta/edit', {
-            ids : [id],
+            ids : [item.id],
             objs : [{
-                topik: topik,
-                mahasiswa_id: idmhs,
-                pembimbings: dosbing,
-                pengujis: dosji,
-                akhirs: akhir
+                topik: item.topik,
+                mahasiswa_id: item.idmhs,
+                pembimbings: item.dosbing,
+                pengujis: item.dosji,
+                akhirs: item.akhir
             }]
         }).then(function (data) {
 

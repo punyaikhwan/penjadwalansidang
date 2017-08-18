@@ -249,6 +249,7 @@ class timta_mng_pasangan_TA extends Component {
           label="SAVE"
           labelPosition="after"
           icon={<i className="material-icons" style={{color:'black'}}>save</i>}
+          onTouchTap={()=>this.handleSave()}
         />
         <AppBar
           title="Dashboard Tim TA - Daftar Pasangan Tugas Akhir"
