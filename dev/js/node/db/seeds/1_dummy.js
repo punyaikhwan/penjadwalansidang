@@ -10,7 +10,7 @@ var now = moment().format("YYYY-MM-DD HH:mm:ss");
 var date_now = moment().format("YYYY-MM-DD");
 
 function random (low, high) {
-    return Math.floor(Math.random() * (high - low) + low);
+    return Math.floor(Math.random() * (high+1 - low) + low);
 }
 
 function sha256(input, secret){
@@ -87,7 +87,21 @@ exports.seed = function(knex, Promise) {
         );
     };
 
-    
+    ///event
+    for (var i_4 = 1; i_4 < 31; i_4++) {
+        tasks.push(
+            knex('event').insert({
+                id: i_4,
+                event_id: faker.phone.phoneNumberFormat(),
+                tipe_event: random(1,2),
+                pasangan_id: i_4,
+                topik: faker.hacker.phrase(),
+                room_id: i_4,
+                start: faker.date.recent(),
+                end: faker.date.future(),
+            }).then(function(){console.log('populate event')})
+        );
+    };
 
     //////////////////////////////////////////
     //run task
