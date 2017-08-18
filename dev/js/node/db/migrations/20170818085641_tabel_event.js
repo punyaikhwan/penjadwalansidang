@@ -8,6 +8,7 @@ exports.up = function(knex, Promise) {
 			table.integer('tipe_event').unsigned();
 			table.integer('pasangan_id').unsigned();
 			table.string('topik');
+			table.string('title');
 			table.integer('room_id').unsigned();
 			table.dateTime('start');
 			table.dateTime('end');

@@ -36,7 +36,7 @@ exports.seed = function(knex, Promise) {
                 id: i_4,
                 nama: faker.name.firstName(),
                 email: faker.internet.email(),
-                peran: random(1,3),
+                peran: random(0,2),
                 NIM: faker.phone.phoneNumberFormat(),
             }).then(function(){console.log('populate user')})
         );
@@ -69,7 +69,7 @@ exports.seed = function(knex, Promise) {
             knex('anggota_pasangan_kp').insert({
                 id: i_4,
                 user_id: i_4,
-                peran_pasangan: random(1,3),
+                peran_pasangan: random(0,2),
                 pasangan_id: i_4,
             }).then(function(){console.log('populate anggota_pasangan_kp')})
         );
@@ -81,7 +81,7 @@ exports.seed = function(knex, Promise) {
             knex('anggota_pasangan_ta').insert({
                 id: i_4,
                 user_id: i_4,
-                peran_pasangan: random(1,3),
+                peran_pasangan: random(0,2),
                 pasangan_id: i_4,
             }).then(function(){console.log('populate anggota_pasangan_ta')})
         );
@@ -96,6 +96,7 @@ exports.seed = function(knex, Promise) {
                 tipe_event: random(1,2),
                 pasangan_id: i_4,
                 topik: faker.hacker.phrase(),
+                title: faker.name.title(),
                 room_id: i_4,
                 start: faker.date.recent(),
                 end: faker.date.future(),
