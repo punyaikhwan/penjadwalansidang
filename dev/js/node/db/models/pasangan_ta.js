@@ -17,6 +17,9 @@ Model = helper.bookshelf.Model.extend({
 	akhir: function() {
 	    return this.hasMany('AnggotaPasanganTA', 'pasangan_id').query({where: {peran_pasangan: '3'}});
 	},
+	anggota: function() {
+		 return this.hasMany('AnggotaPasanganTA', 'pasangan_id')
+	}
 
 
 });	

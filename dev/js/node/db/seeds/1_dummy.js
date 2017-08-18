@@ -10,7 +10,7 @@ var now = moment().format("YYYY-MM-DD HH:mm:ss");
 var date_now = moment().format("YYYY-MM-DD");
 
 function random (low, high) {
-    return Math.floor(Math.random() * (high - low) + low);
+    return Math.floor(Math.random() * (high+1 - low) + low);
 }
 
 function sha256(input, secret){
@@ -36,7 +36,7 @@ exports.seed = function(knex, Promise) {
                 id: i_4,
                 nama: faker.name.firstName(),
                 email: faker.internet.email(),
-                peran: random(1,3),
+                peran: random(0,2),
                 NIM: faker.phone.phoneNumberFormat(),
             }).then(function(){console.log('populate user')})
         );
@@ -69,7 +69,7 @@ exports.seed = function(knex, Promise) {
             knex('anggota_pasangan_kp').insert({
                 id: i_4,
                 user_id: i_4,
-                peran_pasangan: random(1,3),
+                peran_pasangan: random(0,2),
                 pasangan_id: i_4,
             }).then(function(){console.log('populate anggota_pasangan_kp')})
         );
@@ -81,13 +81,28 @@ exports.seed = function(knex, Promise) {
             knex('anggota_pasangan_ta').insert({
                 id: i_4,
                 user_id: i_4,
-                peran_pasangan: random(1,3),
+                peran_pasangan: random(0,2),
                 pasangan_id: i_4,
             }).then(function(){console.log('populate anggota_pasangan_ta')})
         );
     };
 
-    
+    ///event
+    for (var i_4 = 1; i_4 < 31; i_4++) {
+        tasks.push(
+            knex('event').insert({
+                id: i_4,
+                event_id: faker.phone.phoneNumberFormat(),
+                tipe_event: random(1,2),
+                pasangan_id: i_4,
+                topik: faker.hacker.phrase(),
+                title: faker.name.title(),
+                room_id: i_4,
+                start: faker.date.recent(),
+                end: faker.date.future(),
+            }).then(function(){console.log('populate event')})
+        );
+    };
 
     //////////////////////////////////////////
     //run task
