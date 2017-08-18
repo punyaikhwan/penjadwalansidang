@@ -19,9 +19,11 @@ var DeleteTA = async function(id){
 	return Promise.each(task, function(){})
 }
 //===============================================================================
-var NewTA = function(nama){
+var NewTA = function(mahasiswa_id){
 	//bikin record kosong
-	return new TA.model({'nama': nama}).save()
+	return new TA.model({
+		'mahasiswa_id': mahasiswa_id
+	}).save()
 }
 //===============================================================================
 var EditTA = async function(ids, objs){

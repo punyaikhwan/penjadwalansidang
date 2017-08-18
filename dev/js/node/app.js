@@ -115,8 +115,13 @@ app.get('/ta', function(request, response){
 	})
 })
 
+/*
+{
+	"mahasiswa_id": 1
+}
+*/
 app.post('/ta/new', function(request, response){
-	TA.NewTA().then(function(result){
+	TA.NewTA(request.body.mahasiswa_id).then(function(result){
 		response.send('success')
 	}).catch(function(err){
 		console.log(err)
