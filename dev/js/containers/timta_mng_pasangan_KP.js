@@ -32,6 +32,8 @@ import {fetchKP} from '../actions/kp/fetch-kp'
 import {deleteKP} from '../actions/kp/delete-kp'
 import {newKP} from '../actions/kp/new-kp'
 import {editKP} from '../actions/kp/edit-kp'
+import {fetchMahasiswa} from '../actions/user/fetch-mahasiswa'
+import {fetchDosen} from '../actions/user/fetch-dosen'
 
 class timta_mng_pasangan_KP extends Component {
   constructor(props) {
@@ -51,6 +53,8 @@ class timta_mng_pasangan_KP extends Component {
 
   componentDidMount(){
     this.props.fetchKP();
+    this.props.fetchMahasiswa();
+    this.props.fetchDosen();
   }
 
   handleToggle() {this.setState({open: !this.state.open})};
@@ -387,11 +391,11 @@ class timta_mng_pasangan_KP extends Component {
           >
           {this.props.mahasiswa.map((item) => (
             <MenuItem
-              key={item}
+              key={item.id}
               insetChildren={true}
               checked={this.state.values && this.state.values.indexOf(item) > -1}
-              value={item}
-              primaryText={item}
+              value={item.id}
+              primaryText={item.nama}
             />
           ))
           }
@@ -428,11 +432,11 @@ class timta_mng_pasangan_KP extends Component {
           >
           {this.props.dosen.map((item) => (
             <MenuItem
-              key={item}
+              key={item.id}
               insetChildren={true}
               checked={this.state.dosen && this.state.values.indexOf(item) > -1}
-              value={item}
-              primaryText={item}
+              value={item.id}
+              primaryText={item.nama}
             />
           ))
           }
@@ -457,7 +461,9 @@ function matchDispatchToProps(dispatch){
         fetchKP:fetchKP,
         deleteKP: deleteKP,
         newKP: newKP,
-        editKP: editKP
+        editKP: editKP,
+        fetchMahasiswa: fetchMahasiswa,
+        fetchDosen: fetchDosen
     }, dispatch);
 }
 
