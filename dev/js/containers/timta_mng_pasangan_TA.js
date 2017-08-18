@@ -106,10 +106,7 @@ class timta_mng_pasangan_TA extends Component {
   }
 
   handleDeleteMahasiswa(i) {
-    let tempDataTA = this.state.dataTA;
-    tempDataTA.splice(i,1);
-    console.log("data Mhs:",i," ", tempDataTA);
-    this.setState({dataTA: tempDataTA});
+    this.props.deleteTA(i)
   }
 
   handleTambahDosenPembimbing() {
