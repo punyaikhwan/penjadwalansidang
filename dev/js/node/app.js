@@ -4,21 +4,11 @@ var bodyParser = require('body-parser');
 var user = require('./functions/user_function.js')
 var KP = require('./functions/kp_function.js')
 var TA = require('./functions/ta_function.js')
-var googleUtil = require('./GoogleLogin.js')
 
 
 app.use(bodyParser.json()); // for parsing application/json
 //GOOGLE====================================================================
-app.get('/googleLogin', function(request, response){
-	response.send(googleUtil.url)
-})
 
-app.post('/getToken', function(request, response){
-	console.log(request.body.token);
-	var result = googleUtil.getToken(request.body.token)
-
-  	response.send(result)
-})
 //USER====================================================================
 app.get('/user', function(request, response){
 	user.FetchUser().then(function(result){
