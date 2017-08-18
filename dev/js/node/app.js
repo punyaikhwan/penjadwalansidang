@@ -90,7 +90,7 @@ app.get('/kp', function(request, response){
 })
 
 app.post('/kp/new', function(request, response){
-	KP.NewUser().then(function(result){
+	KP.NewKP().then(function(result){
 		response.send('success')
 	}).catch(function(err){
 		console.log(err)
@@ -99,7 +99,7 @@ app.post('/kp/new', function(request, response){
 })
 
 app.post('/kp/edit', function(request, response){
-	KP.EditUser(request.body.ids, request.body.objs).then(function(result){
+	KP.EditKP(request.body.ids, request.body.objs).then(function(result){
 		response.send('success')
 	}).catch(function(err){
 		console.log(err)
@@ -108,7 +108,7 @@ app.post('/kp/edit', function(request, response){
 })
 
 app.post('/kp/delete', function(request, response){
-	KP.DeleteUser(request.body.id).then(function(result){
+	KP.DeleteKP(request.body.id).then(function(result){
 		response.send('success')
 	}).catch(function(err){
 		console.log(err)
@@ -126,7 +126,7 @@ app.get('/ta', function(request, response){
 })
 
 app.post('/ta/new', function(request, response){
-	TA.NewUser().then(function(result){
+	TA.NewTA().then(function(result){
 		response.send('success')
 	}).catch(function(err){
 		console.log(err)
@@ -135,7 +135,7 @@ app.post('/ta/new', function(request, response){
 })
 
 app.post('/ta/edit', function(request, response){
-	TA.EditUser(request.body.ids, request.body.objs).then(function(result){
+	TA.EditTA(request.body.ids, request.body.objs).then(function(result){
 		response.send('success')
 	}).catch(function(err){
 		console.log(err)
@@ -144,7 +144,7 @@ app.post('/ta/edit', function(request, response){
 })
 
 app.post('/ta/delete', function(request, response){
-	TA.DeleteUser(request.body.id).then(function(result){
+	TA.DeleteTA(request.body.id).then(function(result){
 		response.send('success')
 	}).catch(function(err){
 		console.log(err)
