@@ -83,21 +83,11 @@ class timta_mng_pasangan_KP extends Component {
   }
 
   handleTambahKelompok() {
-    let data = {
-      anggota: [],
-      topik: "",
-      dosen: []
-    };
-    let tempDataKelompok = this.state.dataKelompok;
-    tempDataKelompok.push(data);
-    this.setState({dataKelompok: tempDataKelompok});
+    this.props.newKP();
   }
 
   handleDeleteKelompok(i) {
-    let tempDataKelompok = this.state.dataKelompok;
-    tempDataKelompok.splice(i,1)
-    console.log(this.state.dataKelompok);
-    this.setState({dataKelompok: tempDataKelompok});
+    this.props.deleteKP(i);
   }
 
   handleTambahMahasiswa() {
