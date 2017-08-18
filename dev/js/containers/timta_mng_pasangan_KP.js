@@ -19,7 +19,6 @@ import TextField from 'material-ui/TextField';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import windowDimensions from 'react-window-dimensions';
-
 import {
   Table,
   TableBody,
@@ -29,6 +28,10 @@ import {
   TableRowColumn,
 } from 'material-ui/Table';
 import imgProfile from '../../scss/public/images/imgprofile.jpg';
+import {fetchKP} from '../actions/kp/fetch-kp'
+import {deleteKP} from '../actions/kp/delete-kp'
+import {newKP} from '../actions/kp/new-kp'
+import {editKP} from '../actions/kp/edit-kp'
 
 class timta_mng_pasangan_KP extends Component {
   constructor(props) {
@@ -44,6 +47,10 @@ class timta_mng_pasangan_KP extends Component {
       selectedKelompok: 0,
       dataKelompok: this.props.kelompok,
     };
+  }
+
+  componentDidMount(){
+    this.props.fetchKP();
   }
 
   handleToggle() {this.setState({open: !this.state.open})};
@@ -76,21 +83,11 @@ class timta_mng_pasangan_KP extends Component {
   }
 
   handleTambahKelompok() {
-    let data = {
-      anggota: [],
-      topik: "",
-      dosen: []
-    };
-    let tempDataKelompok = this.state.dataKelompok;
-    tempDataKelompok.push(data);
-    this.setState({dataKelompok: tempDataKelompok});
+    this.props.newKP();
   }
 
   handleDeleteKelompok(i) {
-    let tempDataKelompok = this.state.dataKelompok;
-    tempDataKelompok.splice(i,1)
-    console.log(this.state.dataKelompok);
-    this.setState({dataKelompok: tempDataKelompok});
+    this.props.deleteKP(i);
   }
 
   handleTambahMahasiswa() {
@@ -205,25 +202,25 @@ class timta_mng_pasangan_KP extends Component {
                   icon={<i className="material-icons" style={{color:'black'}}>add</i>}
                   onTouchTap={()=>this.handleTambahKelompok()}
                 />
-                {this.state.dataKelompok.length !== 0 &&
+                {this.props.kelompok.length !== 0 &&
                 <ScrollArea
                   horizontal={false}
                   style={{height: 500, borderLeftWidth: 2}}
                   speed={0.8}
                 >
                   <List>
-                    {this.state.dataKelompok.map((item, i) => (
+                    {this.props.kelompok.map((item, i) => (
                       <Row>
                         <Col md="8" xs="8">
                           <ListItem key={i} onTouchTap={()=>this.setState({selectedKelompok:i})}>
-                            {"Kelompok "+(i+1)}
+                            {"Kelompok "+ item.id}
                           </ListItem>
                         </Col>
                         <Col md="4" xs ="4" style={{marginTop:7}}>
                           <FlatButton
                             labelPosition="after"
                             icon={<i className="material-icons" style={{color:'black'}}>close</i>}
-                            onClick={()=>this.handleDeleteKelompok(i)}
+                            onClick={()=>this.handleDeleteKelompok(item.id)}
                           />
                         </Col>
                       </Row>
@@ -232,15 +229,15 @@ class timta_mng_pasangan_KP extends Component {
                   </List>
                 </ScrollArea>
                 }
-                {this.state.dataKelompok.length === 0 &&
+                {this.props.kelompok.length === 0 &&
                   <p><i>Tidak ada kelompok</i></p>
                 }
               </div>
             </Col>
             <Col md="8" xs="12">
-              {this.state.dataKelompok.length !== 0 &&
+              {this.props.kelompok.length !== 0 &&
               <div>
-                <p style={{fontSize:20, fontWight:'bold', textAlign: 'center'}}>{"Kelompok "+(this.state.selectedKelompok+1)}</p>
+                <p style={{fontSize:20, fontWight:'bold', textAlign: 'center'}}>{"Kelompok "+(this.props.kelompok[this.state.selectedKelompok].id)}</p>
                 <br/>
                 <p style={{fontSize:16}}>Daftar Mahasiswa</p>
                 <div>
@@ -258,11 +255,11 @@ class timta_mng_pasangan_KP extends Component {
                     />
 
                     <List>
-                    {this.state.dataKelompok[this.state.selectedKelompok].anggota.map((item, i)=> (
+                    {this.props.kelompok[this.state.selectedKelompok].anggota.map((item, i)=> (
                         <Row>
                           <Col md="8" xs="8">
                             <ListItem key={i}>
-                              {item}
+                              {item.user.nama}
                             </ListItem>
                           </Col>
                           <Col md="4" xs ="4" style={{marginTop:7}}>
@@ -282,7 +279,7 @@ class timta_mng_pasangan_KP extends Component {
                 <p style={{fontSize:16}}>Topik Kerja Praktik</p>
                 <Row>
                   <Col md="10" xs="10">
-                    <p style={{fontSize: 20}}>{this.state.dataKelompok[this.state.selectedKelompok].topik}</p>
+                    <p style={{fontSize: 20}}>{this.props.kelompok[this.state.selectedKelompok].topik}</p>
                   </Col>
                   <Col md="2" xs ="2">
                     <FlatButton
@@ -294,7 +291,7 @@ class timta_mng_pasangan_KP extends Component {
                 <br/>
                 <br/>
                 <p style={{fontSize:16}}>Dosen Pembimbing</p>
-                {this.state.dataKelompok[this.state.selectedKelompok].dosen.length < 2 &&
+                {this.props.kelompok[this.state.selectedKelompok].dosen.length < 2 &&
                   <RaisedButton
                     label="Tambah Dosen"
                     labelPosition="after"
@@ -303,13 +300,13 @@ class timta_mng_pasangan_KP extends Component {
                     onClick={()=>this.handleOpenTambahDosen()}
                   />
                 }
-                {this.state.dataKelompok[this.state.selectedKelompok].dosen.length > 0 &&
+                {this.props.kelompok[this.state.selectedKelompok].dosen.length > 0 &&
                   <List>
-                    {this.state.dataKelompok[this.state.selectedKelompok].dosen.map((item, i) =>(
+                    {this.props.kelompok[this.state.selectedKelompok].dosen.map((item, i) =>(
                       <Row>
                         <Col md="8" xs="8">
                           <ListItem key={i}>
-                            {item}
+                            {item.user.nama}
                           </ListItem>
                         </Col>
                         <Col md="4" xs ="4" style={{marginTop:7}}>
@@ -322,7 +319,7 @@ class timta_mng_pasangan_KP extends Component {
                     ))}
                   </List>
                 }
-                {this.state.dataKelompok[this.state.selectedKelompok].dosen.length == 0 &&
+                {this.props.kelompok[this.state.selectedKelompok].dosen.length == 0 &&
                     <p style={{fontSize:14}}><i>Belum ada dosen.</i></p>
                 }
               </div>
@@ -445,7 +442,12 @@ function mapStateToProps(state) {
 }
 
 function matchDispatchToProps(dispatch){
-    return bindActionCreators({}, dispatch);
+    return bindActionCreators({
+        fetchKP:fetchKP,
+        deleteKP: deleteKP,
+        newKP: newKP,
+        editKP: editKP
+    }, dispatch);
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(windowDimensions()(timta_mng_pasangan_KP));
