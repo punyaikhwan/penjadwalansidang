@@ -20,10 +20,6 @@ module.exports = {
 	model
 }
 //testing====================================================
-// Model.fetchAll({withRelated: 'kelompok_KP'}).then(function(data){
+// Model.fetchAll({withRelated: 'kelompok_KP.anggota.user'}).then(function(data){
 // 	console.log(JSON.stringify(data))
 // })
-
-
-
-
