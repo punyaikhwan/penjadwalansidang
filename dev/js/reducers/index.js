@@ -1,6 +1,4 @@
 import {combineReducers} from 'redux';
-import UserReducer from './reducer-users';
-import ActiveUserReducer from './reducer-active-user';
 import mhsTA from './mahasiswa-TA'
 import mhsKP from './mahasiswa-KP'
 import dosen from './dosen'
@@ -14,8 +12,6 @@ import user from './user'
  * */
 
 const allReducers = combineReducers({
-    users: UserReducer,
-    activeUser: ActiveUserReducer,
     mahasiswaTA: mhsTA,
     mahasiswaKP: mhsKP,
     dosen: dosen,
