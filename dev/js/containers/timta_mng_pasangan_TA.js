@@ -83,9 +83,10 @@ class timta_mng_pasangan_TA extends Component {
   }
 
   handleTambahMahasiswa() {
-    this.props.newTA(this.state.mahasiswa)
+    this.props.newTA(this.state.mahasiswa.id);
     this.setState({mahasiswa: ""});
     this.handleCloseTambahMahasiswa();
+
   }
 
   componentDidMount(){
@@ -100,7 +101,10 @@ class timta_mng_pasangan_TA extends Component {
 
   handleTambahDosenPembimbing() {
     let tempDataTA = this.props.dataTA;
-    tempDataTA[this.state.selectedMhs].pembimbing.push(this.state.dosenPembimbing);
+    let tempNewDosen = {
+        user : this.state.dosenPembimbing
+    }
+    tempDataTA[this.state.selectedMhs].pembimbing.push(tempNewDosen);
     this.props.edit(tempDataTA, this.state.selectedMhs);
     this.setState({dosenPembimbing: ""});
     this.handleCloseTambahDosenPembimbing();
@@ -110,11 +114,15 @@ class timta_mng_pasangan_TA extends Component {
     let tempDataTA = this.props.dataTA;
     tempDataTA[this.state.selectedMhs].pembimbing.splice(i,1);
     this.props.edit(tempDataTA, this.state.selectedMhs);
+    this.forceUpdate();
   }
 
   handleTambahDosenPengujiTA1() {
     let tempDataTA = this.props.dataTA;
-    tempDataTA[this.state.selectedMhs].penguji.push(this.state.dosenPengujiTA1);
+    let tempNewDosen = {
+        user : this.state.dosenPengujiTA1
+    }
+    tempDataTA[this.state.selectedMhs].penguji.push(tempNewDosen);
     this.props.edit(tempDataTA, this.state.selectedMhs);
     this.setState({dosenPengujiTA1: ""});
     this.handleCloseTambahDosenPengujiTA1();
@@ -124,11 +132,15 @@ class timta_mng_pasangan_TA extends Component {
     let tempDataTA = this.props.dataTA;
     tempDataTA[this.state.selectedMhs].penguji.splice(i,1);
     this.props.edit(tempDataTA, this.state.selectedMhs);
+    this.forceUpdate();
   }
 
   handleTambahDosenPengujiAkhir() {
     let tempDataTA = this.props.dataTA;
-    tempDataTA[this.state.selectedMhs].akhir.push(this.state.dosenPengujiAkhir);
+    let tempNewDosen = {
+        user : this.state.dosenPengujiAkhir
+    }
+    tempDataTA[this.state.selectedMhs].akhir.push(tempNewDosen);
     this.props.edit(tempDataTA, this.state.selectedMhs);
     this.setState({dosenPengujiAkhir: ""});
     this.handleCloseTambahDosenPengujiAkhir();
@@ -138,6 +150,7 @@ class timta_mng_pasangan_TA extends Component {
     let tempDataTA = this.props.dataTA;
     tempDataTA[this.state.selectedMhs].akhir.splice(i,1);
     this.props.edit(tempDataTA, this.state.selectedMhs);
+    this.forceUpdate();
   }
 
   handleSelect(i, data){
@@ -342,7 +355,7 @@ class timta_mng_pasangan_TA extends Component {
                                 <FlatButton
                                   labelPosition="after"
                                   icon={<i className="material-icons" style={{color:'black', fontSize:'14px'}}>close</i>}
-                                  onClick={()=>this.handleDeleteDosenPembimbing(item.id)}
+                                  onClick={()=>this.handleDeleteDosenPembimbing(i)}
                                 />
                               </Col>
                             </Row>
@@ -384,7 +397,7 @@ class timta_mng_pasangan_TA extends Component {
                                 <FlatButton
                                   labelPosition="after"
                                   icon={<i className="material-icons" style={{color:'black', fontSize:'14px'}}>close</i>}
-                                  onClick={()=>this.handleDeleteDosenPengujiTA1(item.id)}
+                                  onClick={()=>this.handleDeleteDosenPengujiTA1(i)}
                                 />
                               </Col>
                             </Row>
@@ -420,7 +433,7 @@ class timta_mng_pasangan_TA extends Component {
                                 <FlatButton
                                   labelPosition="after"
                                   icon={<i className="material-icons" style={{color:'black', fontSize:'14px'}}>close</i>}
-                                  onClick={()=>this.handleDeleteDosenPengujiAkhir(item.id)}
+                                  onClick={()=>this.handleDeleteDosenPengujiAkhir(i)}
                                 />
                               </Col>
                             </Row>
@@ -480,7 +493,7 @@ class timta_mng_pasangan_TA extends Component {
           onRequestClose={()=>this.handleCloseTambahMahasiswa()}
         >
           <SelectField
-            multiple={true}
+            multiple={false}
             hintText="Select a name"
             value={this.state.mahasiswa}
             onChange={(event, index, mahasiswa)=>this.handleChangeMahasiswa(event, index, mahasiswa)}
@@ -489,7 +502,7 @@ class timta_mng_pasangan_TA extends Component {
             <MenuItem
               key={item.id}
               insetChildren={true}
-              value={item.id}
+              value={item}
               primaryText={item.nama}
             />
           ))
@@ -506,7 +519,7 @@ class timta_mng_pasangan_TA extends Component {
         >
         <TextField
           hintText="Tulis topik di sini..."
-          defaultValue = {this.props.dataTA.length !== 0 ? this.props.dataTA[this.state.selectedMhs.topik] : ""}
+          defaultValue = {this.props.dataTA[this.state.selectedMhs] ? this.props.dataTA[this.state.selectedMhs].topik : ""}
           style={{width:500}}
           onChange={(event)=>this.handleChangeTopic(event)}
         />
