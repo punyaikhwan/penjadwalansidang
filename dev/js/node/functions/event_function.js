@@ -2,13 +2,14 @@ let Event = require('../db/models/event.js')
 let User = require('../db/models/user.js')
 let TA = require('../db/models/pasangan_ta.js')
 let KP = require('../db/models/pasangan_kp.js')
+let Anggota = require('../db/models/anggota_pasangan_event.js')
 let axios = require('axios')
 let Promise = require('bluebird')
+let knex = require('../db/models/db.js')
 //===============================================================================
 var GetRawEvent = function(start, end){
 	return User.model.fetchAll().then(function(result){
 		result = result.toJSON()
-		console.log(result)
 
 		var request_param = {
 			"data":{
@@ -22,12 +23,11 @@ var GetRawEvent = function(start, end){
 
 		for(var i=0; i<result.length; i++){
 			request_param.data.accounts.push({
-				"email": result[i].email,
+				"email": result[i].id,
 				"refreshToken": result[i].token,
 				"calendarList": ['primary']
 			})
 		}
-		
 		
 		//request to python
 		return axios.post('http://localhost:5000/events', request_param)
@@ -40,34 +40,49 @@ var GetRawEvent = function(start, end){
 	})
 }	
 //===============================================================================
-var PreEventToReady = function(pre, rooms, pasangan){
-	console.log("pre==============================================")
-	console.log(JSON.stringify(pre))
-	console.log("rooms==============================================")
-	console.log(JSON.stringify(rooms))
-	console.log("pasangan==============================================")
-	console.log(JSON.stringify(pasangan))
+var PreEventToReady = function(pre, rooms, pasangan, event_type){
+	pasangan = pasangan.toJSON()
+	rooms = rooms.toJSON()
+	var length
 
-	pre.listStudent = []
+	pre.data.listStudent = []
 	for(var i=0; i<pasangan.length; i++){
-		pre.listStudent.push({})
-		pre.listStudent[i].idPembimbing = []
-		pre.listStudent[i].idPembimbing.push({
-			
-		})
-		pre.listStudent[i].idPenguji = []
-		pre.listStudent[i].idPenguji.push({
-			
-		})
-		pre.listStudent[i].id = 
+		pre.data.listStudent.push({})
+
+		pre.data.listStudent[i].idPembimbing = []
+		length = pasangan[i].pembimbing? pasangan[i].pembimbing.length: 0  
+		for(var j=0; j<length; j++){
+			pre.data.listStudent[i].idPembimbing.push(
+				pasangan[i].pembimbing[j].user_id
+			)	
+		}
+
+		pre.data.listStudent[i].idPenguji = []
+		length = pasangan[i].penguji? pasangan[i].penguji.length: 0  
+		for(var j=0; j<length; j++){
+			pre.data.listStudent[i].idPenguji.push(
+				pasangan[i].penguji[j].user_id
+			)
+		}
+
+		if(event_type == 1){
+			pre.data.listStudent[i].id = pasangan[i].mahasiswa.id
+		}
+
+		if(event_type == 2){
+			pre.data.listStudent[i].id = pasangan[i].mahasiswa[0].user_id
+		}
+		
 	}
 
-	pre.listRoom = []
+	pre.data.listRoom = []
 	for(var i=0; i<rooms.length; i++){
-		pre.listRoom.push({})
-		pre.listRoom[i].id = 
-		pre.listRoom[i].events = []
+		pre.data.listRoom.push({})
+		pre.data.listRoom[i].id = rooms[i].id
+		pre.data.listRoom[i].events = []
 	}
+
+	return pre
 }
 //===============================================================================
 var RawEventToPre = function(raw, start, end){
@@ -91,6 +106,62 @@ var RawEventToPre = function(raw, start, end){
 	return temp
 }
 //===============================================================================
+var RequestScheduling = function(body){
+	return axios.post('http://localhost:5000/schedule', body)
+	.catch(function (error) {
+		console.log(error);
+		return error
+	});
+}
+//===============================================================================
+var GetPasanganFromMahasiswa = function(tipe_pasangan, id_mahasiswa, pasangan){
+	if(tipe_pasangan == 1){
+		pasangan = pasangan.toJSON()
+		for(var i=0; i<pasangan.length; i++){
+			if(pasangan[i].mahasiswa.id == id_mahasiswa){
+				return pasangan[i]
+			}
+		}
+	}
+	else if(tipe_pasangan == 2){
+		pasangan = pasangan.toJSON()
+		for(var i=0; i<pasangan.length; i++){
+			if(pasangan[i].mahasiswa[0].user_id == id_mahasiswa){
+				return pasangan[i]
+			}
+		}
+	}
+
+	return 0
+}
+//===============================================================================
+var FormatForSave = function(events, event_type, pasangan){
+	var result = []
+	for(var i=0; i<events.length; i++){
+		var additionalInfo = GetPasanganFromMahasiswa(event_type, events[i].idStudent, pasangan)
+		var temp = {}
+		temp.event_id = i
+		temp.tipe_event = event_type
+
+		if(event_type == 1){
+			temp.title = ("Event "+additionalInfo.mahasiswa.nama)
+		}
+
+		if(event_type == 2){
+			temp.title = ("Event "+additionalInfo.mahasiswa[0].user.nama)
+		}
+			
+		temp.topik = additionalInfo.topik
+		temp.room_id = events[i].idRoom
+		temp.start = events[i].start
+		temp.end = events[i].end
+
+		result.push(temp)
+	}
+
+	return result
+}
+//===============================================================================
 var ScheduleEvent = async function(event_type, start, end){
 	try{
 		var pasangan
@@ -98,22 +169,38 @@ var ScheduleEvent = async function(event_type, start, end){
 		var rooms
 
 		//fetch pasangan
+		console.log("preparing to schedule================")
 		if(event_type == 1){
-			pasangan = await TA.model.fetchAll({withRelated: ['pembimbing', 'penguji']})
+			pasangan = await TA.model.fetchAll({withRelated: ['pembimbing', 'penguji', 'mahasiswa']})
+			rooms = await User.model.where({"peran": 3}).fetchAll()
+		}
+
+		if(event_type == 2){
+			pasangan = await KP.model.fetchAll({withRelated: ['pembimbing', 'mahasiswa.user']})
 			rooms = await User.model.where({"peran": 3}).fetchAll()
 		}
 
 		//getRaw
+		console.log("collecting calendar data================")
 		events = await GetRawEvent(start, end)
 
 		//process event for scheduling
 		events = RawEventToPre(events.data.result, start, end)
-		events = PreEventToReady(events, rooms, pasangan)
+		events = PreEventToReady(events, rooms, pasangan, event_type)
 
 		//request scheduling
+		console.log("scheduling===================")
+		events = await RequestScheduling(events)
 
+		//delete events
+		await knex.emptyTable('event')
 
 		//save events
+		console.log("saving schedule===================")
+		var temp = FormatForSave(events.data.result, event_type, pasangan)
+		await NewEvent(temp)
+		await NewAnggotaEvent(events.data.result)
+		console.log("done===================")
 	}
 	catch(err){
 		console.log(err)
@@ -136,14 +223,55 @@ var DeleteEvent = async function(id){
 	return Promise.each(task, function(){})
 }
 //===============================================================================
-var NewEvent = function(objs){
+var NewEvent = async function(objs){
 	try{
 		//bikin record kosong
 		var task = []
 
-		//delete pasangan ta
 		for(var i=0; i<objs.length; i++){
 			task.push(new Event.model(objs[i]).save())
+		}
+		
+		
+		
+	}catch(err){
+		console.log(err)
+	}
+	
+
+	return Promise.each(task, function(){})
+}
+//===============================================================================
+var NewAnggotaEvent = function(objs){
+	try{
+		//bikin record kosong
+		var task = []
+
+		for(var i=0; i<objs.length; i++){
+			//masukin mahasiswa
+			task.push(new Anggota.model({
+				"user_id": objs[i].idStudent,
+				"peran_pasangan": 0,
+				"pasangan_id": i
+			}).save())
+
+			//masukin pembimbing
+			for(var j=0; j<objs[i].idPembimbing.length; j++){
+				task.push(new Anggota.model({
+					"user_id": objs[i].idPembimbing[j],
+					"peran_pasangan": 1,
+					"pasangan_id": i
+				}).save())
+			}
+
+			//masukin pembimbing
+			for(var j=0; j<objs[i].idPenguji.length; j++){
+				task.push(new Anggota.model({
+					"user_id": objs[i].idPenguji[j],
+					"peran_pasangan": 2,
+					"pasangan_id": i
+				}).save())
+			}
 		}
 		
 		

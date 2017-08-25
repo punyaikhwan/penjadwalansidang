@@ -5,10 +5,10 @@ require('./user.js')
 Model = helper.bookshelf.Model.extend({
     tableName: 'pasangan_kp',
     hasTimestamps: true,
-    dosen: function() {
+    pembimbing: function() {
 	    return this.hasMany('AnggotaPasanganKP', 'pasangan_id').query({where: {peran_pasangan: 1}});
 	},
-	anggota: function() {
+	mahasiswa: function() {
 	    return this.hasMany('AnggotaPasanganKP', 'pasangan_id').query({where: {peran_pasangan: 0}});
 	}
 });	
