@@ -40,8 +40,7 @@ exports.up = function(knex, Promise) {
 			table.integer('pasangan_id').unsigned();
 			table.timestamps();
 		}),
-
-
+		
 
 
 
