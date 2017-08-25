@@ -6,10 +6,10 @@ Model = helper.bookshelf.Model.extend({
     tableName: 'pasangan_kp',
     hasTimestamps: true,
     dosen: function() {
-	    return this.hasMany('AnggotaPasanganKP', 'pasangan_id').query({where: {peran_pasangan: '1'}});
+	    return this.hasMany('AnggotaPasanganKP', 'pasangan_id').query({where: {peran_pasangan: 1}});
 	},
 	anggota: function() {
-	    return this.hasMany('AnggotaPasanganKP', 'pasangan_id').query({where: {peran_pasangan: '0'}});
+	    return this.hasMany('AnggotaPasanganKP', 'pasangan_id').query({where: {peran_pasangan: 0}});
 	}
 });	
 model = helper.bookshelf.model('PasanganKP', Model);

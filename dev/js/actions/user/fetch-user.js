@@ -4,7 +4,7 @@ export const fetchUser= () => {
     return function(dispatch) {
 
         dispatch({
-            type: "FETCHING USER",
+            type: "FETCH USER",
             payload: []
         })
         axios.get('http://localhost:3001/user').then(function (data) {

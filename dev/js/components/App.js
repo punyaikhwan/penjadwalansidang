@@ -1,6 +1,4 @@
 import React from 'react';
-import UserList from '../containers/user-list';
-import UserDetails from '../containers/user-detail';
 import Stuff from '../containers/App.js'
 import mngUser from '../containers/timta_mng_user';
 import mngPasanganKP from '../containers/timta_mng_pasangan_KP';

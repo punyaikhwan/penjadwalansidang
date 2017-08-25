@@ -25,10 +25,10 @@ import {
 import imgProfile from '../../scss/public/images/imgprofile.jpg';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {fetchUser} from '../actions/fetch-user'
-import {newUser} from '../actions/new-user'
-import {editUser} from '../actions/edit-user'
-import {deleteUser} from '../actions/delete-user'
+import {fetchUser} from '../actions/user/fetch-user'
+import {newUser} from '../actions/user/new-user'
+import {editUser} from '../actions/user/edit-user'
+import {deleteUser} from '../actions/user/delete-user'
 
 class timta_mng_user extends Component {
 
@@ -36,7 +36,7 @@ class timta_mng_user extends Component {
     super(props);
     this.state = {
       open: false,
-      listperan: ['Mahasiswa', 'Dosen', 'Tim TA'],
+      listperan: ['Tim TA', 'Mahasiswa', 'Dosen'],
       modalTambahUser: false,
       modalEditUser: false,
       nama: "",

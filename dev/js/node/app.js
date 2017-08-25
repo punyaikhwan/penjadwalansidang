@@ -4,21 +4,11 @@ var bodyParser = require('body-parser');
 var user = require('./functions/user_function.js')
 var KP = require('./functions/kp_function.js')
 var TA = require('./functions/ta_function.js')
-var googleUtil = require('./GoogleLogin.js')
 
 
 app.use(bodyParser.json()); // for parsing application/json
 //GOOGLE====================================================================
-app.get('/googleLogin', function(request, response){
-	response.send(googleUtil.url)
-})
 
-app.post('/getToken', function(request, response){
-	console.log(request.body.token);
-	var result = googleUtil.getToken(request.body.token)
-
-  	response.send(result)
-})
 //USER====================================================================
 app.get('/user', function(request, response){
 	user.FetchUser().then(function(result){
@@ -90,7 +80,7 @@ app.get('/kp', function(request, response){
 })
 
 app.post('/kp/new', function(request, response){
-	KP.NewUser().then(function(result){
+	KP.NewKP().then(function(result){
 		response.send('success')
 	}).catch(function(err){
 		console.log(err)
@@ -99,7 +89,7 @@ app.post('/kp/new', function(request, response){
 })
 
 app.post('/kp/edit', function(request, response){
-	KP.EditUser(request.body.ids, request.body.objs).then(function(result){
+	KP.EditKP(request.body.ids, request.body.objs).then(function(result){
 		response.send('success')
 	}).catch(function(err){
 		console.log(err)
@@ -108,7 +98,7 @@ app.post('/kp/edit', function(request, response){
 })
 
 app.post('/kp/delete', function(request, response){
-	KP.DeleteUser(request.body.id).then(function(result){
+	KP.DeleteKP(request.body.id).then(function(result){
 		response.send('success')
 	}).catch(function(err){
 		console.log(err)
@@ -125,8 +115,13 @@ app.get('/ta', function(request, response){
 	})
 })
 
+/*
+{
+	"mahasiswa_id": 1
+}
+*/
 app.post('/ta/new', function(request, response){
-	TA.NewUser().then(function(result){
+	TA.NewTA(request.body.mahasiswa_id).then(function(result){
 		response.send('success')
 	}).catch(function(err){
 		console.log(err)
@@ -135,7 +130,7 @@ app.post('/ta/new', function(request, response){
 })
 
 app.post('/ta/edit', function(request, response){
-	TA.EditUser(request.body.ids, request.body.objs).then(function(result){
+	TA.EditTA(request.body.ids, request.body.objs).then(function(result){
 		response.send('success')
 	}).catch(function(err){
 		console.log(err)
@@ -144,7 +139,7 @@ app.post('/ta/edit', function(request, response){
 })
 
 app.post('/ta/delete', function(request, response){
-	TA.DeleteUser(request.body.id).then(function(result){
+	TA.DeleteTA(request.body.id).then(function(result){
 		response.send('success')
 	}).catch(function(err){
 		console.log(err)

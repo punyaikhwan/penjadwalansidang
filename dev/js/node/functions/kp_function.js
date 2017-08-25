@@ -86,6 +86,46 @@ var FetchKP = function(){
 	return KP.model.fetchAll({withRelated:['dosen.user', 'anggota.user']})
 }
 //===============================================================================
+var FetchSpecificKP = async function(nama){
+	try{
+		let temp = await KP.model.fetchAll({withRelated:['dosen.user', 'anggota.user']})
+		temp = temp.toJSON()
+
+		//loop ilangin yang ngga sesuai nama
+		var n = nama
+		var mark = []
+		for(var i=0; i<temp.length; i++){
+			//check dosen
+			for(var j1=0; j1<temp[i].dosen.length; j1++){
+				if(temp[i].dosen[j1].user.nama == n){
+					mark.push(i)
+					break
+				}
+			}
+
+			//check anggota
+			for(var j2=0; j2<temp[i].anggota.length; j2++){
+				if(temp[i].anggota[j2].user.nama == n){
+					mark.push(i)
+					break
+				}
+			}
+
+		}
+
+		let result = []
+
+		for(var i=0; i<mark.length; i++){
+			result.push(temp[mark[i]])
+		}
+		return result
+		
+		
+	}catch(err){
+		console.log(err)
+	}
+}
+//===============================================================================
 var CreateKPObj = function(anggotas, topik, pembimbings){
 	var obj = {
 		"anggotas": anggotas,
@@ -110,9 +150,10 @@ var test = async function(){
 
 		//test fetch
 		console.log("FETCH===============================")
-		var result = await FetchKP()
+		var result = await FetchSpecificKP('Madison')
 		console.log(JSON.stringify(result))
 
+		return
 		//test new
 		console.log("NEW===============================")
 		await NewKP()
