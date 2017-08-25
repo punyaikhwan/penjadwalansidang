@@ -10,7 +10,8 @@ exports.up = function(knex, Promise) {
 	knex.schema.alterTable('anggota_pasangan_ta', function (table) {
 	  table.foreign('user_id').references('id').inTable('user').onUpdate('restrict').onDelete('cascade');
 	  table.foreign('pasangan_id').references('id').inTable('pasangan_ta').onUpdate('restrict').onDelete('cascade');
-	}),
+  }),
+  
   ]);
 };
 
