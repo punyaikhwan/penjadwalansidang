@@ -48,7 +48,6 @@ class timta_mng_pasangan_KP extends Component {
       topic: "",
       dosen: "",
       selectedKelompok: 0,
-      dataKelompok: {},
     };
   }
 
@@ -130,8 +129,7 @@ class timta_mng_pasangan_KP extends Component {
   }
 
   handleSelect(i, data){
-      this.setState({selectedKelompok:i});
-      this.setState({dataKelompok: data})
+      this.setState({selectedKelompok:i})
   }
 
   handleSave(){
