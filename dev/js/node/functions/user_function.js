@@ -4,7 +4,7 @@ let Promise = require('bluebird')
 
 //==============================================================================
 var UpdateEmail = function(email, token) {
-	User.model.where({"email": email}).fetch().then(function(data){
+	return User.model.where({"email": email}).fetch().then(function(data){
 		if(data){ //if user found
 			return new User.model({id: data.get('id')}).save({"token": token}, {patch: true})
 		}
@@ -102,7 +102,8 @@ module.exports = {
   DeleteUser, 
   NewUser,
   EditUser,
-  FetchUser
+  FetchUser,
+  UpdateEmail
 }
 
 

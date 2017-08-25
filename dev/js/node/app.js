@@ -12,9 +12,11 @@ var google = require('googleapis');
 var OAuth2 = google.auth.OAuth2;
 var plus = google.plus('v1');
 
-const ClientId = "806339176753-cmb1mv9g8itmir0p4ucqh0ibuhbl6s0k.apps.googleusercontent.com";
-const ClientSecret = "PF6m7fxfIzu8g3AhyMI3VoAz";
-const RedirectionUrl = "http://localhost:3000/timta_mng_user"
+// const ClientId = "806339176753-cmb1mv9g8itmir0p4ucqh0ibuhbl6s0k.apps.googleusercontent.com";
+// const ClientSecret = "PF6m7fxfIzu8g3AhyMI3VoAz";
+const ClientId = "1031302495796-7vb2i3hqj2q5o632ggreuca6cvsuvjn9.apps.googleusercontent.com";
+const ClientSecret = "6nN7tlnCMHfqtlmrgn8PP7Cx";
+const RedirectionUrl = "http://localhost:3000/"
 
 // Starting the express app
 var app = express()
@@ -22,6 +24,21 @@ var app = express()
 app.use(bodyParser.json()); // for parsing application/json
 
 var generatedSecret = secretHandler.getOrCreate();
+
+// {  
+//   "web":{  
+//     "client_id":"1031302495796-7vb2i3hqj2q5o632ggreuca6cvsuvjn9.apps.googleusercontent.com",
+//     "project_id":"ivory-being-162716",
+//     "auth_uri":"https://accounts.google.com/o/oauth2/auth",
+//     "token_uri":"https://accounts.google.com/o/oauth2/token",
+//     "auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs",
+//     "client_secret":"6nN7tlnCMHfqtlmrgn8PP7Cx",
+//     "redirect_uris":[  
+//       "urn:ietf:wg:oauth:2.0:oob",
+//       "http://localhost"
+//     ]
+//   }
+// }
 //============================================================================
 // generate a url that asks permissions for Google+ and Google Calendar scopes
 var scopes = [
@@ -34,6 +51,8 @@ var scopes = [
 app.use(Session({
 	// secret: generatedSecret,
 	secret: '0ecef849563661269e02a44a48f5d3ab47496c88f78ab9a606f60899a2e56305d0f0a6411b4659e6db9c297e7004b6fe',
+	duration: (30 * 60 * 1000),
+	activeDuration: (5 * 60 * 1000),
 	resave: true,
 	saveUninitialized: true
 }))
@@ -63,6 +82,16 @@ app.use('/googleLogin', function(request, response){
 });
 
 
+app.use('/logout', function(request, response){
+	var oauth2Client = getOAuthClient();
+	var session = request.session;
+	oauth2Client.signOut().then(function() {
+		request.session.reset();
+		response.redirect('/');
+		console.log('User signed out.')
+	})
+});
+
 app.use('/getUserInfo', function(request, response){
 	var oauth2Client = getOAuthClient();
 	var session = request.session;
@@ -81,18 +110,22 @@ app.use('/getUserInfo', function(request, response){
 				// 	resolve(profile || err);
 				// });
 			}).then(function (data) {
-				UpdateEmail(email, tokens).then(function(result){
+				let email = data.emails[0].value;
+				user.UpdateEmail(email, tokens.refresh_token).then(function(result){
 					if (result != 'gagal') {
-						response.send(400, "SUCCESS");
+						// response.status(200).send({status: "SUCCESS", session: session});
+						response.status(200).send({status: "SUCCESS"});
 					} else {
-						response.send(404, "FAILED");
+						// response.status(404).send({status: "FAILED", session: session});
+						response.status(404).send({status: "FAILED"});
 					}
 					
 					console.log(data.emails[0].value);	
 				});
 			})
 		} else {
-			response.send(404, "FAILED");
+			// response.status(404).send({status: "FAILED", session: session});
+			response.status(404).send({status: "FAILED"});
 			console.log(err);
 		}
 	})

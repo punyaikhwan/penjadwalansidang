@@ -1,5 +1,124 @@
 let Event = require('../db/models/event.js')
+let User = require('../db/models/user.js')
+let TA = require('../db/models/pasangan_ta.js')
+let KP = require('../db/models/pasangan_kp.js')
+let axios = require('axios')
 let Promise = require('bluebird')
+//===============================================================================
+var GetRawEvent = function(start, end){
+	return User.model.fetchAll().then(function(result){
+		result = result.toJSON()
+		console.log(result)
+
+		var request_param = {
+			"data":{
+				"period":{
+					"start":start,
+					"end":end
+				},
+				"accounts":[]
+			}
+		}
+
+		for(var i=0; i<result.length; i++){
+			request_param.data.accounts.push({
+				"email": result[i].email,
+				"refreshToken": result[i].token,
+				"calendarList": ['primary']
+			})
+		}
+		
+		
+		//request to python
+		return axios.post('http://localhost:5000/events', request_param)
+		.catch(function (error) {
+			console.log(error);
+			return error
+		});
+	}).catch(function(error){
+		return error
+	})
+}	
+//===============================================================================
+var PreEventToReady = function(pre, rooms, pasangan){
+	console.log("pre==============================================")
+	console.log(JSON.stringify(pre))
+	console.log("rooms==============================================")
+	console.log(JSON.stringify(rooms))
+	console.log("pasangan==============================================")
+	console.log(JSON.stringify(pasangan))
+
+	pre.listStudent = []
+	for(var i=0; i<pasangan.length; i++){
+		pre.listStudent.push({})
+		pre.listStudent[i].idPembimbing = []
+		pre.listStudent[i].idPembimbing.push({
+			
+		})
+		pre.listStudent[i].idPenguji = []
+		pre.listStudent[i].idPenguji.push({
+			
+		})
+		pre.listStudent[i].id = 
+	}
+
+	pre.listRoom = []
+	for(var i=0; i<rooms.length; i++){
+		pre.listRoom.push({})
+		pre.listRoom[i].id = 
+		pre.listRoom[i].events = []
+	}
+}
+//===============================================================================
+var RawEventToPre = function(raw, start, end){
+	var temp = {
+		"data":{
+			listLecturer: [],
+			period:{}
+		}
+	}
+
+	for(var i=0; i<raw.length; i++){
+		temp.data.listLecturer.push({
+			"id": raw[i].email,
+			"events": raw[i].events
+		})
+	}
+
+	temp.data.period.start = start
+	temp.data.period.end = end
+
+	return temp
+}
+//===============================================================================
+var ScheduleEvent = async function(event_type, start, end){
+	try{
+		var pasangan
+		var events
+		var rooms
+
+		//fetch pasangan
+		if(event_type == 1){
+			pasangan = await TA.model.fetchAll({withRelated: ['pembimbing', 'penguji']})
+			rooms = await User.model.where({"peran": 3}).fetchAll()
+		}
+
+		//getRaw
+		events = await GetRawEvent(start, end)
+
+		//process event for scheduling
+		events = RawEventToPre(events.data.result, start, end)
+		events = PreEventToReady(events, rooms, pasangan)
+
+		//request scheduling
+
+
+		//save events
+	}
+	catch(err){
+		console.log(err)
+	}
+}
 //===============================================================================
 var DeleteEvent = async function(id){
 	try{
@@ -103,6 +222,12 @@ var test = async function(){
 			room_id: 3,
 		}
 
+		console.log("ScheduleEvent=========")
+		ScheduleEvent(1, "2017-08-08T00:00:00+07:00", "2017-10-10T23:59:59+07:00")
+		return
+		console.log("GETEVENT=========")
+		GetRawEvent("2017-08-08T00:00:00+07:00", "2017-10-10T23:59:59+07:00")
+	
 		console.log("FETCH=========")
 		var result = await FetchTAEvent()
 		console.log(result.toJSON())
