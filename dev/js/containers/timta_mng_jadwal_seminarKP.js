@@ -11,7 +11,7 @@ import Row from 'muicss/lib/react/row';
 import Col from 'muicss/lib/react/col';
 import TextField from 'material-ui/TextField';
 import Checkbox from 'material-ui/Checkbox';
-import ScrollArea from 'react-scrollbar';;
+import ScrollArea from 'react-scrollbar';
 import {List, ListItem} from 'material-ui/List';
 import {
   Table,
@@ -28,6 +28,7 @@ import imgProfile from '../../scss/public/images/imgprofile.jpg';
 
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import {fetchKP} from '../actions/kp/fetch-kp'
 
 class timta_mng_jadwal_seminarKP extends Component {
 
@@ -47,9 +48,10 @@ class timta_mng_jadwal_seminarKP extends Component {
 
   componentDidMount() {
     console.log("DidMount")
-    setTimeout(()=> {
+    this.props.fetchKP();
+      setTimeout(()=> {
       let tempCheckBoxKelompok = [];
-      for (var i=0; i < this.state.dataKelompok.length; i++) {
+      for (var i=0; i < this.props.kelompok.length; i++) {
         tempCheckBoxKelompok.push(0);
         console.log(tempCheckBoxKelompok);
       }
@@ -296,6 +298,8 @@ function mapStateToProps(state) {
 }
 
 function matchDispatchToProps(dispatch){
-    return bindActionCreators({}, dispatch);
+    return bindActionCreators({
+        fetchKP: fetchKP
+    }, dispatch);
 }
 export default connect(mapStateToProps, matchDispatchToProps)(timta_mng_jadwal_seminarKP);

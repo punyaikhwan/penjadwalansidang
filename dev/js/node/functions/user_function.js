@@ -1,6 +1,19 @@
 let User = require('../db/models/user.js')
 let Promise = require('bluebird')
 
+
+//==============================================================================
+var UpdateEmail = function(email, token) {
+	return User.model.where({"email": email}).fetch().then(function(data){
+		if(data){ //if user found
+			return new User.model({id: data.get('id')}).save({"token": token}, {patch: true})
+		}
+		else{
+			return 'gagal'
+		}
+	})
+}
+
 //===============================================================================
 var DeleteUser = function(id){
 	return new User.model({"id": id}).destroy()
@@ -39,6 +52,15 @@ var CreateUserObj = function(nama, email, peran, NIM=null){
 var test = async function(){
 	try{
 		var myobj = CreateUserObj("mama", "mama@mama.com", 1, "098654")
+
+		//test updateEmail
+		console.log("EMAILTOKEN===============================")
+		await UpdateEmail('Carmel.Cronin90@hotmail.com', 'awawawawaw')
+		var result = await FetchUser()
+		console.log(result.toJSON())
+
+		return
+
 
 		//test fetch
 		console.log("FETCH===============================")
@@ -80,7 +102,8 @@ module.exports = {
   DeleteUser, 
   NewUser,
   EditUser,
-  FetchUser
+  FetchUser,
+  UpdateEmail
 }
 
 

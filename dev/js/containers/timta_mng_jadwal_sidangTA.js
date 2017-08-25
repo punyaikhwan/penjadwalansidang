@@ -28,7 +28,7 @@ import imgProfile from '../../scss/public/images/imgprofile.jpg';
 
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-
+import windowDimensions from 'react-window-dimensions';
 class timta_mng_jadwal_sidangTA extends Component {
 
   constructor(props) {
@@ -300,4 +300,4 @@ function mapStateToProps(state) {
 function matchDispatchToProps(dispatch){
     return bindActionCreators({}, dispatch);
 }
-export default connect(mapStateToProps, matchDispatchToProps)(timta_mng_jadwal_sidangTA);
+export default connect(mapStateToProps, matchDispatchToProps)(windowDimensions()(timta_mng_jadwal_sidangTA));

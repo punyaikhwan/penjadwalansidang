@@ -16,6 +16,7 @@ import ScrollArea from 'react-scrollbar';
 import SelectField from 'material-ui/SelectField';
 import TextField from 'material-ui/TextField';
 import Dialog from 'material-ui/Dialog';
+import windowDimensions from 'react-window-dimensions';
 import {
   Table,
   TableBody,
@@ -27,6 +28,10 @@ import {
 import imgProfile from '../../scss/public/images/imgprofile.jpg';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import {fetchTA} from '../actions/ta/fetch-ta'
+import {editTA} from '../actions/ta/edit-ta'
+import {newTA} from '../actions/ta/new-ta'
+import {deleteTA} from '../actions/ta/delete-ta'
 
 class timta_mng_pasangan_TA extends Component {
 
@@ -96,11 +101,12 @@ class timta_mng_pasangan_TA extends Component {
     this.handleCloseTambahMahasiswa();
   }
 
+  componentDidMount(){
+    this.props.fetchTA();
+  }
+
   handleDeleteMahasiswa(i) {
-    let tempDataTA = this.state.dataTA;
-    tempDataTA.splice(i,1);
-    console.log("data Mhs:",i," ", tempDataTA);
-    this.setState({dataTA: tempDataTA});
+    this.props.deleteTA(i)
   }
 
   handleTambahDosenPembimbing() {
@@ -228,6 +234,18 @@ class timta_mng_pasangan_TA extends Component {
     return (
       <MuiThemeProvider>
       <div>
+        <RaisedButton
+          style={{
+            position: 'fixed',
+            marginTop: this.props.height-50,
+            marginLeft: this.props.width-200,
+            alignItems: 'center'
+          }}
+          backgroundColor="#F1D600"
+          label="SAVE"
+          labelPosition="after"
+          icon={<i className="material-icons" style={{color:'black'}}>save</i>}
+        />
         <AppBar
           title="Dashboard Tim TA - Daftar Pasangan Tugas Akhir"
           iconElementLeft={
@@ -259,181 +277,175 @@ class timta_mng_pasangan_TA extends Component {
                   />
                 </Row>
                 <Row>
+                  {this.props.dataTA.length !== 0 &&
                   <ScrollArea
                     horizontal={false}
                     style={{height: 400}}
                     speed={0.8}
                   >
                     <List>
-                      {this.state.dataTA.map((mhs, i) => (
+                      {this.props.dataTA.map((mhs, i) => (
                         <Row>
                           <Col md="8" xs="8">
                             <ListItem key={i} onTouchTap={()=>this.setState({selectedMhs:i})}>
-                            {mhs.nama}
+                            {mhs.mahasiswa.nama}
                             </ListItem>
                           </Col>
                           <Col md="4" xs ="4" style={{marginTop:7}}>
                             <FlatButton
                               labelPosition="after"
                               icon={<i className="material-icons" style={{color:'black'}}>close</i>}
-                              onClick={()=>this.handleDeleteMahasiswa(i)}
+                              onClick={()=>this.handleDeleteMahasiswa(mhs.id)}
                             />
                           </Col>
                         </Row>
                       ))}
                     </List>
                   </ScrollArea>
+                  }
+                  {this.props.dataTA.length === 0 &&
+                    <p style={{fontSize:14}}><i>Tidak ada mahasiswa</i></p>
+                  }
                 </Row>
               </div>
             </Col>
             <Col md="8" xs="12">
+              {this.props.dataTA.length > 0 &&
               <div>
-                <p style={{fontSize:25, alignItems:'center', fontWeight: 'bold'}}>{this.state.dataTA.length > 0 ? this.state.dataTA[this.state.selectedMhs].nama : "Tidak ada mahasiswa"}</p>
+                <div>
+                  <p style={{fontSize:25, alignItems:'center', fontWeight: 'bold'}}>{this.props.dataTA[this.state.selectedMhs].mahasiswa.nama}</p>
+                  <br/>
+                  <p style={{fontSize:16}}>Topik Tugas Akhir</p>
+                  <Row>
+                    <Col md="10" xs="10">
+                      <p style={{fontSize: 20}}>{this.props.dataTA[this.state.selectedMhs].topik}</p>
+                    </Col>
+                    <Col md="2" xs ="2">
+                      <FlatButton
+                        icon={<i className="material-icons" style={{color:'black'}}>edit</i>}
+                        onClick={()=>this.handleOpenEditTopic()}
+                      />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col md="6" xs="12">
+                      <Subheader>Dosen Pembimbing</Subheader>
+                      {this.props.dataTA[this.state.selectedMhs].pembimbing.length < 2 &&
+                        <RaisedButton
+                          label="Tambah Dosen"
+                          labelPosition="after"
+                          backgroundColor="rgb(166, 233, 255)"
+                          icon={<i className="material-icons" style={{color:'black'}}>add</i>}
+                          onClick={()=>this.handleOpenTambahDosenPembimbing()}
+                        />
+                      }
+
+                      {this.props.dataTA[this.state.selectedMhs].pembimbing.length > 0 &&
+                        <List>
+                          {this.props.dataTA[this.state.selectedMhs].pembimbing.map((item, i) =>(
+                            <Row>
+                              <Col md="10" xs="10">
+                                <ListItem key={i}>
+                                  {item.user.nama}
+                                </ListItem>
+                              </Col>
+                              <Col md="2" xs ="2" style={{marginTop:7}}>
+                                <FlatButton
+                                  labelPosition="after"
+                                  icon={<i className="material-icons" style={{color:'black', fontSize:'14px'}}>close</i>}
+                                  onClick={()=>this.handleDeleteDosenPembimbing(item.id)}
+                                />
+                              </Col>
+                            </Row>
+                          ))}
+                        </List>
+                      }
+                      {this.props.dataTA[this.state.selectedMhs].pembimbing.length == 0 &&
+                          <p style={{fontSize:14}}><i>Belum ada dosen pembimbing.</i></p>
+                      }
+                    </Col>
+                  </Row>
+                </div>
                 <br/>
-                <p style={{fontSize:16}}>Topik Tugas Akhir</p>
-                <Row>
-                  <Col md="10" xs="10">
-                    <p style={{fontSize: 20}}>{this.state.dataTA.length > 0 ? this.state.dataTA[this.state.selectedMhs].topik : "Tidak ada mahasiswa"}</p>
-                  </Col>
-                  <Col md="2" xs ="2">
-                    <FlatButton
-                      icon={<i className="material-icons" style={{color:'black'}}>edit</i>}
-                      onClick={()=>this.handleOpenEditTopic()}
-                    />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col md="6" xs="12">
-                    <Subheader>Dosen Pembimbing</Subheader>
-                    {this.state.dataTA.length > 0 && this.state.dataTA[this.state.selectedMhs].dosenPembimbing.length < 2 &&
-                      <RaisedButton
-                        label="Tambah Dosen"
-                        labelPosition="after"
-                        backgroundColor="rgb(166, 233, 255)"
-                        icon={<i className="material-icons" style={{color:'black'}}>add</i>}
-                        onClick={()=>this.handleOpenTambahDosenPembimbing()}
-                      />
-                    }
+                <br/>
+                <div>
+                  <Row>
+                    <Col md="6" xs="12">
+                      <Subheader>Daftar Dosen Penguji TA 1</Subheader>
+                      {this.props.dataTA[this.state.selectedMhs].penguji.length < 2 &&
+                        <RaisedButton
+                          label="Tambah Dosen Penguji TA 1"
+                          labelPosition="after"
+                          backgroundColor="rgb(166, 233, 255)"
+                          icon={<i className="material-icons" style={{color:'black'}}>add</i>}
+                          onClick={()=>this.handleOpenTambahDosenPengujiTA1()}
+                        />
+                      }
 
-                    {this.state.dataTA.length > 0 &&
-                      this.state.dataTA[this.state.selectedMhs].dosenPembimbing.length > 0 &&
-                      <List>
-                        {this.state.dataTA[this.state.selectedMhs].dosenPembimbing.map((item, i) =>(
-                          <Row>
-                            <Col md="10" xs="10">
+                      {this.props.dataTA[this.state.selectedMhs].penguji.length > 0 &&
+                        <List>
+                          {this.props.dataTA[this.state.selectedMhs].penguji.map((item, i) =>(
+                            <Row>
+                              <Col md="8" xs="10">
                               <ListItem key={i}>
-                                {item}
+                                {item.user.nama}
                               </ListItem>
-                            </Col>
-                            <Col md="2" xs ="2" style={{marginTop:7}}>
-                              <FlatButton
-                                labelPosition="after"
-                                icon={<i className="material-icons" style={{color:'black', fontSize:'14px'}}>close</i>}
-                                onClick={()=>this.handleDeleteDosenPembimbing(i)}
-                              />
-                            </Col>
-                          </Row>
-                        ))}
-                      </List>
-                    }
-                    {this.state.dataTA.length > 0 &&
-                      this.state.dataTA[this.state.selectedMhs].dosenPembimbing.length == 0 &&
-                        <p style={{fontSize:14}}><i>Belum ada dosen pembimbing.</i></p>
-                    }
-                    {this.state.dataTA.length == 0 &&
-                      <p style={{fontSize:14}}><i>Tidak ada mahasiswa</i></p>
-                    }
-                  </Col>
-                </Row>
-              </div>
-              <br/>
-              <br/>
-              <div>
-                <Row>
-                  <Col md="6" xs="12">
-                    <Subheader>Daftar Dosen Penguji TA 1</Subheader>
-                    {this.state.dataTA.length > 0 && this.state.dataTA[this.state.selectedMhs].dosenPengujiTA1.length < 2 &&
-                      <RaisedButton
-                        label="Tambah Dosen Penguji TA 1"
-                        labelPosition="after"
-                        backgroundColor="rgb(166, 233, 255)"
-                        icon={<i className="material-icons" style={{color:'black'}}>add</i>}
-                        onClick={()=>this.handleOpenTambahDosenPengujiTA1()}
-                      />
-                    }
+                              </Col>
+                              <Col md="4" xs ="2" style={{marginTop:7}}>
+                                <FlatButton
+                                  labelPosition="after"
+                                  icon={<i className="material-icons" style={{color:'black', fontSize:'14px'}}>close</i>}
+                                  onClick={()=>this.handleDeleteDosenPengujiTA1(item.id)}
+                                />
+                              </Col>
+                            </Row>
+                          ))}
+                        </List>
+                      }
+                      {this.props.dataTA[this.state.selectedMhs].penguji.length == 0 &&
+                          <p style={{fontSize:14}}><i>Belum ada dosen penguji seminar TA 1</i></p>
+                      }
+                    </Col>
+                    <Col md="6" xs="12">
+                      <Subheader>Daftar Dosen Penguji Sidang Akhir</Subheader>
+                      {this.props.dataTA[this.state.selectedMhs].akhir.length < 2 &&
+                        <RaisedButton
+                          label="Tambah Dosen Penguji Sidang Akhir"
+                          labelPosition="after"
+                          backgroundColor="rgb(166, 233, 255)"
+                          icon={<i className="material-icons" style={{color:'black'}}>add</i>}
+                          onClick={()=>this.handleOpenTambahDosenPengujiAkhir()}
+                        />
+                      }
 
-                    {this.state.dataTA.length > 0 &&
-                      this.state.dataTA[this.state.selectedMhs].dosenPengujiTA1.length > 0 &&
-                      <List>
-                        {this.state.dataTA[this.state.selectedMhs].dosenPengujiTA1.map((item, i) =>(
-                          <Row>
-                            <Col md="8" xs="10">
-                            <ListItem key={i}>
-                              {item}
-                            </ListItem>
-                            </Col>
-                            <Col md="4" xs ="2" style={{marginTop:7}}>
-                              <FlatButton
-                                labelPosition="after"
-                                icon={<i className="material-icons" style={{color:'black', fontSize:'14px'}}>close</i>}
-                                onClick={()=>this.handleDeleteDosenPengujiTA1(i)}
-                              />
-                            </Col>
-                          </Row>
-                        ))}
-                      </List>
-                    }
-                    {this.state.dataTA.length > 0 &&
-                      this.state.dataTA[this.state.selectedMhs].dosenPengujiTA1.length == 0 &&
-                        <p style={{fontSize:14}}><i>Belum ada dosen pembimbing.</i></p>
-                    }
-                    {this.state.dataTA.length == 0 &&
-                      <p style={{fontSize:14}}><i>Tidak ada mahasiswa</i></p>
-                    }
-                  </Col>
-                  <Col md="6" xs="12">
-                    <Subheader>Daftar Dosen Penguji Sidang Akhir</Subheader>
-                    {this.state.dataTA.length > 0 && this.state.dataTA[this.state.selectedMhs].dosenPengujiAkhir.length < 2 &&
-                      <RaisedButton
-                        label="Tambah Dosen Penguji Sidang Akhir"
-                        labelPosition="after"
-                        backgroundColor="rgb(166, 233, 255)"
-                        icon={<i className="material-icons" style={{color:'black'}}>add</i>}
-                        onClick={()=>this.handleOpenTambahDosenPengujiAkhir()}
-                      />
-                    }
-
-                    {this.state.dataTA.length > 0 &&
-                      this.state.dataTA[this.state.selectedMhs].dosenPengujiAkhir.length > 0 &&
-                      <List>
-                        {this.state.dataTA[this.state.selectedMhs].dosenPengujiAkhir.map((item, i) =>(
-                          <Row>
-                            <Col md="8" xs="10">
-                            <ListItem key={i}>
-                              {item}
-                            </ListItem>
-                            </Col>
-                            <Col md="4" xs ="2" style={{marginTop:7}}>
-                              <FlatButton
-                                labelPosition="after"
-                                icon={<i className="material-icons" style={{color:'black', fontSize:'14px'}}>close</i>}
-                                onClick={()=>this.handleDeleteDosenPengujiAkhir(i)}
-                              />
-                            </Col>
-                          </Row>
-                        ))}
-                      </List>
-                    }
-                    {this.state.dataTA.length > 0 &&
-                      this.state.dataTA[this.state.selectedMhs].dosenPengujiAkhir.length == 0 &&
-                        <p style={{fontSize:14}}><i>Belum ada dosen pembimbing.</i></p>
-                    }
-                    {this.state.dataTA.length == 0 &&
-                      <p style={{fontSize:14}}><i>Tidak ada mahasiswa</i></p>
-                    }
-                  </Col>
-                </Row>
+                      {this.props.dataTA[this.state.selectedMhs].akhir.length > 0 &&
+                        <List>
+                          {this.props.dataTA[this.state.selectedMhs].akhir.map((item, i) =>(
+                            <Row>
+                              <Col md="8" xs="10">
+                              <ListItem key={i}>
+                                {item.user.nama}
+                              </ListItem>
+                              </Col>
+                              <Col md="4" xs ="2" style={{marginTop:7}}>
+                                <FlatButton
+                                  labelPosition="after"
+                                  icon={<i className="material-icons" style={{color:'black', fontSize:'14px'}}>close</i>}
+                                  onClick={()=>this.handleDeleteDosenPengujiAkhir(item.id)}
+                                />
+                              </Col>
+                            </Row>
+                          ))}
+                        </List>
+                      }
+                      {this.props.dataTA[this.state.selectedMhs].akhir.length == 0 &&
+                          <p style={{fontSize:14}}><i>Belum ada dosen penguji sidang akhir.</i></p>
+                      }
+                    </Col>
+                  </Row>
+                </div>
               </div>
+              }
             </Col>
           </Row>
         </div>
@@ -568,7 +580,7 @@ class timta_mng_pasangan_TA extends Component {
           title="Tambah Dosen Penguji Sidang Akhir"
           actions= {actionsTambahDosenPengujiAkhir}
           modal={false}
-          open={this.state.modalTambahDosenPenguji}
+          open={this.state.modalTambahDosenPengujiAkhir}
           onRequestClose={()=>this.handleCloseTambahDosenPenguji()}
         >
           <SelectField
@@ -604,7 +616,12 @@ function mapStateToProps(state) {
 }
 
 function matchDispatchToProps(dispatch){
-    return bindActionCreators({}, dispatch);
+    return bindActionCreators({
+        fetchTA: fetchTA,
+        newTA: newTA,
+        deleteTA: deleteTA,
+        editTA: editTA
+    }, dispatch);
 }
 
-export default connect(mapStateToProps, matchDispatchToProps)(timta_mng_pasangan_TA);
+export default connect(mapStateToProps, matchDispatchToProps)(windowDimensions()(timta_mng_pasangan_TA));

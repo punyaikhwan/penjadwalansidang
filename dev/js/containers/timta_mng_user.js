@@ -14,7 +14,6 @@ import Row from 'muicss/lib/react/row';
 import Col from 'muicss/lib/react/col';
 import {List, ListItem} from 'material-ui/List';
 import SelectField from 'material-ui/SelectField';
-
 import {
   Table,
   TableBody,
@@ -26,6 +25,10 @@ import {
 import imgProfile from '../../scss/public/images/imgprofile.jpg';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import {fetchUser} from '../actions/user/fetch-user'
+import {newUser} from '../actions/user/new-user'
+import {editUser} from '../actions/user/edit-user'
+import {deleteUser} from '../actions/user/delete-user'
 
 class timta_mng_user extends Component {
 
@@ -39,8 +42,12 @@ class timta_mng_user extends Component {
       nama: "",
       email: "",
       peran: "",
-      dataUser: this.props.user,
+      nim: "",
     };
+  }
+
+  componentDidMount(){
+    this.props.fetchUser()
   }
 
   handleToggle(){this.setState({open: !this.state.open})};
@@ -53,46 +60,27 @@ class timta_mng_user extends Component {
   handleCloseTambahUser(){this.setState({modalTambahUser:false})};
 
   handleTambahUser() {
-    let tempDataUser = this.state.dataUser;
-    let tempUserBaru = {
-      nama: this.state.nama,
-      email: this.state.email,
-      access_token: "",
-      refresh_token: "",
-      expires_at: null,
-      peran: this.state.peran
-    }
-    tempDataUser.push(tempUserBaru);
-    console.log("data User:",i," ", tempDataUser);
-    this.setState({dataUser: tempDataUser});
+    this.props.newUser(this.state.nama, this.state.email, this.state.peran, this.state.nim)
     this.handleCloseTambahUser();
   }
 
   handleDeleteUser(i) {
-    let tempDataUser = this.state.dataUser;
-    tempDataUser.splice(i,1);
-    console.log("data User:",i," ", tempDataUser);
-    this.setState({dataUser: tempDataUser});
+    this.props.deleteUser(i.id);
   }
 
-  handleOpenEditUser(i){
-    this.setState({editedMhs: i});
-    this.setState({nama: this.state.dataUser[i].nama});
-    this.setState({nim: this.state.dataUser[i].nim});
-    this.setState({email: this.state.dataUser[i].email});
-    this.setState({peran: this.state.dataUser[i].peran.toString()});
-    console.log("peran:", this.state.peran);
+  handleOpenEditUser(user){
+    this.setState({editedMhs: user.id});
+    this.setState({nama: user.nama});
+    this.setState({nim: user.NIM});
+    this.setState({email: user.email});
+    this.setState({peran: user.peran.toString()});
     this.setState({modalEditUser:true});
   };
+
   handleCloseEditUser(){this.setState({modalEditUser:false})};
+
   handleEditUser() {
-    let tempDataUser = this.state.dataUser;
-    tempDataUser[this.state.editedMhs].nama = this.state.nama;
-    tempDataUser[this.state.editedMhs].nim = this.state.nim;
-    tempDataUser[this.state.editedMhs].email = this.state.email;
-    tempDataUser[this.state.editedMhs].peran = this.state.peran;
-    console.log("data User:",this.state.editedMhs," ", tempDataUser);
-    this.setState({dataUser: tempDataUser});
+    this.props.editUser(this.state.editedMhs, this.state.nama, this.state.email, this.state.peran, this.state.nim)
     this.handleCloseEditUser();
   }
 
@@ -120,6 +108,7 @@ class timta_mng_user extends Component {
   handleChangePeran(event, index, peran) {
     this.setState({peran});
   }
+
   render() {
     const actionsTambahUser = [
       <FlatButton
@@ -188,22 +177,26 @@ class timta_mng_user extends Component {
               </TableRow>
             </TableHeader>
             <TableBody displayRowCheckbox = {false}>
-              {this.state.dataUser.map((user, i) => (
-                <TableRow key={i}>
+              {this.props.user.map((user, i) => (
+
+                  <TableRow key={i}>
+
                   <TableRowColumn style={{width:3}}></TableRowColumn>
                   <TableRowColumn>{user.nama}</TableRowColumn>
-                  <TableRowColumn>{user.nim}</TableRowColumn>
+                  <TableRowColumn>{user.NIM}</TableRowColumn>
                   <TableRowColumn>{user.email}</TableRowColumn>
-                  <TableRowColumn>{user.refresh_token}</TableRowColumn>
+                  <TableRowColumn>{user.token}</TableRowColumn>
                   <TableRowColumn>{this.state.listperan[user.peran]}</TableRowColumn>
-                  <TableRowColumn>
-                      <IconButton style={{color:'blue'}}  onClick={()=>this.handleOpenEditUser(i)}>
-                      <i className="material-icons">edit</i>
-                      </IconButton>
-                      <IconButton style={{color:'red'}}  onClick={()=>this.handleDeleteUser(i)}>
-                      <i className="material-icons" >delete</i>
-                      </IconButton>
-                  </TableRowColumn>
+                      {user.nama !== "Ruangan" &&
+                      <TableRowColumn>
+                        <IconButton style={{color: 'blue'}} onClick={() => this.handleOpenEditUser(user)}>
+                          <i className="material-icons">edit</i>
+                        </IconButton>
+                        <IconButton style={{color: 'red'}} onClick={() => this.handleDeleteUser(user)}>
+                          <i className="material-icons">delete</i>
+                        </IconButton>
+                      </TableRowColumn>
+                      }
                 </TableRow>
               ))}
             </TableBody>
@@ -373,7 +366,12 @@ function mapStateToProps(state) {
 }
 
 function matchDispatchToProps(dispatch){
-    return bindActionCreators({}, dispatch);
+    return bindActionCreators({
+        fetchUser:fetchUser,
+        newUser: newUser,
+        deleteUser: deleteUser,
+        editUser: editUser,
+    }, dispatch);
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(timta_mng_user);

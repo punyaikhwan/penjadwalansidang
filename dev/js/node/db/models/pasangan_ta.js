@@ -5,6 +5,9 @@ require('./user.js')
 Model = helper.bookshelf.Model.extend({
     tableName: 'pasangan_ta',
     hasTimestamps: true,
+    mahasiswa: function() {
+	    return this.belongsTo('User', 'mahasiswa_id')
+	},
     pembimbing: function() {
 	    return this.hasMany('AnggotaPasanganTA', 'pasangan_id').query({where: {peran_pasangan: '1'}});
 	},
@@ -14,6 +17,9 @@ Model = helper.bookshelf.Model.extend({
 	akhir: function() {
 	    return this.hasMany('AnggotaPasanganTA', 'pasangan_id').query({where: {peran_pasangan: '3'}});
 	},
+	anggota: function() {
+		 return this.hasMany('AnggotaPasanganTA', 'pasangan_id')
+	}
 
 
 });	
