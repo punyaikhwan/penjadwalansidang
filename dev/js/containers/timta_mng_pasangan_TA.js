@@ -34,6 +34,7 @@ import {newTA} from '../actions/ta/new-ta'
 import {deleteTA} from '../actions/ta/delete-ta'
 import {fetchMahasiswa} from '../actions/user/fetch-mahasiswa'
 import {fetchDosen} from '../actions/user/fetch-dosen'
+import {tempEditTA} from '../actions/ta/temp-edit-ta'
 
 class timta_mng_pasangan_TA extends Component {
 
@@ -47,12 +48,11 @@ class timta_mng_pasangan_TA extends Component {
       modalTambahDosenPengujiTA1: false,
       modalTambahDosenPengujiAkhir: false,
       modalEditTopic: false,
-      mahasiswa: [],
+      mahasiswa: "",
       topic: "",
       dosenPembimbing: "",
       dosenPengujiTA1: "",
-      dosenPengujiAkhir: "",
-      dataTA : {}
+      dosenPengujiAkhir: ""
     };
   }
 
@@ -75,21 +75,16 @@ class timta_mng_pasangan_TA extends Component {
   handleChangeDosenPengujiAkhir(event, index, dosenPengujiAkhir) {this.setState({dosenPengujiAkhir})};
 
   handleEditTopic() {
-    let tempDataTA = this.state.dataTA;
-    tempDataTA.topik = this.state.topic;
-    this.setState({dataTA: tempDataTA});
+    let tempDataTA = this.props.dataTA;
+    tempDataTA[this.state.selectedMhs].topik = this.state.topic;
+    this.props.edit(tempDataTA, this.state.selectedMhs)
     this.setState({topic: ""});
     this.handleCloseEditTopic();
   }
 
   handleTambahMahasiswa() {
-    let tempDataElemenMhs = [];
-    var id;
-    this.state.mahasiswa.forEach(function(item, i) {
-      id = item.id;
-    })
-      this.props.newTA(id)
-    this.setState({mahasiswa: []});
+    this.props.newTA(this.state.mahasiswa)
+    this.setState({mahasiswa: ""});
     this.handleCloseTambahMahasiswa();
   }
 
@@ -104,64 +99,53 @@ class timta_mng_pasangan_TA extends Component {
   }
 
   handleTambahDosenPembimbing() {
-    let tempDataTA = this.state.dataTA;
-    console.log("Dosen pembimbing tmbah:", this.state.dosenPembimbing);
-    tempDataTA[this.state.selectedMhs].dosenPembimbing.push(this.state.dosenPembimbing);
-    console.log("data Mhs:", tempDataTA);
-    this.setState({dataTA: tempDataTA});
+    let tempDataTA = this.props.dataTA;
+    tempDataTA[this.state.selectedMhs].pembimbing.push(this.state.dosenPembimbing);
+    this.props.edit(tempDataTA, this.state.selectedMhs);
     this.setState({dosenPembimbing: ""});
     this.handleCloseTambahDosenPembimbing();
   }
 
   handleDeleteDosenPembimbing(i) {
-    let tempDataTA = this.state.dataTA;
-    tempDataTA[this.state.selectedMhs].dosenPembimbing.splice(i,1);
-    console.log("data Mhs:",i," ", tempDataTA);
-    this.setState({dataTA: tempDataTA});
+    let tempDataTA = this.props.dataTA;
+    tempDataTA[this.state.selectedMhs].pembimbing.splice(i,1);
+    this.props.edit(tempDataTA, this.state.selectedMhs);
   }
 
   handleTambahDosenPengujiTA1() {
-    let tempDataTA = this.state.dataTA;
-    console.log("Dosen peguji 1 tmbah:", this.state.dosenPengujiTA1);
-    tempDataTA[this.state.selectedMhs].dosenPengujiTA1.push(this.state.dosenPengujiTA1);
-    console.log("data Mhs:", tempDataTA);
-    this.setState({dataTA: tempDataTA});
+    let tempDataTA = this.props.dataTA;
+    tempDataTA[this.state.selectedMhs].penguji.push(this.state.dosenPengujiTA1);
+    this.props.edit(tempDataTA, this.state.selectedMhs);
     this.setState({dosenPengujiTA1: ""});
     this.handleCloseTambahDosenPengujiTA1();
   }
 
   handleDeleteDosenPengujiTA1(i) {
-    let tempDataTA = this.state.dataTA;
-    tempDataTA[this.state.selectedMhs].dosenPengujiTA1.splice(i,1);
-    console.log("data Mhs:",i," ", tempDataTA);
-    this.setState({dataTA: tempDataTA});
+    let tempDataTA = this.props.dataTA;
+    tempDataTA[this.state.selectedMhs].penguji.splice(i,1);
+    this.props.edit(tempDataTA, this.state.selectedMhs);
   }
 
   handleTambahDosenPengujiAkhir() {
-    let tempDataTA = this.state.dataTA;
-    console.log("Dosen peguji 1 tmbah:", this.state.dosenPengujiAkhir);
-    tempDataTA[this.state.selectedMhs].dosenPengujiAkhir.push(this.state.dosenPengujiAkhir);
-    console.log("data Mhs:", tempDataTA);
-    this.setState({dataTA: tempDataTA});
+    let tempDataTA = this.props.dataTA;
+    tempDataTA[this.state.selectedMhs].akhir.push(this.state.dosenPengujiAkhir);
+    this.props.edit(tempDataTA, this.state.selectedMhs);
     this.setState({dosenPengujiAkhir: ""});
     this.handleCloseTambahDosenPengujiAkhir();
   }
 
   handleDeleteDosenPengujiAkhir(i) {
-    let tempDataTA = this.state.dataTA;
-    tempDataTA[this.state.selectedMhs].dosenPengujiAkhir.splice(i,1);
-    console.log("data Mhs:",i," ", tempDataTA);
-    this.setState({dataTA: tempDataTA});
+    let tempDataTA = this.props.dataTA;
+    tempDataTA[this.state.selectedMhs].akhir.splice(i,1);
+    this.props.edit(tempDataTA, this.state.selectedMhs);
   }
 
   handleSelect(i, data){
-      this.setState({selectedMhs:i});
-      this.setState({dataTA: data})
+      this.setState({selectedMhs:i})
   }
 
   handleSave(){
-    console.log(this.state.dataTA);
-      this.props.editTA(this.state.dataTA);
+    this.props.editTA(this.props.dataTA);
   }
 
   render() {
@@ -505,8 +489,7 @@ class timta_mng_pasangan_TA extends Component {
             <MenuItem
               key={item.id}
               insetChildren={true}
-              checked={this.state.mahasiswa && this.state.mahasiswa.indexOf(item) > -1}
-              value={item}
+              value={item.id}
               primaryText={item.nama}
             />
           ))
@@ -523,7 +506,7 @@ class timta_mng_pasangan_TA extends Component {
         >
         <TextField
           hintText="Tulis topik di sini..."
-          defaultValue = {this.state.dataTA.length !== 0 ? this.state.dataTA.topik : ""}
+          defaultValue = {this.props.dataTA.length !== 0 ? this.props.dataTA[this.state.selectedMhs.topik] : ""}
           style={{width:500}}
           onChange={(event)=>this.handleChangeTopic(event)}
         />
@@ -627,7 +610,8 @@ function matchDispatchToProps(dispatch){
         deleteTA: deleteTA,
         editTA: editTA,
         fetchMahasiswa: fetchMahasiswa,
-        fetchDosen: fetchDosen
+        fetchDosen: fetchDosen,
+        edit: tempEditTA
     }, dispatch);
 }
 

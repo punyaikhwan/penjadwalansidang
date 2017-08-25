@@ -8,10 +8,8 @@ export const fetchDosen= () => {
             payload: []
         })
         axios.get('http://localhost:3001/user').then(function (data) {
-            console.log(data.data)
             var dosen = []
             data.data.forEach(function(item) {
-                console.log(item.peran)
                 if (item.peran == 2) {
                     dosen.push(item);
                 }
