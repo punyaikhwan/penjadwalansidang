@@ -34,6 +34,7 @@ import {newKP} from '../actions/kp/new-kp'
 import {editKP} from '../actions/kp/edit-kp'
 import {fetchMahasiswa} from '../actions/user/fetch-mahasiswa'
 import {fetchDosen} from '../actions/user/fetch-dosen'
+import {tempEditKP} from '../actions/kp/temp-edit-kp'
 
 class timta_mng_pasangan_KP extends Component {
   constructor(props) {
@@ -47,7 +48,6 @@ class timta_mng_pasangan_KP extends Component {
       topic: "",
       dosen: "",
       selectedKelompok: 0,
-      dataKelompok: {},
     };
   }
 
@@ -72,17 +72,27 @@ class timta_mng_pasangan_KP extends Component {
   handleChangeDosen(event, index, dosen) {this.setState({dosen})};
 
   handleDeleteDosen(i) {
-    let tempDataKelompok = this.state.dataKelompok;
-    tempDataKelompok.dosen.splice(i,1);
+    let tempDataKelompok = this.props.kelompok;
+    tempDataKelompok[this.state.selectedKelompok].dosen.splice(i,1);
     console.log("data Kelompok:", tempDataKelompok);
-    this.setState({dataKelompok: tempDataKelompok});
+    this.props.edit(tempDataKelompok, this.state.selectedKelompok);
+    this.forceUpdate();
+  }
+
+  handleDeleteMahasiswa(i) {
+      let tempDataKelompok = this.props.kelompok;
+      tempDataKelompok[this.state.selectedKelompok].anggota.splice(i,1);
+      console.log("data Kelompok:", tempDataKelompok);
+      this.props.edit(tempDataKelompok, this.state.selectedKelompok);
+      this.forceUpdate();
+      this.setState({values: []})
   }
 
   handleEditTopic() {
-    let tempDataKelompok = this.state.dataKelompok;
+    let tempDataKelompok = this.props.kelompok;
     console.log(this.state.topic);
-    tempDataKelompok.topik = this.state.topic;
-    this.setState({dataKelompok: tempDataKelompok});
+    tempDataKelompok[this.state.selectedKelompok].topik = this.state.topic;
+    this.props.edit(tempDataKelompok, this.state.selectedKelompok);
     this.handleCloseEditTopic();
   }
 
@@ -95,46 +105,35 @@ class timta_mng_pasangan_KP extends Component {
   }
 
   handleTambahMahasiswa() {
-    let tempDataKelompok = this.state.dataKelompok;
-    console.log(tempDataKelompok.anggota);
+    let tempDataKelompok = this.props.kelompok;
     console.log(this.state.values);
     let tempNewMhs = {
       user : this.state.values
     }
-    tempDataKelompok.anggota = tempDataKelompok.anggota.concat(tempNewMhs);
-    console.log("data Kelompok:", tempDataKelompok);
-    this.setState({dataKelompok: tempDataKelompok});
+    tempDataKelompok[this.state.selectedKelompok].anggota.push(tempNewMhs);
+      this.props.edit(tempDataKelompok, this.state.selectedKelompok);
     this.handleCloseTambahMahasiswa();
   }
 
-  handleDeleteMahasiswa(i) {
-    let tempDataKelompok = this.state.dataKelompok;
-    tempDataKelompok.anggota.splice(i,1);
-    console.log("data Kelompok:", tempDataKelompok);
-    this.setState({dataKelompok: tempDataKelompok});
-    this.setState({values: []})
-  }
-
   handleTambahDosen() {
-    let tempDataKelompok = this.state.dataKelompok;
+    let tempDataKelompok = this.props.kelompok;
     console.log("Dosen tmbah:", this.state.dosen);
       let tempNewDosen = {
           user : this.state.dosen
       }
-    tempDataKelompok.dosen.push(tempNewDosen);
+    tempDataKelompok[this.state.selectedKelompok].dosen.push(tempNewDosen);
     console.log("data Kelompok:", tempDataKelompok);
-    this.setState({dataKelompok: tempDataKelompok});
+    this.props.edit(tempDataKelompok, this.state.selectedKelompok);
     this.setState({dosen: ""});
     this.handleCloseTambahDosen();
   }
 
   handleSelect(i, data){
-      this.setState({selectedKelompok:i});
-      this.setState({dataKelompok: data})
+      this.setState({selectedKelompok:i})
   }
 
   handleSave(){
-    this.props.editKP(this.state.dataKelompok);
+    this.props.editKP(this.props.kelompok);
   }
 
   render() {
@@ -390,7 +389,7 @@ class timta_mng_pasangan_KP extends Component {
           onRequestClose={()=>this.handleCloseTambahMahasiswa()}
         >
           <SelectField
-            multiple={true}
+            multiple={false}
             hintText="Select a name"
             value={this.state.values}
             onChange={(event, index, values)=>this.handleChangeMahasiswa(event, index, values)}
@@ -399,7 +398,6 @@ class timta_mng_pasangan_KP extends Component {
             <MenuItem
               key={item.id}
               insetChildren={true}
-              checked={this.state.values && this.state.values.indexOf(item) > -1}
               value={item}
               primaryText={item.nama}
             />
@@ -417,14 +415,14 @@ class timta_mng_pasangan_KP extends Component {
         >
         <TextField
           hintText="Tulis topik di sini..."
-          defaultValue = {this.state.dataKelompok !== null ? this.state.dataKelompok.topik : ""}
+          defaultValue = {this.props.kelompok[this.state.selectedKelompok] ? this.props.kelompok[this.state.selectedKelompok].topik : ""}
           style={{width:500}}
           onChange={(event)=>this.handleChangeTopic(event)}
         />
         </Dialog>
 
         <Dialog
-          title="Tambah Dosen Pemboimbing"
+          title="Tambah Dosen Pembimbing"
           actions= {actionsTambahDosen}
           modal={false}
           open={this.state.modalTambahDosen}
@@ -440,7 +438,6 @@ class timta_mng_pasangan_KP extends Component {
             <MenuItem
               key={item.id}
               insetChildren={true}
-              checked={this.state.dosen && this.state.values.indexOf(item) > -1}
               value={item}
               primaryText={item.nama}
             />
@@ -469,7 +466,8 @@ function matchDispatchToProps(dispatch){
         newKP: newKP,
         editKP: editKP,
         fetchMahasiswa: fetchMahasiswa,
-        fetchDosen: fetchDosen
+        fetchDosen: fetchDosen,
+        edit: tempEditKP,
     }, dispatch);
 }
 
