@@ -6,6 +6,7 @@ var user = require('./functions/user_function.js')
 var KP = require('./functions/kp_function.js')
 var TA = require('./functions/ta_function.js')
 var Event = require('./functions/event_function.js')
+var CalendarList = require('./functions/calendar_list_function')
 // var googleUtil = require('./GoogleLogin.js')
 var secretHandler = require('./sessionSecret.js')
 
@@ -135,6 +136,30 @@ app.use('/getUserInfo', function(request, response){
 
   	// response.send(session)
 })
+
+//Calendar====================================================================
+app.get('/calendars', function(request, response){
+	let id = request.query.id;
+
+	CalendarList.GetCalendarList(id).then(function(result) {
+		response.send(result)
+	}).catch(function(err){
+		console.log(err)
+		response.send(err)
+	})
+
+})
+
+app.post('/calendars', function(request, response) {
+	let id = request.body.id
+	CalendarList.InsertCalendarList(id).then(function(result) {
+		response.send(result)
+	}).catch(function(err){
+		console.log(err)
+		response.send(err)
+	})
+})
+
 //Event====================================================================
 app.post('/schedule', function(request, response){
 	let event_type = request.body.event_type

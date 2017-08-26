@@ -51,15 +51,22 @@ var UpdateCalendarList = async function(instanc, chosen) {
 
 // Ini khusus cuma satu id aja
 var InsertCalendarList = async function(id, chosen='nope') {
-    var res = await GetCalendarList(id); 
-    console.log(res.data);
-    var temp = res.data.result[0].calendarList;
-    console.log(temp);   
+    var res = await GetCalendarList(id).then(function(data) {
+        console.log(data);
+        var temp = data.result[0].calendarList;
+        console.log(temp);   
+    
+        for (var i = 0; i < temp.length; i++) {
+            var insert_cal = {user_id: id, calendar_id: temp[i].id, calendar_name: temp[i].name}
+            UpdateCalendarList(insert_cal, chosen);
+        }
 
-    for (var i = 0; i < temp.length; i++) {
-        var insert_cal = {user_id: id, calendar_id: temp[i].id, calendar_name: temp[i].name}
-        UpdateCalendarList(insert_cal, chosen);
-    }
+        return temp
+    }) .catch(function(err) {
+        console.log(err);
+        return err
+    })
+
 }
 
 var NewCalendar = function(obj){
