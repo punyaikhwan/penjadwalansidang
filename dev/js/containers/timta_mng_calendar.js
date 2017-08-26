@@ -43,6 +43,11 @@ class timta_mng_calendar extends Component {
     super(props);
     this.state = {
       open: false,
+      statusJadwal: 1,
+      /*
+        0: menunggu finalisasi
+        1: sudah difinalisasi
+      */
       events: events,
       selectedEvent: null,
       selectedDate: events[1].start,
@@ -139,12 +144,23 @@ class timta_mng_calendar extends Component {
         </Drawer>
 
         <div className="containerCalendar">
+          {this.state.statusJadwal === 0 &&
           <RaisedButton
             label="Finalisasi"
             backgroundColor="#0FC722"
             labelColor= "#fff"
             style={{marginBottom: 20}}
           />
+          }
+          {this.state.statusJadwal === 1 &&
+          <RaisedButton
+            label="Sudah difinalisasi"
+            backgroundColor="#0FC722"
+            labelColor= "#fff"
+            disabled
+            style={{marginBottom: 20}}
+          />
+          }
           <DragAndDropCalendar
             selectable
             events={this.state.events}

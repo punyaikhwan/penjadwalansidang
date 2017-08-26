@@ -148,15 +148,9 @@ class dosen_calendar extends Component {
             </Row>
           </div>
           <hr/>
-          <p className="menuTitle">Manajemen Pengguna</p>
-          <MenuItem insetChildren={true} href="/timta_mng_user">Daftar Pengguna</MenuItem>
-          <MenuItem insetChildren={true} href="/timta_mng_pasangan">Daftar Pasangan</MenuItem>
+          <MenuItem insetChildren={true} style={{backgroundColor:'#b0bec5'}} href="/dosen_calendar">Kalender</MenuItem>
+          <MenuItem insetChildren={true} href="/dosen_setting">Profil dan Pengaturan</MenuItem>
           <br/>
-          <p className="menuTitle">Manajemen Jadwal</p>
-          <MenuItem insetChildren={true} href="/timta_mng_jadwal_seminarKP" style={{backgroundColor:'#b0bec5'}}>Seminar KP</MenuItem>
-          <MenuItem insetChildren={true} href="/timta_mng_jadwal_seminarTA1">Seminar TA 1</MenuItem>
-          <MenuItem insetChildren={true} href="/timta_mng_jadwal_seminarTA2">Seminar TA 2</MenuItem>
-          <MenuItem insetChildren={true} href="/timta_mng_jadwal_sidangTA">Sidang Akhir</MenuItem>
         </Drawer>
 
         <div className="containerCalendar">
