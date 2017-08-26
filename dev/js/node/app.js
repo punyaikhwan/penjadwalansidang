@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 var user = require('./functions/user_function.js')
 var KP = require('./functions/kp_function.js')
 var TA = require('./functions/ta_function.js')
+var Event = require('./functions/event_function.js')
 // var googleUtil = require('./GoogleLogin.js')
 var secretHandler = require('./sessionSecret.js')
 
@@ -133,6 +134,18 @@ app.use('/getUserInfo', function(request, response){
 
 
   	// response.send(session)
+})
+//Event====================================================================
+app.post('/schedule', function(request, response){
+	let event_type = request.body.event_type
+	let start = request.body.start
+	let end = request.body.end
+	Event.ScheduleEvent(event_type, start, end).then(function(result){
+		response.send(result)
+	}).catch(function(err){
+		console.log(err)
+		response.send(err)
+	})
 })
 
 //USER====================================================================

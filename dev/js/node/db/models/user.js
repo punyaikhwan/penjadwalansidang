@@ -14,10 +14,10 @@ module.exports = {
 	model
 }
 //testing====================================================
-Model.fetchAll({withRelated: "calendar_list"}).then(function(data){
-	console.log("==user=================")
-	console.log(JSON.stringify(data))
-})
+// Model.fetchAll({withRelated: "calendar_list"}).then(function(data){
+// 	console.log("==user=================")
+// 	console.log(JSON.stringify(data))
+// })
 
 
 

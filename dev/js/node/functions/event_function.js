@@ -198,9 +198,32 @@ var ScheduleEvent = async function(event_type, start, end){
 		//save events
 		console.log("saving schedule===================")
 		var temp = FormatForSave(events.data.result, event_type, pasangan)
-		await NewEvent(temp)
-		await NewAnggotaEvent(events.data.result)
+		await NewEvent(temp, events.data.result)
+		//await NewAnggotaEvent(events.data.result)
 		console.log("done===================")
+
+		let preResult = await Event.model.fetchAll({withRelated: ['dosen.user', 'mahasiswa.user']})
+		console.log(preResult.toJSON())
+
+		//return event
+		var result = []
+
+		for(var i=0; i<temp.length; i++){
+			result.push({
+				"idEvent": temp[i].event_id,
+				"title": temp[i].title,
+				"id": i,
+				"topik": temp[i].topik,
+				"room": temp[i].room_Id,
+				"start": temp[i].start,
+				"end": temp[i].end,
+				"anggota": [],
+				"dosen": []
+			})
+		}
+
+
+		return temp
 	}
 	catch(err){
 		console.log(err)
@@ -223,13 +246,44 @@ var DeleteEvent = async function(id){
 	return Promise.each(task, function(){})
 }
 //===============================================================================
-var NewEvent = async function(objs){
+var NewEvent = async function(objs, anggotas){
 	try{
 		//bikin record kosong
 		var task = []
 
 		for(var i=0; i<objs.length; i++){
-			task.push(new Event.model(objs[i]).save())
+			console.log("==========================")
+			console.log(i)
+			task.push(new Event.model(objs[i]).save().then(function(result){
+				var id = result.get('id')
+				"*****************************"
+				console.log(i)
+				//masukin mahasiswa
+				task.push(new Anggota.model({
+					"user_id": anggotas[i].idStudent,
+					"peran_pasangan": 0,
+					"pasangan_id": id
+				}).save())
+
+				//masukin pembimbing
+				for(var j=0; j<anggotas[i].idPembimbing.length; j++){
+					task.push(new Anggota.model({
+						"user_id": anggotas[i].idPembimbing[j],
+						"peran_pasangan": 1,
+						"pasangan_id": id
+					}).save())
+				}
+
+				//masukin pembimbing
+				for(var j=0; j<anggotas[i].idPenguji.length; j++){
+					task.push(new Anggota.model({
+						"user_id": anggotas[i].idPenguji[j],
+						"peran_pasangan": 2,
+						"pasangan_id": id
+					}).save())
+				}
+
+			}))
 		}
 		
 		
@@ -244,6 +298,8 @@ var NewEvent = async function(objs){
 //===============================================================================
 var NewAnggotaEvent = function(objs){
 	try{
+		console.log(objs)
+
 		//bikin record kosong
 		var task = []
 
@@ -252,7 +308,7 @@ var NewAnggotaEvent = function(objs){
 			task.push(new Anggota.model({
 				"user_id": objs[i].idStudent,
 				"peran_pasangan": 0,
-				"pasangan_id": i
+				"pasangan_id": i+1
 			}).save())
 
 			//masukin pembimbing
@@ -260,7 +316,7 @@ var NewAnggotaEvent = function(objs){
 				task.push(new Anggota.model({
 					"user_id": objs[i].idPembimbing[j],
 					"peran_pasangan": 1,
-					"pasangan_id": i
+					"pasangan_id": i+1
 				}).save())
 			}
 
@@ -269,7 +325,7 @@ var NewAnggotaEvent = function(objs){
 				task.push(new Anggota.model({
 					"user_id": objs[i].idPenguji[j],
 					"peran_pasangan": 2,
-					"pasangan_id": i
+					"pasangan_id": i+1
 				}).save())
 			}
 		}
@@ -370,11 +426,12 @@ var test = async function(){
 }
 //===============================================================================
 //main program
-test()
+// test()
 
 module.exports = {
   DeleteEvent, 
   NewEvent,
   FetchTAEvent,
   FetchKPEvent,
+  ScheduleEvent
 }
