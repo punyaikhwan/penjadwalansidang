@@ -41,9 +41,9 @@ class dosen_calendar extends Component {
     super(props);
     this.state = {
       open: false,
-      events: events.result,
+      events: events,
       selectedEvent: null,
-      selectedDate: events.result[1].start,
+      selectedDate: events[1].start,
       modalEvent: false,
       openSnackbar: false,
       dataUser: {
@@ -83,7 +83,7 @@ class dosen_calendar extends Component {
      console.log(event);
     var backgroundColor = '204FA7';
      for (var i=0; i< event.dosen.length; i++) {
-      if (event.dosen[i] === this.state.dataUser.nama) {
+      if (event.dosen[i].nama === this.state.dataUser.nama) {
         console.log("halooo");
         backgroundColor = '#247510';
       }
@@ -203,13 +203,13 @@ class dosen_calendar extends Component {
                 {this.state.selectedEvent.anggota.map((item, i) => (
                   <TableRow key={i} displayBorder={false}>
                     <TableRowColumn className="attributeTable">{i===0 ? "Mahasiswa":""}</TableRowColumn>
-                    <TableRowColumn>{item}</TableRowColumn>
+                    <TableRowColumn>{item.nim+" "+item.nama}</TableRowColumn>
                   </TableRow>
                 ))}
                 {this.state.selectedEvent.dosen.map((item, i) => (
                 <TableRow key={i} displayBorder={false}>
                   <TableRowColumn className="attributeTable">{i === 0 ? "Dosen": ""}</TableRowColumn>
-                  <TableRowColumn>{item}</TableRowColumn>
+                  <TableRowColumn>{item.nama}</TableRowColumn>
                 </TableRow>
                 ))}
               </TableBody>

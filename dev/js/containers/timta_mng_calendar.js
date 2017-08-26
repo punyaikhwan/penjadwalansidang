@@ -43,9 +43,9 @@ class timta_mng_calendar extends Component {
     super(props);
     this.state = {
       open: false,
-      events: events.result,
+      events: events,
       selectedEvent: null,
-      selectedDate: events.result[1].start,
+      selectedDate: events[1].start,
       modalEvent: false,
       openSnackbar: false,
     };
@@ -186,13 +186,13 @@ class timta_mng_calendar extends Component {
                 {this.state.selectedEvent.anggota.map((item, i) => (
                   <TableRow key={i} displayBorder={false}>
                     <TableRowColumn className="attributeTable">{i===0 ? "Mahasiswa":""}</TableRowColumn>
-                    <TableRowColumn>{item}</TableRowColumn>
+                    <TableRowColumn>{item.nim+" "+item.nama}</TableRowColumn>
                   </TableRow>
                 ))}
                 {this.state.selectedEvent.dosen.map((item, i) => (
                 <TableRow key={i} displayBorder={false}>
                   <TableRowColumn className="attributeTable">{i === 0 ? "Dosen": ""}</TableRowColumn>
-                  <TableRowColumn>{item}</TableRowColumn>
+                  <TableRowColumn>{item.nama}</TableRowColumn>
                 </TableRow>
                 ))}
               </TableBody>
