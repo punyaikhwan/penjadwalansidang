@@ -15,6 +15,7 @@ import mhsJadwalSeminarTA2 from '../containers/mhs_jadwal_seminarTA2';
 import mhsJadwalSidangAkhir from '../containers/mhs_jadwal_sidangTA';
 import mngCalendar from '../containers/timta_mng_calendar';
 import dsnSetting from '../containers/dosen_setting';
+import dsnCalendar from '../containers/dosen_calendar';
 import notFound from '../containers/not_found';
 import '../../scss/style.scss';
 import '../../scss/index.scss';
@@ -49,6 +50,7 @@ const App = () => (
 	      <Route exact path="/mhs_profile" component={mhsProfile}/>
 	      <Route exact path="/timta_calendar" component={mngCalendar}/>
         <Route exact path="/dosen_setting" component={dsnSetting}/>
+        <Route exact path="/dosen_calendar" component={dsnCalendar}/>
 	      <Route path="*" component={notFound}/>
 	    </Switch>
   	</Router>

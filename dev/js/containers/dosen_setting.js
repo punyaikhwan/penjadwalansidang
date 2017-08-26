@@ -40,7 +40,8 @@ class dosen_setting extends Component {
       ],
       dataUser: {
         nama: "Dessi Puji Lestari",
-        email: "dessipuji@informatika.org"
+        email: "dessipuji@informatika.org",
+        peran: "Dosen"
       }
     };
   }
@@ -132,6 +133,7 @@ class dosen_setting extends Component {
                 <Row>
                   <Col className="nameProfile">{this.state.dataUser.nama}</Col>
                   <Col className="emailProfile">{this.state.dataUser.email}</Col>
+                  <Col className="emailProfile">{this.state.dataUser.peran}</Col>
                 </Row>
               </Col>
             </Row>

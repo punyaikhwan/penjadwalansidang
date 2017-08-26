@@ -12,7 +12,7 @@ export default {
       topik: "Implementasi X pada YYYY",
       dosen: [
           'Rinaldi Munir',
-          'Ayu Purwarianti'
+          'Dessi Puji Lestari'
       ],
       end: new Date("2017-05-01T10:20:00"),
       room:"7602",
