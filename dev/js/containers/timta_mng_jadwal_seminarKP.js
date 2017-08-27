@@ -23,6 +23,8 @@ import {
 } from 'material-ui/Table';
 import DatePicker from 'material-ui/DatePicker';
 import SubHeader from 'material-ui/SubHeader';
+import CircularProgress from 'material-ui/CircularProgress';
+import Dialog from 'material-ui/Dialog';
 
 import imgProfile from '../../scss/public/images/imgprofile.jpg';
 
@@ -36,13 +38,14 @@ class timta_mng_jadwal_seminarKP extends Component {
     super(props);
     this.state = {
       open: false,
-      statusJadwal: 3,
+      statusJadwal: 0,
       /*
       0: belum dijadwalkan
       1: menunggu penjadwalan
       2: menunggu finalisasi
       3: sudah difinalisasi
       */
+      modalLoadScheduling: false,
       checkBoxKelompok: [],
       selectAll: false,
       listDosen: [],
@@ -143,6 +146,9 @@ class timta_mng_jadwal_seminarKP extends Component {
     this.setState({endDate: date})
   }
 
+  handleRequestSchedule() {
+    this.setState({modalLoadScheduling: true});
+  }
   render() {
     return (
       <MuiThemeProvider>
@@ -267,6 +273,7 @@ class timta_mng_jadwal_seminarKP extends Component {
               labelColor= "#fff"
               fullWidth
               style={{marginLeft: 20, marginTop: 20}}
+              onClick = {()=>this.handleRequestSchedule()}
             />
             }
             {this.state.statusJadwal === 1 &&
@@ -341,6 +348,15 @@ class timta_mng_jadwal_seminarKP extends Component {
           <MenuItem insetChildren={true} href="/timta_mng_jadwal_seminarTA2">Seminar TA 2</MenuItem>
           <MenuItem insetChildren={true} href="/timta_mng_jadwal_sidangTA">Sidang Akhir</MenuItem>
         </Drawer>
+
+        <Dialog
+          modal={false}
+          open={this.state.modalLoadScheduling}
+          contentStyle = {{width: 300, textAlign: 'center'}}
+        >
+          <CircularProgress size={80} thickness={5} />
+          <p>Sedang menjadwalkan...</p>
+        </Dialog>
       </div>
       </MuiThemeProvider>
     );

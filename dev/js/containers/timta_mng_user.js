@@ -36,7 +36,7 @@ class timta_mng_user extends Component {
     super(props);
     this.state = {
       open: false,
-      listperan: ['Tim TA', 'Mahasiswa', 'Dosen'],
+      listperan: ['Mahasiswa', 'Dosen', 'Tim TA'],
       modalTambahUser: false,
       modalEditUser: false,
       nama: "",
@@ -244,35 +244,9 @@ class timta_mng_user extends Component {
           open={this.state.modalTambahUser}
           onRequestClose={()=>this.handleCloseTambahUser()}
         >
-          <TextField
-            hintText="Masukkan nama"
-            floatingLabelText="Nama Pengguna"
-            floatingLabelFixed={true}
-            errorText = {this.isEmpty(this.state.nama) ? "Tidak boleh kosong" : ""}
-            onChange = {(event)=> this.handleChangeNama(event)}
-            style = {{width: 350}}
-          />
-          <br />
-          <TextField
-            hintText="NIM (untuk mahasiswa)"
-            floatingLabelText="NIM"
-            floatingLabelFixed={true}
-            onChange = {(event)=>this.handleChangeNIM(event)}
-            style = {{width: 350}}
-          />
-          <br />
-          <TextField
-            hintText="Email (untuk login)"
-            floatingLabelText="Email"
-            floatingLabelFixed={true}
-            errorText = {this.isErrorEmail(this.state.email) ? "Email tidak valid" : ""}
-            onChange = {(event)=>this.handleChangeEmail(event)}
-            style = {{width: 350}}
-          />
-          <br />
           <SelectField
             multiple={false}
-            hintText="Select a name"
+            hintText="Pilih peran"
             value={this.state.peran}
             onChange={(event, index, peran)=>this.handleChangePeran(event, index, peran)}
             style = {{width: 350}}
@@ -291,6 +265,37 @@ class timta_mng_user extends Component {
             primaryText="Tim TA"
             />
           </SelectField>
+          <br/>
+          <TextField
+            hintText="Masukkan nama"
+            floatingLabelText="Nama Pengguna"
+            floatingLabelFixed={true}
+            errorText = {this.isEmpty(this.state.nama) ? "Tidak boleh kosong" : ""}
+            onChange = {(event)=> this.handleChangeNama(event)}
+            style = {{width: 350}}
+          />
+          <br />
+          {this.state.peran === '0' &&
+          <TextField
+            hintText="NIM (untuk mahasiswa)"
+            floatingLabelText="NIM"
+            floatingLabelFixed={true}
+            errorText = {this.isEmpty(this.state.nim)? "NIM tidak boleh kosong" : ""}
+            onChange = {(event)=>this.handleChangeNIM(event)}
+            style = {{width: 350}}
+          />
+          }
+          <br />
+          <TextField
+            hintText="Email (untuk login)"
+            floatingLabelText="Email"
+            floatingLabelFixed={true}
+            errorText = {this.isErrorEmail(this.state.email) ? "Email tidak valid" : ""}
+            onChange = {(event)=>this.handleChangeEmail(event)}
+            style = {{width: 350}}
+          />
+          <br />
+          
         </Dialog>
 
         <Dialog
@@ -301,38 +306,9 @@ class timta_mng_user extends Component {
           open={this.state.modalEditUser}
           onRequestClose={()=>this.handleCloseEditUser()}
         >
-          <TextField
-            hintText="Masukkan nama"
-            defaultValue = {this.state.nama}
-            floatingLabelText="Nama Pengguna"
-            floatingLabelFixed={true}
-            errorText = {this.isEmpty(this.state.nama) ? "Tidak boleh kosong" : ""}
-            onChange = {(event)=> this.handleChangeNama(event)}
-            style = {{width: 350}}
-          />
-          <br />
-          <TextField
-            hintText="NIM (untuk mahasiswa)"
-            defaultValue = {this.state.nim}
-            floatingLabelText="NIM"
-            floatingLabelFixed={true}
-            onChange = {(event)=>this.handleChangeNIM(event)}
-            style = {{width: 350}}
-          />
-          <br />
-          <TextField
-            hintText="Email (untuk login)"
-            defaultValue = {this.state.email}
-            floatingLabelText="Email"
-            floatingLabelFixed={true}
-            errorText = {this.isErrorEmail(this.state.email) ? "Email tidak valid" : ""}
-            onChange = {(event)=>this.handleChangeEmail(event)}
-            style = {{width: 350}}
-          />
-          <br />
           <SelectField
             multiple={false}
-            hintText="Select a name"
+            hintText="Pilih peran"
             defaultValue = {this.state.peran}
             value={this.state.peran}
             onChange={(event, index, peran)=>this.handleChangePeran(event, index, peran)}
@@ -352,6 +328,39 @@ class timta_mng_user extends Component {
             primaryText="Tim TA"
             />
           </SelectField>
+          <TextField
+            hintText="Masukkan nama"
+            defaultValue = {this.state.nama}
+            floatingLabelText="Nama Pengguna"
+            floatingLabelFixed={true}
+            errorText = {this.isEmpty(this.state.nama) ? "Tidak boleh kosong" : ""}
+            onChange = {(event)=> this.handleChangeNama(event)}
+            style = {{width: 350}}
+          />
+          <br />
+          {this.state.peran === '0' &&
+          <TextField
+            hintText="NIM (untuk mahasiswa)"
+            defaultValue = {this.state.nim}
+            floatingLabelText="NIM"
+            floatingLabelFixed={true}
+            errorText = {this.isEmpty(this.state.nim)? "NIM tidak boleh kosong" : ""}
+            onChange = {(event)=>this.handleChangeNIM(event)}
+            style = {{width: 350}}
+          />
+          }
+          <br />
+          <TextField
+            hintText="Email (untuk login)"
+            defaultValue = {this.state.email}
+            floatingLabelText="Email"
+            floatingLabelFixed={true}
+            errorText = {this.isErrorEmail(this.state.email) ? "Email tidak valid" : ""}
+            onChange = {(event)=>this.handleChangeEmail(event)}
+            style = {{width: 350}}
+          />
+          <br />
+          
         </Dialog>
       </div>
       </MuiThemeProvider>

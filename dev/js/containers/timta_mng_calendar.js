@@ -43,7 +43,7 @@ class timta_mng_calendar extends Component {
     super(props);
     this.state = {
       open: false,
-      statusJadwal: 1,
+      statusJadwal: 0,
       /*
         0: menunggu finalisasi
         1: sudah difinalisasi
