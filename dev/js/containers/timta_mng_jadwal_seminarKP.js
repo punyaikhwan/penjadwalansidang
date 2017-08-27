@@ -38,13 +38,6 @@ class timta_mng_jadwal_seminarKP extends Component {
     super(props);
     this.state = {
       open: false,
-      statusJadwal: 0,
-      /*
-      0: belum dijadwalkan
-      1: menunggu penjadwalan
-      2: menunggu finalisasi
-      3: sudah difinalisasi
-      */
       modalLoadScheduling: false,
       checkBoxKelompok: [],
       selectAll: false,
@@ -69,6 +62,7 @@ class timta_mng_jadwal_seminarKP extends Component {
     }, 1000);
   }
 
+  
   handleToggle(){this.setState({open: !this.state.open})};
   handleClose(){this.setState({open: false})};
 
@@ -254,19 +248,7 @@ class timta_mng_jadwal_seminarKP extends Component {
               </Col>
             </Row>
             <br/>
-            <span style={{fontSize: 14}}>
-              <i className="material-icons" style={{color: 'black', size: 14}}>info</i> 
-              {" Status Jadwal: "}
-              {this.state.statusJadwal === 0 ? " belum dijadwalkan" :
-                (this.state.statusJadwal === 1 ? " menunggu penjadwalan" :
-                  (this.state.statusJadwal === 2 ? " menunggu finalisasi" :
-                    "sudah dijadwalkan."
-                  )
-                )
-              } 
-            </span>
             <div style={{textAlign: 'center'}}>
-            {this.state.statusJadwal === 0 &&
             <RaisedButton
               label="Jadwalkan!"
               backgroundColor="#2196F3"
@@ -275,42 +257,6 @@ class timta_mng_jadwal_seminarKP extends Component {
               style={{marginLeft: 20, marginTop: 20}}
               onClick = {()=>this.handleRequestSchedule()}
             />
-            }
-            {this.state.statusJadwal === 1 &&
-            <RaisedButton
-              label="Jadwalkan!"
-              backgroundColor="#2196F3"
-              labelColor= "#fff"
-              fullWidth
-              disabled
-              style={{marginLeft: 20, marginTop: 20}}
-            />
-            }
-            {this.state.statusJadwal === 2 &&
-            <RaisedButton
-              label="Lihat kalender"
-              backgroundColor="#2196F3"
-              labelColor= "#fff"
-              fullWidth
-              style={{marginLeft: 20, marginTop: 20}}
-              href="/timta_calendar"
-            />
-            }
-            {this.state.statusJadwal === 3 &&
-            <span>
-            <RaisedButton
-              label="Lihat kalender"
-              backgroundColor="#2196F3"
-              labelColor= "#fff"
-              fullWidth
-              style={{marginLeft: 20, marginTop: 20}}
-              href="/timta_calendar"
-            />
-            <div>
-              atau <span style={{color: "#2E1AB2"}}>jadwalkan ulang.</span>
-            </div>
-            </span>
-            }
             </div>
           </Col>
         </Row>
