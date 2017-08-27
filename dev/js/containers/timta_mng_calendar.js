@@ -62,6 +62,13 @@ class timta_mng_calendar extends Component {
 
   componentDidMount(){
     this.props.fetchEvent();
+
+    // setTimeout(()=> {
+    //   if (this.props.events.length !== 0) 
+    //     this.setState({selectedDate: this.props.events[0].start});
+    //     console.log("DATEEEEE", this.state.selectedDate);
+    // }, 1000)
+
   }
 
   handleToggle(){this.setState({open: !this.state.open})};
@@ -71,16 +78,17 @@ class timta_mng_calendar extends Component {
   }
 
   moveEvent({ event, start, end }) {
-    const { events } = this.state;
-    const idx = events.indexOf(event);
+    const idx = this.props.events.indexOf(event);
     let updatedEvent = event;
     updatedEvent.start = start;
     updatedEvent.end = end;
+
 
     const nextEvents = events
     nextEvents.splice(idx, 1, updatedEvent)
     this.props.move(nextEvents);
     // this.setState({events: nextEvents})
+
   }
 
   handleSelectedEvent(event) {

@@ -31,6 +31,7 @@ import moment from 'moment';
 import dateFormat from 'dateformat';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import {fetchEvent} from '../actions/event/fetch-events'
 
 BigCalendar.setLocalizer(
   BigCalendar.momentLocalizer(moment)
@@ -52,6 +53,17 @@ class dosen_calendar extends Component {
         peran: "Dosen"
       }
     };
+
+  }
+
+  componentDidMount(){
+      this.props.fetchEvent();
+
+      // setTimeout(()=> {
+      //   if (this.props.events.length !== 0)
+      //     this.setState({selectedDate: this.props.events[0].start});
+      //     console.log("DATEEEEE", this.state.selectedDate);
+      // }, 1000)
 
   }
 
@@ -223,7 +235,9 @@ function mapStateToProps(state) {
 }
 
 function matchDispatchToProps(dispatch){
-    return bindActionCreators({}, dispatch);
+    return bindActionCreators({
+        fetchEvent: fetchEvent
+    }, dispatch);
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(dosen_calendar);
