@@ -11,7 +11,7 @@ import Row from 'muicss/lib/react/row';
 import Col from 'muicss/lib/react/col';
 import TextField from 'material-ui/TextField';
 import Checkbox from 'material-ui/Checkbox';
-import ScrollArea from 'react-scrollbar';;
+import ScrollArea from 'react-scrollbar';
 import {List, ListItem} from 'material-ui/List';
 import {
   Table,
@@ -29,13 +29,21 @@ import imgProfile from '../../scss/public/images/imgprofile.jpg';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import windowDimensions from 'react-window-dimensions';
+import {fetchTA} from '../actions/ta/fetch-ta'
+
 class timta_mng_jadwal_sidangTA extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
       open: false,
-      dataTA: this.props.dataTA,
+      statusJadwal: 3,
+      /*
+      0: belum dijadwalkan
+      1: menunggu penjadwalan
+      2: menunggu finalisasi
+      3: sudah difinalisasi
+      */
       selectAll: false,
       checkBoxTA: [],
       listDosen: [],
@@ -47,9 +55,10 @@ class timta_mng_jadwal_sidangTA extends Component {
 
   componentDidMount() {
     console.log("DidMount")
+      this.props.fetchTA();
     setTimeout(()=> {
       let tempcheckBoxTA = [];
-      for (var i=0; i < this.state.dataTA.length; i++) {
+      for (var i=0; i < this.props.dataTA.length; i++) {
         tempcheckBoxTA.push(0);
         console.log(tempcheckBoxTA);
       }
@@ -75,8 +84,8 @@ class timta_mng_jadwal_sidangTA extends Component {
     var tempListDosen = [];
     for (var i=0; i<this.state.checkBoxTA.length; i++) {
       if (this.state.checkBoxTA[i] === 1) {
-        this.union_arrays(tempListDosen, this.state.dataTA[i].dosenPembimbing);
-          this.union_arrays(tempListDosen, this.state.dataTA[i].dosenPengujiAkhir);
+        this.union_arrays(tempListDosen, this.props.dataTA[i].pembimbing);
+          this.union_arrays(tempListDosen, this.props.dataTA[i].akhir);
       }
     }
     this.setState({listDosen: tempListDosen});
@@ -84,14 +93,14 @@ class timta_mng_jadwal_sidangTA extends Component {
 
   handleSelectAll() {
     let tempcheckBoxTA = this.state.checkBoxTA;
-    let tempdataTA = this.state.dataTA;
+    let tempdataTA = this.props.dataTA;
     let tempListDosen = this.state.listDosen;
     if (this.state.selectAll === false) {
       this.setState({selectAll: true});
       for (var i=0; i<this.state.checkBoxTA.length; i++) {
         tempcheckBoxTA[i] = 1;
-        this.union_arrays(tempListDosen, tempdataTA[i].dosenPembimbing);
-        this.union_arrays(tempListDosen, tempdataTA[i].dosenPengujiAkhir);
+        this.union_arrays(tempListDosen, tempdataTA[i].pembimbing);
+        this.union_arrays(tempListDosen, tempdataTA[i].akhir);
       }
       this.setState({listDosen: tempListDosen});
     } else {
@@ -106,12 +115,12 @@ class timta_mng_jadwal_sidangTA extends Component {
 
   handleSelectMahasiswa(i) {
     let tempcheckBoxTA = this.state.checkBoxTA;
-    let tempdataTA = this.state.dataTA;
+    let tempdataTA = this.props.dataTA;
     let tempListDosen = this.state.listDosen;
     if (tempcheckBoxTA[i] === 0) {
       tempcheckBoxTA[i] = 1;
-      this.union_arrays(tempListDosen, tempdataTA[i].dosenPembimbing);
-      this.union_arrays(tempListDosen, this.state.dataTA[i].dosenPengujiAkhir);
+      this.union_arrays(tempListDosen, tempdataTA[i].pembimbing);
+      this.union_arrays(tempListDosen, this.props.dataTA[i].akhir);
       this.setState({checkBoxTA: tempcheckBoxTA});
     } else {
       tempcheckBoxTA[i] = 0;
@@ -169,8 +178,8 @@ class timta_mng_jadwal_sidangTA extends Component {
               <ListItem leftCheckbox={<Checkbox checked={this.state.selectAll}/>} primaryText="Pilih semua" onClick={()=>this.handleSelectAll()}/>
             </List>
             <List>
-              {this.state.dataTA.map((item, i) => (
-                <ListItem key={i} primaryText={item.nim+"\t"+item.nama} leftCheckbox={<Checkbox checked={this.state.checkBoxTA[i] === 1 ? true:false} onCheck={()=>this.handleSelectMahasiswa(i)}/>}/>
+              {this.props.dataTA.map((item, i) => (
+                <ListItem key={i} primaryText={item.mahasiswa.NIM+"\t"+item.mahasiswa.nama} leftCheckbox={<Checkbox checked={this.state.checkBoxTA[i] === 1 ? true:false} onCheck={()=>this.handleSelectMahasiswa(i)}/>}/>
               ))}
             </List>
             </ScrollArea>
@@ -193,8 +202,8 @@ class timta_mng_jadwal_sidangTA extends Component {
                   {this.state.listDosen.map((item, i) => (
                     <TableRow key={i}>
                       <TableRowColumn></TableRowColumn>
-                      <TableRowColumn>{item}</TableRowColumn>
-                      <TableRowColumn>Yes</TableRowColumn>
+                      <TableRowColumn>{item.user.nama}</TableRowColumn>
+                      <TableRowColumn>{item.user.status_kalender}</TableRowColumn>
                     </TableRow>
                   ))}
               </TableBody>
@@ -241,14 +250,63 @@ class timta_mng_jadwal_sidangTA extends Component {
                 />
               </Col>
             </Row>
+            <br/>
+            <span style={{fontSize: 14}}>
+              <i className="material-icons" style={{color: 'black', size: 14}}>info</i> 
+              {" Status Jadwal: "}
+              {this.state.statusJadwal === 0 ? " belum dijadwalkan" :
+                (this.state.statusJadwal === 1 ? " menunggu penjadwalan" :
+                  (this.state.statusJadwal === 2 ? " menunggu finalisasi" :
+                    "sudah dijadwalkan."
+                  )
+                )
+              } 
+            </span>
             <div style={{textAlign: 'center'}}>
+            {this.state.statusJadwal === 0 &&
             <RaisedButton
               label="Jadwalkan!"
               backgroundColor="#2196F3"
               labelColor= "#fff"
               fullWidth
-              style={{marginLeft: 20, marginTop: 50}}
+              style={{marginLeft: 20, marginTop: 20}}
             />
+            }
+            {this.state.statusJadwal === 1 &&
+            <RaisedButton
+              label="Jadwalkan!"
+              backgroundColor="#2196F3"
+              labelColor= "#fff"
+              fullWidth
+              disabled
+              style={{marginLeft: 20, marginTop: 20}}
+            />
+            }
+            {this.state.statusJadwal === 2 &&
+            <RaisedButton
+              label="Lihat kalender"
+              backgroundColor="#2196F3"
+              labelColor= "#fff"
+              fullWidth
+              style={{marginLeft: 20, marginTop: 20}}
+              href="/timta_calendar"
+            />
+            }
+            {this.state.statusJadwal === 3 &&
+            <span>
+            <RaisedButton
+              label="Lihat kalender"
+              backgroundColor="#2196F3"
+              labelColor= "#fff"
+              fullWidth
+              style={{marginLeft: 20, marginTop: 20}}
+              href="/timta_calendar"
+            />
+            <div>
+              atau <span style={{color: "#2E1AB2"}}>jadwalkan ulang.</span>
+            </div>
+            </span>
+            }
             </div>
           </Col>
         </Row>
@@ -298,6 +356,6 @@ function mapStateToProps(state) {
 }
 
 function matchDispatchToProps(dispatch){
-    return bindActionCreators({}, dispatch);
+    return bindActionCreators({fetchTA:fetchTA}, dispatch);
 }
 export default connect(mapStateToProps, matchDispatchToProps)(windowDimensions()(timta_mng_jadwal_sidangTA));
