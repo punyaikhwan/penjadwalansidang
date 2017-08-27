@@ -2,6 +2,7 @@ let Event = require('../db/models/event.js')
 let User = require('../db/models/user.js')
 let TA = require('../db/models/pasangan_ta.js')
 let KP = require('../db/models/pasangan_kp.js')
+let Room = require('../db/models/ruangan.js')
 let Anggota = require('../db/models/anggota_pasangan_event.js')
 let axios = require('axios')
 let Promise = require('bluebird')
@@ -79,8 +80,18 @@ var PreEventToReady = function(pre, rooms, pasangan, event_type){
 	for(var i=0; i<rooms.length; i++){
 		pre.data.listRoom.push({})
 		pre.data.listRoom[i].id = rooms[i].id
+
 		pre.data.listRoom[i].events = []
+		for(var j=0; j<rooms[i].event.length; j++){
+
+			pre.data.listRoom[i].events.push({
+				"start": rooms[i].event[j].start,
+				"end": rooms[i].event[j].end
+			})
+		}
+		
 	}
+
 
 	return pre
 }
@@ -172,12 +183,12 @@ var ScheduleEvent = async function(event_type, start, end){
 		console.log("preparing to schedule================")
 		if(event_type == 1){
 			pasangan = await TA.model.fetchAll({withRelated: ['pembimbing', 'penguji', 'mahasiswa']})
-			rooms = await User.model.where({"peran": 3}).fetchAll()
+			rooms = await Room.model.fetchAll({withRelated: 'event'})
 		}
 
 		if(event_type == 2){
 			pasangan = await KP.model.fetchAll({withRelated: ['pembimbing', 'mahasiswa.user']})
-			rooms = await User.model.where({"peran": 3}).fetchAll()
+			rooms = await Room.model.fetchAll({withRelated: 'event'})
 		}
 
 		//getRaw
@@ -198,32 +209,34 @@ var ScheduleEvent = async function(event_type, start, end){
 		//save events
 		console.log("saving schedule===================")
 		var temp = FormatForSave(events.data.result, event_type, pasangan)
+		console.log(temp)
 		await NewEvent(temp, events.data.result)
 		//await NewAnggotaEvent(events.data.result)
 		console.log("done===================")
 
 		let preResult = await Event.model.fetchAll({withRelated: ['dosen.user', 'mahasiswa.user']})
-		console.log(preResult.toJSON())
+		preResult = preResult.toJSON()
 
 		//return event
 		var result = []
 
 		for(var i=0; i<temp.length; i++){
 			result.push({
-				"idEvent": temp[i].event_id,
-				"title": temp[i].title,
-				"id": i,
-				"topik": temp[i].topik,
-				"room": temp[i].room_Id,
-				"start": temp[i].start,
-				"end": temp[i].end,
-				"anggota": [],
-				"dosen": []
+				"idEvent": preResult[i].event_id,
+				"title": preResult[i].title,
+				"id": preResult[i].i,
+				"topik": preResult[i].topik,
+				"room": preResult[i].room_id,
+				"start": preResult[i].start,
+				"end": preResult[i].end,
+				"anggota": preResult[i].mahasiswa,
+				"dosen": preResult[i].dosen
 			})
 		}
 
-
-		return temp
+		result = {"events": result}
+		console.log(result)
+		return result
 	}
 	catch(err){
 		console.log(err)
@@ -250,38 +263,37 @@ var NewEvent = async function(objs, anggotas){
 	try{
 		//bikin record kosong
 		var task = []
+		let gloi = 0 //index for promise insert event
 
 		for(var i=0; i<objs.length; i++){
-			console.log("==========================")
-			console.log(i)
 			task.push(new Event.model(objs[i]).save().then(function(result){
 				var id = result.get('id')
-				"*****************************"
-				console.log(i)
 				//masukin mahasiswa
 				task.push(new Anggota.model({
-					"user_id": anggotas[i].idStudent,
+					"user_id": anggotas[gloi].idStudent,
 					"peran_pasangan": 0,
 					"pasangan_id": id
 				}).save())
 
 				//masukin pembimbing
-				for(var j=0; j<anggotas[i].idPembimbing.length; j++){
+				for(var j=0; j<anggotas[gloi].idPembimbing.length; j++){
 					task.push(new Anggota.model({
-						"user_id": anggotas[i].idPembimbing[j],
+						"user_id": anggotas[gloi].idPembimbing[j],
 						"peran_pasangan": 1,
 						"pasangan_id": id
 					}).save())
 				}
 
 				//masukin pembimbing
-				for(var j=0; j<anggotas[i].idPenguji.length; j++){
+				for(var j=0; j<anggotas[gloi].idPenguji.length; j++){
 					task.push(new Anggota.model({
-						"user_id": anggotas[i].idPenguji[j],
+						"user_id": anggotas[gloi].idPenguji[j],
 						"peran_pasangan": 2,
 						"pasangan_id": id
 					}).save())
 				}
+
+				gloi++
 
 			}))
 		}
@@ -407,7 +419,7 @@ var test = async function(){
 		}
 
 		console.log("ScheduleEvent=========")
-		ScheduleEvent(1, "2017-08-08T00:00:00+07:00", "2017-10-10T23:59:59+07:00")
+		ScheduleEvent(2, "2017-08-08T00:00:00+07:00", "2017-10-10T23:59:59+07:00")
 		return
 		console.log("GETEVENT=========")
 		GetRawEvent("2017-08-08T00:00:00+07:00", "2017-10-10T23:59:59+07:00")
@@ -426,7 +438,7 @@ var test = async function(){
 }
 //===============================================================================
 //main program
-// test()
+test()
 
 module.exports = {
   DeleteEvent, 
