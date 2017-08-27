@@ -59,6 +59,7 @@ class dosen_calendar extends Component {
   componentDidMount(){
     this.props.fetchEvent();
   }
+
   handleToggle(){this.setState({open: !this.state.open})};
 
   handleClose() {
