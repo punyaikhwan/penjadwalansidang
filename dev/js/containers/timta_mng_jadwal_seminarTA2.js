@@ -43,7 +43,6 @@ class timta_mng_jadwal_seminarTA2 extends Component {
       2: menunggu finalisasi
       3: sudah difinalisasi
       */
-      dataTA: this.props.dataTA,
       selectAll: false,
       checkBoxTA: [],
       listDosen: [],

@@ -27,9 +27,10 @@ import 'react-big-calendar/lib/addons/dragAndDrop/styles.less';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import imgProfile from '../../scss/public/images/dosenprofile.jpg';
 import '../../scss/timTA.scss';
-import events from './events';
 import moment from 'moment';
 import dateFormat from 'dateformat';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 
 BigCalendar.setLocalizer(
   BigCalendar.momentLocalizer(moment)
@@ -41,9 +42,8 @@ class dosen_calendar extends Component {
     super(props);
     this.state = {
       open: false,
-      events: events,
       selectedEvent: null,
-      selectedDate: events[1].start,
+      selectedDate: null,
       modalEvent: false,
       openSnackbar: false,
       dataUser: {
@@ -52,7 +52,7 @@ class dosen_calendar extends Component {
         peran: "Dosen"
       }
     };
-    this.moveEvent = this.moveEvent.bind(this)
+
   }
 
   handleToggle(){this.setState({open: !this.state.open})};
@@ -61,18 +61,18 @@ class dosen_calendar extends Component {
     this.setState({open: false});
   }
 
-  moveEvent({ event, start, end }) {
-    const { events } = this.state;
-    const idx = events.indexOf(event);
-    let updatedEvent = event;
-    updatedEvent.start = start;
-    updatedEvent.end = end;
-
-    const nextEvents = events
-    nextEvents.splice(idx, 1, updatedEvent)
-
-    this.setState({events: nextEvents})
-  }
+  // moveEvent({ event, start, end }) {
+  //   const { events } = this.state;
+  //   const idx = events.indexOf(event);
+  //   let updatedEvent = event;
+  //   updatedEvent.start = start;
+  //   updatedEvent.end = end;
+  //
+  //   const nextEvents = events
+  //   nextEvents.splice(idx, 1, updatedEvent)
+  //
+  //   this.setState({events: nextEvents})
+  // }
 
   handleSelectedEvent(event) {
     this.setState({selectedEvent: event});
@@ -157,9 +157,8 @@ class dosen_calendar extends Component {
           <p style={{fontSize: 20}}><i className="material-icons" style={{color: 'black'}}>info</i> Jadwal Anda yang berwarna hijau.</p><br/>
           <BigCalendar
             selectable
-            events={this.state.events}
+            events={this.props.events}
             defaultView='month'
-            defaultDate={this.state.selectedDate}
             onSelectEvent= {event => this.handleSelectedEvent(event)}
             onSelectSlot={(slotInfo) => {
               this.setState({selectedDate: slotInfo.start});
@@ -216,4 +215,15 @@ class dosen_calendar extends Component {
   }
 }
 
-export default DragDropContext(HTML5Backend)(dosen_calendar);
+function mapStateToProps(state) {
+  console.log(state.events)
+  return {
+        events: state.events
+    };
+}
+
+function matchDispatchToProps(dispatch){
+    return bindActionCreators({}, dispatch);
+}
+
+export default connect(mapStateToProps, matchDispatchToProps)(dosen_calendar);

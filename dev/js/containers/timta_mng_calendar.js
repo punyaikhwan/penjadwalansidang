@@ -28,9 +28,13 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import imgProfile from '../../scss/public/images/imgprofile.jpg';
 import '../../scss/timTA.scss';
-import events from './events';
+import events from '../reducers/events';
 import moment from 'moment';
 import dateFormat from 'dateformat';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import {moveEvent} from '../actions/event/move-event'
+import {fetchEvent} from '../actions/event/fetch-events'
 
 BigCalendar.setLocalizer(
   BigCalendar.momentLocalizer(moment)
@@ -43,18 +47,26 @@ class timta_mng_calendar extends Component {
     super(props);
     this.state = {
       open: false,
-      statusJadwal: 0,
+      statusJadwal: 1,
       /*
         0: menunggu finalisasi
         1: sudah difinalisasi
       */
-      events: events,
       selectedEvent: null,
-      selectedDate: events[1].start,
+      selectedDate: null,
       modalEvent: false,
       openSnackbar: false,
     };
     this.moveEvent = this.moveEvent.bind(this)
+  }
+
+  componentDidMount(){
+    this.props.fetchEvent();
+    // setTimeout(()=> {
+    //   if (this.props.events.length !== 0) 
+    //     this.setState({selectedDate: this.props.events[0].start});
+    //     console.log("DATEEEEE", this.state.selectedDate);
+    // }, 1000)
   }
 
   handleToggle(){this.setState({open: !this.state.open})};
@@ -64,16 +76,14 @@ class timta_mng_calendar extends Component {
   }
 
   moveEvent({ event, start, end }) {
-    const { events } = this.state;
-    const idx = events.indexOf(event);
+    const idx = this.props.events.indexOf(event);
     let updatedEvent = event;
     updatedEvent.start = start;
     updatedEvent.end = end;
 
-    const nextEvents = events
-    nextEvents.splice(idx, 1, updatedEvent)
-
-    this.setState({events: nextEvents})
+    const nextEvents = this.props.events
+    nextEvents.splice(idx, 1, updatedEvent);
+    this.props.move(nextEvents);
   }
 
   handleSelectedEvent(event) {
@@ -163,10 +173,9 @@ class timta_mng_calendar extends Component {
           }
           <DragAndDropCalendar
             selectable
-            events={this.state.events}
+            events={this.props.events}
             onEventDrop={this.moveEvent}
             defaultView='month'
-            defaultDate={this.state.selectedDate}
             onSelectEvent= {event => this.handleSelectedEvent(event)}
             onSelectSlot={(slotInfo) => {
               this.setState({selectedDate: slotInfo.start});
@@ -221,4 +230,17 @@ class timta_mng_calendar extends Component {
   }
 }
 
-export default DragDropContext(HTML5Backend)(timta_mng_calendar);
+function mapStateToProps(state) {
+    return {
+        events: state.events
+    };
+}
+
+function matchDispatchToProps(dispatch){
+    return bindActionCreators({
+        move: moveEvent,
+        fetchEvent: fetchEvent
+    }, dispatch);
+}
+
+export default DragDropContext(HTML5Backend)(connect(mapStateToProps, matchDispatchToProps)(timta_mng_calendar));

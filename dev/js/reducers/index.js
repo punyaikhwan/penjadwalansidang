@@ -5,6 +5,7 @@ import dosen from './dosen'
 import kelompok from './kelompok-KP'
 import dataTA from './data-TA'
 import user from './user'
+import events from './events'
 
 /*
  * We combine all reducers into a single object before updated data is dispatched (sent) to store
@@ -18,6 +19,7 @@ const allReducers = combineReducers({
     kelompokKP: kelompok,
     dataTA: dataTA,
     user: user,
+    events: events,
 });
 
 export default allReducers
