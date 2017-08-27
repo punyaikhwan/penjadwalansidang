@@ -1,20 +1,20 @@
 let helper = require('./db.js');
-require('./pasangan_ta.js')
+require('./event_ruangan.js')
 
 Model = helper.bookshelf.Model.extend({
-    tableName: 'user',
+    tableName: 'ruangan',
     hasTimestamps: true,
-    calendar_list: function() {
-	    return this.hasMany('CalendarList', 'user_id');
+    event: function() {
+	    return this.hasMany('EventRuangan', 'room_id');
 	},
 });	
-model = helper.bookshelf.model('User', Model);
+model = helper.bookshelf.model('Ruangan', Model);
 
 module.exports = {
 	model
 }
 //testing====================================================
-// Model.fetchAll({withRelated: "calendar_list"}).then(function(data){
+// Model.fetchAll({withRelated: "event"}).then(function(data){
 // 	console.log("==user=================")
 // 	console.log(JSON.stringify(data))
 // })

@@ -1,14 +1,10 @@
 let helper = require('./db.js');
-require('./pasangan_ta.js')
 
 Model = helper.bookshelf.Model.extend({
-    tableName: 'user',
+    tableName: 'event_ruangan',
     hasTimestamps: true,
-    calendar_list: function() {
-	    return this.hasMany('CalendarList', 'user_id');
-	},
 });	
-model = helper.bookshelf.model('User', Model);
+model = helper.bookshelf.model('EventRuangan', Model);
 
 module.exports = {
 	model

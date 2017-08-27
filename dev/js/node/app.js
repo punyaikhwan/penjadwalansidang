@@ -1,13 +1,177 @@
+var http = require('http');
 var express = require('express')
-var app = express()
+var Session = require('express-session')
 var bodyParser = require('body-parser');
 var user = require('./functions/user_function.js')
 var KP = require('./functions/kp_function.js')
 var TA = require('./functions/ta_function.js')
+var Event = require('./functions/event_function.js')
+var CalendarList = require('./functions/calendar_list_function')
+// var googleUtil = require('./GoogleLogin.js')
+var secretHandler = require('./sessionSecret.js')
 
+var google = require('googleapis');
+var OAuth2 = google.auth.OAuth2;
+var plus = google.plus('v1');
+
+// const ClientId = "806339176753-cmb1mv9g8itmir0p4ucqh0ibuhbl6s0k.apps.googleusercontent.com";
+// const ClientSecret = "PF6m7fxfIzu8g3AhyMI3VoAz";
+const ClientId = "1031302495796-7vb2i3hqj2q5o632ggreuca6cvsuvjn9.apps.googleusercontent.com";
+const ClientSecret = "6nN7tlnCMHfqtlmrgn8PP7Cx";
+const RedirectionUrl = "http://localhost:3000/"
+
+// Starting the express app
+var app = express()
 
 app.use(bodyParser.json()); // for parsing application/json
+
+var generatedSecret = secretHandler.getOrCreate();
+
+// {  
+//   "web":{  
+//     "client_id":"1031302495796-7vb2i3hqj2q5o632ggreuca6cvsuvjn9.apps.googleusercontent.com",
+//     "project_id":"ivory-being-162716",
+//     "auth_uri":"https://accounts.google.com/o/oauth2/auth",
+//     "token_uri":"https://accounts.google.com/o/oauth2/token",
+//     "auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs",
+//     "client_secret":"6nN7tlnCMHfqtlmrgn8PP7Cx",
+//     "redirect_uris":[  
+//       "urn:ietf:wg:oauth:2.0:oob",
+//       "http://localhost"
+//     ]
+//   }
+// }
+//============================================================================
+// generate a url that asks permissions for Google+ and Google Calendar scopes
+var scopes = [
+	'https://www.googleapis.com/auth/calendar',
+	'https://www.googleapis.com/auth/plus.me',
+	'https://www.googleapis.com/auth/userinfo.email',
+	'https://www.googleapis.com/auth/userinfo.profile'
+];
+
+app.use(Session({
+	// secret: generatedSecret,
+	secret: '0ecef849563661269e02a44a48f5d3ab47496c88f78ab9a606f60899a2e56305d0f0a6411b4659e6db9c297e7004b6fe',
+	duration: (30 * 60 * 1000),
+	activeDuration: (5 * 60 * 1000),
+	resave: true,
+	saveUninitialized: true
+}))
+
+function getOAuthClient () {
+    return new OAuth2(ClientId ,  ClientSecret, RedirectionUrl);
+}
+ 
+function getAuthUrl () {
+    var oauth2Client = getOAuthClient();
+    // generate a url that asks permissions for Google+ and Google Calendar scopes
+
+ 
+    var url = oauth2Client.generateAuthUrl({
+        access_type: 'offline',
+        scope: scopes // If you only need one scope you can pass it as string
+    });
+ 
+    return url;
+}
+
 //GOOGLE====================================================================
+app.use('/googleLogin', function(request, response){
+	var url = getAuthUrl();
+	console.log(url);
+	response.send(url)
+});
+
+
+app.use('/logout', function(request, response){
+	var oauth2Client = getOAuthClient();
+	var session = request.session;
+	oauth2Client.signOut().then(function() {
+		request.session.reset();
+		response.redirect('/');
+		console.log('User signed out.')
+	})
+});
+
+app.use('/getUserInfo', function(request, response){
+	var oauth2Client = getOAuthClient();
+	var session = request.session;
+	var code = request.body.token;
+	oauth2Client.getToken(code, function(err, tokens) {
+		if(!err) {
+			console.log(tokens);
+			oauth2Client.setCredentials(tokens);
+			//saving the token to current session
+			session["tokens"] = tokens;
+			var p = new Promise(function (resolve, reject) {
+				plus.people.get({ userId: 'me', auth: oauth2Client }, function(err, response) {
+					resolve(response || err);
+				});
+				// google.oauth("v2").userinfo.v2.me.get({auth: oauth2Client}, (e, profile) => {
+				// 	resolve(profile || err);
+				// });
+			}).then(function (data) {
+				let email = data.emails[0].value;
+				user.UpdateEmail(email, tokens.refresh_token).then(function(result){
+					if (result != 'gagal') {
+						// response.status(200).send({status: "SUCCESS", session: session});
+						response.status(200).send({status: "SUCCESS"});
+					} else {
+						// response.status(404).send({status: "FAILED", session: session});
+						response.status(404).send({status: "FAILED"});
+					}
+					
+					console.log(data.emails[0].value);	
+				});
+			})
+		} else {
+			// response.status(404).send({status: "FAILED", session: session});
+			response.status(404).send({status: "FAILED"});
+			console.log(err);
+		}
+	})
+
+
+
+  	// response.send(session)
+})
+
+//Calendar====================================================================
+app.get('/calendars', function(request, response){
+	let id = request.query.id;
+
+	CalendarList.GetCalendarList(id).then(function(result) {
+		response.send(result)
+	}).catch(function(err){
+		console.log(err)
+		response.send(err)
+	})
+
+})
+
+app.post('/calendars', function(request, response) {
+	let id = request.body.id
+	CalendarList.InsertCalendarList(id).then(function(result) {
+		response.send(result)
+	}).catch(function(err){
+		console.log(err)
+		response.send(err)
+	})
+})
+
+//Event====================================================================
+app.post('/schedule', function(request, response){
+	let event_type = request.body.event_type
+	let start = request.body.start
+	let end = request.body.end
+	Event.ScheduleEvent(event_type, start, end).then(function(result){
+		response.send(result)
+	}).catch(function(err){
+		console.log(err)
+		response.send(err)
+	})
+})
 
 //USER====================================================================
 app.get('/user', function(request, response){
@@ -153,6 +317,14 @@ app.post('/', function(request, response){
 	response.send('hello world')
 })
 
-app.listen(3001, function () {
-  console.log('Example app listening on port 3001!')
+app.get('/', function(request, response){
+	response.send('hello world')
+})
+
+
+var port = 3001;
+var server = http.createServer(app);
+server.listen(port);
+server.on('listening', function() {
+	console.log('Tim Ta app listening to ${port}');
 })
