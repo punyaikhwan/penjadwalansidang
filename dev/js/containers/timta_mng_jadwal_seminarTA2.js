@@ -23,6 +23,8 @@ import {
 } from 'material-ui/Table';
 import DatePicker from 'material-ui/DatePicker';
 import SubHeader from 'material-ui/SubHeader';
+import CircularProgress from 'material-ui/CircularProgress';
+import Dialog from 'material-ui/Dialog';
 
 import imgProfile from '../../scss/public/images/imgprofile.jpg';
 
@@ -36,13 +38,7 @@ class timta_mng_jadwal_seminarTA2 extends Component {
     super(props);
     this.state = {
       open: false,
-      statusJadwal: 3,
-      /*
-      0: belum dijadwalkan
-      1: menunggu penjadwalan
-      2: menunggu finalisasi
-      3: sudah difinalisasi
-      */
+      modalLoadScheduling: false,
       selectAll: false,
       checkBoxTA: [],
       listDosen: [],
@@ -140,6 +136,11 @@ class timta_mng_jadwal_seminarTA2 extends Component {
 
   handleChangeEndDate(event, date) {
     this.setState({endDate: date})
+  }
+
+  handleRequestSchedule() {
+    this.setState({modalLoadScheduling: true});
+    //send request schedule to BE
   }
 
   render() {
@@ -247,62 +248,15 @@ class timta_mng_jadwal_seminarTA2 extends Component {
               </Col>
             </Row>
             <br/>
-            <span style={{fontSize: 14}}>
-              <i className="material-icons" style={{color: 'black', size: 14}}>info</i> 
-              {" Status Jadwal: "}
-              {this.state.statusJadwal === 0 ? " belum dijadwalkan" :
-                (this.state.statusJadwal === 1 ? " menunggu penjadwalan" :
-                  (this.state.statusJadwal === 2 ? " menunggu finalisasi" :
-                    "sudah dijadwalkan."
-                  )
-                )
-              } 
-            </span>
             <div style={{textAlign: 'center'}}>
-            {this.state.statusJadwal === 0 &&
-            <RaisedButton
-              label="Jadwalkan!"
-              backgroundColor="#2196F3"
-              labelColor= "#fff"
-              fullWidth
-              style={{marginLeft: 20, marginTop: 20}}
-            />
-            }
-            {this.state.statusJadwal === 1 &&
-            <RaisedButton
-              label="Jadwalkan!"
-              backgroundColor="#2196F3"
-              labelColor= "#fff"
-              fullWidth
-              disabled
-              style={{marginLeft: 20, marginTop: 20}}
-            />
-            }
-            {this.state.statusJadwal === 2 &&
-            <RaisedButton
-              label="Lihat kalender"
-              backgroundColor="#2196F3"
-              labelColor= "#fff"
-              fullWidth
-              style={{marginLeft: 20, marginTop: 20}}
-              href="/timta_calendar"
-            />
-            }
-            {this.state.statusJadwal === 3 &&
-            <span>
-            <RaisedButton
-              label="Lihat kalender"
-              backgroundColor="#2196F3"
-              labelColor= "#fff"
-              fullWidth
-              style={{marginLeft: 20, marginTop: 20}}
-              href="/timta_calendar"
-            />
-            <div>
-              atau <span style={{color: "#2E1AB2"}}>jadwalkan ulang.</span>
-            </div>
-            </span>
-            }
+              <RaisedButton
+                label="Jadwalkan!"
+                backgroundColor="#2196F3"
+                labelColor= "#fff"
+                fullWidth
+                style={{marginLeft: 20, marginTop: 20}}
+                onClick = {()=>this.handleRequestSchedule()}
+              />
             </div>
           </Col>
         </Row>
@@ -340,6 +294,15 @@ class timta_mng_jadwal_seminarTA2 extends Component {
           <MenuItem insetChildren={true} href="/timta_mng_jadwal_seminarTA2">Seminar TA 2</MenuItem>
           <MenuItem insetChildren={true} href="/timta_mng_jadwal_sidangTA">Sidang Akhir</MenuItem>
         </Drawer>
+
+        <Dialog
+          modal={false}
+          open={this.state.modalLoadScheduling}
+          contentStyle = {{width: 300, textAlign: 'center'}}
+        >
+          <CircularProgress size={80} thickness={5} />
+          <p>Sedang menjadwalkan...</p>
+        </Dialog>
       </div>
       </MuiThemeProvider>
     );
