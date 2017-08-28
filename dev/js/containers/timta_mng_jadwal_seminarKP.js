@@ -142,7 +142,17 @@ class timta_mng_jadwal_seminarKP extends Component {
   }
 
   handleRequestSchedule() {
-    this.props.schedule();
+      let kel = []
+      let check = this.state.checkBoxKelompok;
+      this.props.kelompok.forEach(function (item, i) {
+          console.log(item.id)
+          if (check[i] == 1){
+              console.log(item.id)
+              kel.push(item.id)
+          }
+      })
+      console.log(kel)
+      this.props.schedule(2, this.state.startDate, this.state.endDate, kel);
   }
 
   render() {

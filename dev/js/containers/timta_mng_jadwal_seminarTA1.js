@@ -146,9 +146,17 @@ class timta_mng_jadwal_seminarTA1 extends Component {
   }
 
   handleRequestSchedule() {
-    this.setState({modalLoadScheduling: true});
-    this.props.schedule();
-    //send request schedule to BE
+      let kel = []
+      let check = this.state.checkBoxTA;
+      this.props.dataTA.forEach(function (item, i) {
+        console.log(item.id)
+        if (check[i] == 1){
+            console.log(item.id)
+              kel.push(item.id)
+          }
+      })
+      console.log(kel)
+      this.props.schedule(1, this.state.startDate, this.state.endDate, kel);
   }
 
   render() {
