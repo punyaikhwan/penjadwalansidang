@@ -42,10 +42,11 @@ var UpdateCalendarList = async function(insert_cal) {
             return new CalendarList.model({id: data.get('id')}).save({"calendar_id": calendar_id, "calendar_name": calendar_name, "status": 0}, {patch: true})
         } else if (data.get('status') == 0) {
             return new CalendarList.model({id: data.get('id')}).save({"calendar_id": calendar_id, "calendar_name": calendar_name, "status": 1}, {patch: true})
-        }  else { // buat baru
-            return NewCalendar({"user_id": user_id, "calendar_id": calendar_id, "calendar_name": calendar_name, "status": true});
-        }
+        } // }  else { // buat baru
     }).catch(function(err) {
+        console.log("new calendarlist");
+        return NewCalendar({"user_id": user_id, "calendar_id": calendar_id, "calendar_name": calendar_name, "status": true});
+
         console.log(err);
         return err;
     })
