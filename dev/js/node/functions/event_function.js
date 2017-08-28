@@ -67,11 +67,11 @@ var PreEventToReady = function(pre, rooms, pasangan, event_type){
 		}
 
 		if(event_type == 1){
-			pre.data.listStudent[i].id = pasangan[i].mahasiswa.id
+			pre.data.listStudent[i].id = pasangan[i].mahasiswa[0].user_id
 		}
 
-		if(event_type == 2){
-			pre.data.listStudent[i].id = pasangan[i].mahasiswa[0].user_id
+		if(event_type == 2 || event_type == 3 || event_type == 4 ){
+			pre.data.listStudent[i].id = pasangan[i].mahasiswa.id
 		}
 		
 	}
@@ -129,15 +129,15 @@ var GetPasanganFromMahasiswa = function(tipe_pasangan, id_mahasiswa, pasangan){
 	if(tipe_pasangan == 1){
 		pasangan = pasangan.toJSON()
 		for(var i=0; i<pasangan.length; i++){
-			if(pasangan[i].mahasiswa.id == id_mahasiswa){
+			if(pasangan[i].mahasiswa[0].user_id == id_mahasiswa){
 				return pasangan[i]
 			}
 		}
 	}
-	else if(tipe_pasangan == 2){
+	else if(tipe_pasangan == 2 || tipe_pasangan == 3 || tipe_pasangan == 4 ){
 		pasangan = pasangan.toJSON()
 		for(var i=0; i<pasangan.length; i++){
-			if(pasangan[i].mahasiswa[0].user_id == id_mahasiswa){
+			if(pasangan[i].mahasiswa.id == id_mahasiswa){
 				return pasangan[i]
 			}
 		}
@@ -152,14 +152,14 @@ var FormatForSave = function(events, event_type, pasangan){
 		var additionalInfo = GetPasanganFromMahasiswa(event_type, events[i].idStudent, pasangan)
 		var temp = {}
 		temp.event_id = i
-		temp.tipe_event = event_type
+		temp.tipe_event = 99
 
 		if(event_type == 1){
-			temp.title = ("Event "+additionalInfo.mahasiswa.nama)
+			temp.title = ("Event "+additionalInfo.mahasiswa[0].user.nama)
 		}
 
-		if(event_type == 2){
-			temp.title = ("Event "+additionalInfo.mahasiswa[0].user.nama)
+		if(event_type == 2 || event_type == 3 || event_type == 4){
+			temp.title = ("Event "+additionalInfo.mahasiswa.nama)
 		}
 			
 		temp.topik = additionalInfo.topik
@@ -181,13 +181,27 @@ var ScheduleEvent = async function(event_type, start, end, pasangans){
 
 		//fetch pasangan
 		console.log("preparing to schedule================")
+		//KP
 		if(event_type == 1){
+			pasangan = await KP.model.where('id','IN', pasangans).fetchAll({withRelated: ['pembimbing', 'mahasiswa.user']})
+			rooms = await Room.model.fetchAll({withRelated: 'event'})
+		}
+
+		//seminar TA-I
+		if(event_type == 2){
 			pasangan = await TA.model.where('id','IN', pasangans).fetchAll({withRelated: ['pembimbing', 'penguji', 'mahasiswa']})
 			rooms = await Room.model.fetchAll({withRelated: 'event'})
 		}
 
-		if(event_type == 2){
-			pasangan = await KP.model.where('id','IN', pasangans).fetchAll({withRelated: ['pembimbing', 'mahasiswa.user']})
+		//seminar TA-II
+		if(event_type == 3){
+			pasangan = await TA.model.where('id','IN', pasangans).fetchAll({withRelated: ['pembimbing', 'mahasiswa']})
+			rooms = await Room.model.fetchAll({withRelated: 'event'})
+		}
+
+		//sidang TA
+		if(event_type == 4){
+			pasangan = await TA.model.where('id','IN', pasangans).fetchAll({withRelated: ['pembimbing', 'akhir', 'mahasiswa']})
 			rooms = await Room.model.fetchAll({withRelated: 'event'})
 		}
 
@@ -204,18 +218,25 @@ var ScheduleEvent = async function(event_type, start, end, pasangans){
 		events = await RequestScheduling(events)
 
 		//delete events
-		await knex.emptyTable('event')
+		await Event.model.where('tipe_event', 99).destroy()
+		//await knex.emptyTable('event')
 
 		//save events
 		console.log("saving schedule===================")
 		var temp = FormatForSave(events.data.result, event_type, pasangan)
-		console.log(temp)
 		await NewEvent(temp, events.data.result)
 		//await NewAnggotaEvent(events.data.result)
 		console.log("done===================")
 
-		let preResult = await Event.model.fetchAll({withRelated: ['dosen.user', 'mahasiswa.user']})
+		let preResult = await Event.model.where({"tipe_event": 99}).fetchAll({withRelated: ['dosen.user', 'mahasiswa.user']})
 		preResult = preResult.toJSON()
+
+		console.log("events====================")
+		console.log(events.data.result)
+		console.log("temp====================")
+		console.log(temp)
+		console.log("preResult====================")
+		console.log(preResult)
 
 		//return event
 		var result = []
@@ -431,11 +452,6 @@ var FormatEvent = function(events){
 var test = async function(){
 	try{
 
-		var result = await FetchEventMahasiswa(49)
-		console.log(JSON.stringify(result))
-
-		return
-
 		var newStuff = {
 			event_id: 'yyyyyy',
 			tipe_event: 1,
@@ -445,7 +461,7 @@ var test = async function(){
 		}
 
 		console.log("ScheduleEvent=========")
-		ScheduleEvent(2, "2017-08-08T00:00:00+07:00", "2017-10-10T23:59:59+07:00", [1])
+		ScheduleEvent(3, "2017-08-08T00:00:00+07:00", "2017-10-10T23:59:59+07:00", [1])
 		return
 		console.log("GETEVENT=========")
 		GetRawEvent("2017-08-08T00:00:00+07:00", "2017-10-10T23:59:59+07:00")
@@ -464,7 +480,7 @@ var test = async function(){
 }
 //===============================================================================
 //main program
-// test()
+test()
 
 module.exports = {
   DeleteEvent, 
