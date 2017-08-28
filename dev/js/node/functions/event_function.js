@@ -219,7 +219,6 @@ var ScheduleEvent = async function(event_type, start, end, pasangans){
 
 		//delete events
 		await Event.model.where('tipe_event', 99).destroy()
-		//await knex.emptyTable('event')
 
 		//save events
 		console.log("saving schedule===================")
@@ -262,6 +261,96 @@ var ScheduleEvent = async function(event_type, start, end, pasangans){
 	catch(err){
 		console.log(err)
 	}
+}
+//===============================================================================
+var FinalizeEvent = async function(events, event_type){
+	try{
+		//bikin record kosong
+		await Event.model.where('tipe_event', 99).destroy()
+
+		//format json
+		let objs = []
+		let anggotas = []
+		for(var i=0; i<events.length; i++){
+			objs.push({
+				"event_id": events[i].idEvent,
+				"tipe_event": event_type,
+				"topik": events[i].topik,
+				"title": events[i].title,
+				"room_id": events[i].room,
+				"start": events[i].start,
+				"end": events[i].end
+			})
+
+			anggotas.push({
+				idStudent: [],
+				idPembimbing: [],
+				idPenguji: []
+			})
+
+			//dosen
+			for(var j=0; j<events[i].dosen.length; j++){
+				if(events[i].dosen[j].peran_pasangan == 1){
+					anggotas[i].idPembimbing.push(events[i].dosen[j].user_id)
+				}
+				else if(events[i].dosen[j].peran_pasangan == 2){
+					anggotas[i].idPenguji.push(events[i].dosen[j].user_id)
+				}
+			}
+
+			//mahasiswa
+			for(var j=0; j<events[i].anggota.length; j++){
+				anggotas[i].idStudent.push(events[i].anggota[j].user_id)
+			}
+		}
+
+
+		//insert new record
+		var task = []
+		let gloi = 0 //index for promise insert event
+
+		for(var i=0; i<objs.length; i++){
+			task.push(new Event.model(objs[i]).save().then(function(result){
+				var id = result.get('id')
+				//masukin mahasiswa
+				task.push(new Anggota.model({
+					"user_id": anggotas[gloi].idStudent,
+					"peran_pasangan": 0,
+					"pasangan_id": id
+				}).save())
+
+				//masukin pembimbing
+				for(var j=0; j<anggotas[gloi].idPembimbing.length; j++){
+					task.push(new Anggota.model({
+						"user_id": anggotas[gloi].idPembimbing[j],
+						"peran_pasangan": 1,
+						"pasangan_id": id
+					}).save())
+				}
+
+				//masukin penguji
+				for(var j=0; j<anggotas[gloi].idPenguji.length; j++){
+
+					task.push(new Anggota.model({
+						"user_id": anggotas[gloi].idPenguji[j],
+						"peran_pasangan": 2,
+						"pasangan_id": id
+					}).save())
+				}
+
+				gloi++
+
+			}))
+		}
+		
+		
+		
+	}catch(err){
+		console.log(err)
+	}
+	
+
+	return Promise.each(task, function(){})
 }
 //===============================================================================
 var DeleteEvent = async function(id){
@@ -459,6 +548,164 @@ var test = async function(){
 			topik: 'everyday BRO',
 			room_id: 3,
 		}
+
+		let testJSON = 
+[
+  {
+    "idEvent": "0",
+    "title": "Event mahasiswa1",
+    "topik": "If we parse the protocol, we can get to the COM feed through the solid state AI bus!",
+    "room": 1,
+    "start": "2017-08-28T09:22:28.000Z",
+    "end": "2017-08-28T10:02:28.000Z",
+    "anggota": [
+      {
+        "id": 41,
+        "user_id": 8,
+        "peran_pasangan": 0,
+        "created_at": "2017-08-28T14:22:48.000Z",
+        "updated_at": "2017-08-28T14:22:48.000Z",
+        "pasangan_id": 21,
+        "user": {
+          "id": 8,
+          "nama": "mahasiswa1",
+          "email": "",
+          "token": null,
+          "peran": 0,
+          "NIM": "435-799-2642",
+          "created_at": null,
+          "updated_at": null,
+          "status_kalender": null
+        }
+      }
+    ],
+    "dosen": [
+      {
+        "id": 42,
+        "user_id": 2,
+        "peran_pasangan": 1,
+        "created_at": "2017-08-28T14:22:48.000Z",
+        "updated_at": "2017-08-28T14:22:48.000Z",
+        "pasangan_id": 21,
+        "user": {
+          "id": 2,
+          "nama": "dosen2",
+          "email": "hasnurk@gmail.com",
+          "token": "1\/wHT6b6vzDptKG3RpYgJS0IRWjPI1vdyGBVp3Y37ALgQ",
+          "peran": 1,
+          "NIM": "273-364-2661",
+          "created_at": null,
+          "updated_at": "2017-08-28T13:47:44.000Z",
+          "status_kalender": null
+        }
+      }
+    ]
+  },
+  {
+    "idEvent": "1",
+    "title": "Event mahasiswa2",
+    "topik": "Try to back up the HTTP sensor, maybe it will synthesize the 1080p firewall!",
+    "room": 2,
+    "start": "2017-08-28T10:02:28.000Z",
+    "end": "2017-08-28T10:42:28.000Z",
+    "anggota": [
+      {
+        "id": 45,
+        "user_id": 7,
+        "peran_pasangan": 0,
+        "created_at": "2017-08-28T14:22:48.000Z",
+        "updated_at": "2017-08-28T14:22:48.000Z",
+        "pasangan_id": 22,
+        "user": {
+          "id": 7,
+          "nama": "dosen7",
+          "email": "bimawansatrianto@gmail.com",
+          "token": "1\/1_CATwHqO4ef8OtemdVy_R-B9LjjGejRLpLZCuwRcwk",
+          "peran": 1,
+          "NIM": "616-259-6389",
+          "created_at": null,
+          "updated_at": "2017-08-28T13:53:43.000Z",
+          "status_kalender": null
+        }
+      }
+    ],
+    "dosen": [
+      {
+        "id": 46,
+        "user_id": 1,
+        "peran_pasangan": 1,
+        "created_at": "2017-08-28T14:22:48.000Z",
+        "updated_at": "2017-08-28T14:22:48.000Z",
+        "pasangan_id": 22,
+        "user": {
+          "id": 1,
+          "nama": "dosen1",
+          "email": "imathenoor@gmail.com",
+          "token": "1\/L8SlUq5jfDvdkkXaa-9KYoGNiCnF_9YiaRQurYQ0smU",
+          "peran": 1,
+          "NIM": "181-193-9416",
+          "created_at": null,
+          "updated_at": "2017-08-28T13:56:14.000Z",
+          "status_kalender": null
+        }
+      }
+    ]
+  },
+  {
+    "idEvent": "2",
+    "title": "Event dosen7",
+    "topik": "You can't reboot the capacitor without copying the multi-byte SDD monitor!",
+    "room": 1,
+    "start": "2017-08-28T14:02:28.000Z",
+    "end": "2017-08-28T14:42:28.000Z",
+    "anggota": [
+      {
+        "id": 43,
+        "user_id": 9,
+        "peran_pasangan": 0,
+        "created_at": "2017-08-28T14:22:48.000Z",
+        "updated_at": "2017-08-28T14:22:48.000Z",
+        "pasangan_id": 23,
+        "user": {
+          "id": 9,
+          "nama": "mahasiswa2",
+          "email": "",
+          "token": null,
+          "peran": 0,
+          "NIM": "846-066-4078",
+          "created_at": null,
+          "updated_at": null,
+          "status_kalender": null
+        }
+      }
+    ],
+    "dosen": [
+      {
+        "id": 44,
+        "user_id": 3,
+        "peran_pasangan": 1,
+        "created_at": "2017-08-28T14:22:48.000Z",
+        "updated_at": "2017-08-28T14:22:48.000Z",
+        "pasangan_id": 23,
+        "user": {
+          "id": 3,
+          "nama": "dosen3",
+          "email": "13514106@std.stei.itb.ac.id",
+          "token": "1\/RZ4jXAx5rGIuINunnyiJBAM9q8rfqudDgE7kEeQ2Njg",
+          "peran": 1,
+          "NIM": "556-331-2419",
+          "created_at": null,
+          "updated_at": "2017-08-28T13:49:14.000Z",
+          "status_kalender": null
+        }
+      }
+    ]
+  }
+]
+
+		await FinalizeEvent(testJSON, 1)
+		return
+
 
 		console.log("ScheduleEvent=========")
 		ScheduleEvent(3, "2017-08-08T00:00:00+07:00", "2017-10-10T23:59:59+07:00", [1])

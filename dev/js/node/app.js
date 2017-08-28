@@ -249,6 +249,15 @@ app.post('/eventmahasiswa', function(request, response){
 	})
 })
 
+app.post('/finalize', function(request, response){
+	Event.FinalizeEvent(request.body.events, request.body.event_type).then(function(result){
+		response.send("success")
+	}).catch(function(err){
+		console.log(err)
+		response.send(err)
+	})
+})
+
 //USER====================================================================
 app.get('/user', function(request, response){
 	user.FetchUser().then(function(result){
