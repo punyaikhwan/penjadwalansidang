@@ -6,6 +6,7 @@ var user = require('./functions/user_function.js')
 var KP = require('./functions/kp_function.js')
 var TA = require('./functions/ta_function.js')
 var Event = require('./functions/event_function.js')
+var Room = require('./functions/room_function.js')
 var CalendarList = require('./functions/calendar_list_function')
 // var googleUtil = require('./GoogleLogin.js')
 var secretHandler = require('./sessionSecret.js')
@@ -137,6 +138,62 @@ app.use('/getUserInfo', function(request, response){
   	// response.send(session)
 })
 
+//Ruangan====================================================================
+app.get('/ruangan', function(request, response){
+	Room.FetchRoom().then(function(result){
+		response.send(result)
+	}).catch(function(err){
+		console.log(err)
+		response.send(err)
+	})
+})
+
+/*
+{
+	"nama": 
+}
+*/
+app.post('/ruangan/new', function(request, response){
+	Room.NewRoom({"nama": request.body.nama}).then(function(result){
+		response.send('success')
+	}).catch(function(err){
+		console.log(err)
+		response.send(err)
+	})
+})
+
+/*
+{
+	"ids": [1],
+	"objs": [[
+		"start": ,
+		"end": ,
+		"title": 
+	]]
+}
+*/
+app.post('/ruangan/edit', function(request, response){
+	Room.EditRoom(request.body.ids, request.body.objs).then(function(result){
+		response.send('success')
+	}).catch(function(err){
+		console.log(err)
+		response.send(err)
+	})
+})
+
+/*
+{
+	"id": 1,
+}
+*/
+app.post('/ruangan/delete', function(request, response){
+	Room.DeleteRoom(request.body.id).then(function(result){
+		response.send('success')
+	}).catch(function(err){
+		console.log(err)
+		response.send(err)
+	})
+})
 //Calendar====================================================================
 app.get('/calendars', function(request, response){
 	let id = request.query.id;
@@ -166,6 +223,24 @@ app.post('/schedule', function(request, response){
 	let start = request.body.start
 	let end = request.body.end
 	Event.ScheduleEvent(event_type, start, end).then(function(result){
+		response.send(result)
+	}).catch(function(err){
+		console.log(err)
+		response.send(err)
+	})
+})
+
+app.get('/events', function(request, response){
+	Event.FetchEvent().then(function(result){
+		response.send(result)
+	}).catch(function(err){
+		console.log(err)
+		response.send(err)
+	})
+})
+
+app.post('/eventmahasiswa', function(request, response){
+	Event.FetchEventMahasiswa(request.body.id).then(function(result){
 		response.send(result)
 	}).catch(function(err){
 		console.log(err)
