@@ -30,8 +30,13 @@ exports.seed = function(knex, Promise) {
         //Deletes ALL existing entries
         knex('anggota_pasangan_kp').del().then(function(c){console.log('delete anggota_pasangan_kp')}),
         knex('anggota_pasangan_ta').del().then(function(c){console.log('delete anggota_pasangan_ta')}),
+        knex('anggota_event').del().then(function(c){console.log('delete anggota_event')}),
+        knex('calendar_list_user').del().then(function(c){console.log('delete calendar_list_user')}),
+        knex('event').del().then(function(c){console.log('delete event')}),
+        knex('event_ruangan').del().then(function(c){console.log('delete event_ruangan')}),
         knex('pasangan_kp').del().then(function(c){console.log('delete pasangan_kp')}),
         knex('pasangan_ta').del().then(function(c){console.log('delete pasangan_ta')}),
+        knex('ruangan').del().then(function(c){console.log('delete pasangan_ta')}),
         knex('user').del().then(function(c){console.log('delete user')}),
     ];
 
