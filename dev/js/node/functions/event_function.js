@@ -173,7 +173,7 @@ var FormatForSave = function(events, event_type, pasangan){
 	return result
 }
 //===============================================================================
-var ScheduleEvent = async function(event_type, start, end){
+var ScheduleEvent = async function(event_type, start, end, pasangans){
 	try{
 		var pasangan
 		var events
@@ -182,12 +182,12 @@ var ScheduleEvent = async function(event_type, start, end){
 		//fetch pasangan
 		console.log("preparing to schedule================")
 		if(event_type == 1){
-			pasangan = await TA.model.fetchAll({withRelated: ['pembimbing', 'penguji', 'mahasiswa']})
+			pasangan = await TA.model.where('id','IN', pasangans).fetchAll({withRelated: ['pembimbing', 'penguji', 'mahasiswa']})
 			rooms = await Room.model.fetchAll({withRelated: 'event'})
 		}
 
 		if(event_type == 2){
-			pasangan = await KP.model.fetchAll({withRelated: ['pembimbing', 'mahasiswa.user']})
+			pasangan = await KP.model.where('id','IN', pasangans).fetchAll({withRelated: ['pembimbing', 'mahasiswa.user']})
 			rooms = await Room.model.fetchAll({withRelated: 'event'})
 		}
 
@@ -360,6 +360,26 @@ var FetchKPEvent = function(){
 	return Event.model.fetchAll({withRelated:['kelompok_KP.anggota.user']})
 }
 //===============================================================================
+var FetchEvent = function(){
+	return Event.model.fetchAll({withRelated:['mahasiswa.user', 'dosen.user']})
+}//===============================================================================
+var FetchEventMahasiswa = function(id){
+	return Event.model.fetchAll({withRelated:['mahasiswa.user', 'dosen.user']}).then(function(result){
+		result = result.toJSON()
+		let events = []
+
+		for(var i=0; i<result.length; i++){
+			for(var j=0; j<result[i].mahasiswa.length; j++){
+				if(result[i].mahasiswa[j].id == id){
+					events.push(result[i])
+				}
+			}	
+		}
+
+		return events
+	})
+}
+//===============================================================================
 var FormatEvent = function(events){
 	var formatted = []
 
@@ -410,6 +430,12 @@ var FormatEvent = function(events){
 //===============================================================================
 var test = async function(){
 	try{
+
+		var result = await FetchEventMahasiswa(49)
+		console.log(JSON.stringify(result))
+
+		return
+
 		var newStuff = {
 			event_id: 'yyyyyy',
 			tipe_event: 1,
@@ -419,7 +445,7 @@ var test = async function(){
 		}
 
 		console.log("ScheduleEvent=========")
-		ScheduleEvent(2, "2017-08-08T00:00:00+07:00", "2017-10-10T23:59:59+07:00")
+		ScheduleEvent(2, "2017-08-08T00:00:00+07:00", "2017-10-10T23:59:59+07:00", [1])
 		return
 		console.log("GETEVENT=========")
 		GetRawEvent("2017-08-08T00:00:00+07:00", "2017-10-10T23:59:59+07:00")
@@ -445,5 +471,7 @@ module.exports = {
   NewEvent,
   FetchTAEvent,
   FetchKPEvent,
-  ScheduleEvent
+  ScheduleEvent,
+  FetchEvent,
+  FetchEventMahasiswa
 }
