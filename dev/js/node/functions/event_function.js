@@ -58,6 +58,13 @@ var PreEventToReady = function(pre, rooms, pasangan, event_type){
 			)	
 		}
 
+		length = pasangan[i].akhir? pasangan[i].akhir.length: 0  
+		for(var j=0; j<length; j++){
+			pre.data.listStudent[i].idPembimbing.push(
+				pasangan[i].akhir[j].user_id
+			)	
+		}
+
 		pre.data.listStudent[i].idPenguji = []
 		length = pasangan[i].penguji? pasangan[i].penguji.length: 0  
 		for(var j=0; j<length; j++){
@@ -348,7 +355,7 @@ var FinalizeEvent = async function(events, event_type){
 			
 			if(event_type == 1){
 				await KP.model.where({'status_penjadwalan': 0}).save({status_penjadwalan: event_type},{method: 'update', patch: true}).catch(function(err){
-					
+
 				})
 				
 			}
