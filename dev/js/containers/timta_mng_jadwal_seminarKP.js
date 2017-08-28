@@ -23,6 +23,8 @@ import {
 } from 'material-ui/Table';
 import DatePicker from 'material-ui/DatePicker';
 import SubHeader from 'material-ui/SubHeader';
+import CircularProgress from 'material-ui/CircularProgress';
+import Dialog from 'material-ui/Dialog';
 
 import imgProfile from '../../scss/public/images/imgprofile.jpg';
 
@@ -36,7 +38,7 @@ class timta_mng_jadwal_seminarKP extends Component {
     super(props);
     this.state = {
       open: false,
-      dataKelompok: this.props.kelompok,
+      modalLoadScheduling: false,
       checkBoxKelompok: [],
       selectAll: false,
       listDosen: [],
@@ -60,6 +62,7 @@ class timta_mng_jadwal_seminarKP extends Component {
     }, 1000);
   }
 
+  
   handleToggle(){this.setState({open: !this.state.open})};
   handleClose(){this.setState({open: false})};
 
@@ -77,7 +80,7 @@ class timta_mng_jadwal_seminarKP extends Component {
     var tempListDosen = [];
     for (var i=0; i<this.state.checkBoxKelompok.length; i++) {
       if (this.state.checkBoxKelompok[i] === 1) {
-        this.union_arrays(tempListDosen, this.state.dataKelompok[i].dosen);
+        this.union_arrays(tempListDosen, this.props.kelompok[i].dosen);
       }
     }
     this.setState({listDosen: tempListDosen});
@@ -85,7 +88,7 @@ class timta_mng_jadwal_seminarKP extends Component {
 
   handleSelectAll() {
     let tempcheckBoxKelompok = this.state.checkBoxKelompok;
-    let tempdataKelompok = this.state.dataKelompok;
+    let tempdataKelompok = this.props.kelompok;
     let tempListDosen = this.state.listDosen;
     if (this.state.selectAll === false) {
       this.setState({selectAll: true});
@@ -106,7 +109,7 @@ class timta_mng_jadwal_seminarKP extends Component {
 
   handleSelectKelompok(i) {
     let tempCheckBoxKelompok = this.state.checkBoxKelompok;
-    let tempDataKelompok = this.state.dataKelompok;
+    let tempDataKelompok = this.props.kelompok;
     let tempListDosen = this.state.listDosen;
     if (tempCheckBoxKelompok[i] === 0) {
       tempCheckBoxKelompok[i] = 1;
@@ -137,6 +140,9 @@ class timta_mng_jadwal_seminarKP extends Component {
     this.setState({endDate: date})
   }
 
+  handleRequestSchedule() {
+    this.setState({modalLoadScheduling: true});
+  }
   render() {
     return (
       <MuiThemeProvider>
@@ -169,8 +175,8 @@ class timta_mng_jadwal_seminarKP extends Component {
                 <ListItem leftCheckbox={<Checkbox checked={this.state.selectAll}/>} primaryText="Pilih semua" onClick={()=>this.handleSelectAll()}/>
               </List>
               <List>
-                {this.state.dataKelompok.map((item, i) => (
-                  <ListItem key={i} primaryText={"Kelompok "+item.id} leftCheckbox={<Checkbox checked={this.state.checkBoxKelompok[i] === 1 ? true:false} onCheck={()=>this.handleSelectKelompok(i)}/>}/>
+                {this.props.kelompok.map((item, i) => (
+                  <ListItem key={i} primaryText={"Kelompok "+ item.id} leftCheckbox={<Checkbox checked={this.state.checkBoxKelompok[i] === 1 ? true:false} onCheck={()=>this.handleSelectKelompok(i)}/>}/>
                 ))}
               </List>
             </ScrollArea>
@@ -193,8 +199,8 @@ class timta_mng_jadwal_seminarKP extends Component {
                   {this.state.listDosen.map((item, i) => (
                     <TableRow key={i}>
                       <TableRowColumn></TableRowColumn>
-                      <TableRowColumn>{item}</TableRowColumn>
-                      <TableRowColumn>Yes</TableRowColumn>
+                      <TableRowColumn>{item.user.nama}</TableRowColumn>
+                      <TableRowColumn>{item.user.status_kalender}</TableRowColumn>
                     </TableRow>
                   ))}
               </TableBody>
@@ -241,13 +247,15 @@ class timta_mng_jadwal_seminarKP extends Component {
                 />
               </Col>
             </Row>
+            <br/>
             <div style={{textAlign: 'center'}}>
             <RaisedButton
               label="Jadwalkan!"
               backgroundColor="#2196F3"
               labelColor= "#fff"
               fullWidth
-              style={{marginLeft: 20, marginTop: 50}}
+              style={{marginLeft: 20, marginTop: 20}}
+              onClick = {()=>this.handleRequestSchedule()}
             />
             </div>
           </Col>
@@ -286,6 +294,15 @@ class timta_mng_jadwal_seminarKP extends Component {
           <MenuItem insetChildren={true} href="/timta_mng_jadwal_seminarTA2">Seminar TA 2</MenuItem>
           <MenuItem insetChildren={true} href="/timta_mng_jadwal_sidangTA">Sidang Akhir</MenuItem>
         </Drawer>
+
+        <Dialog
+          modal={false}
+          open={this.state.modalLoadScheduling}
+          contentStyle = {{width: 300, textAlign: 'center'}}
+        >
+          <CircularProgress size={80} thickness={5} />
+          <p>Sedang menjadwalkan...</p>
+        </Dialog>
       </div>
       </MuiThemeProvider>
     );

@@ -32,6 +32,9 @@ import {fetchTA} from '../actions/ta/fetch-ta'
 import {editTA} from '../actions/ta/edit-ta'
 import {newTA} from '../actions/ta/new-ta'
 import {deleteTA} from '../actions/ta/delete-ta'
+import {fetchMahasiswa} from '../actions/user/fetch-mahasiswa'
+import {fetchDosen} from '../actions/user/fetch-dosen'
+import {tempEditTA} from '../actions/ta/temp-edit-ta'
 
 class timta_mng_pasangan_TA extends Component {
 
@@ -45,12 +48,11 @@ class timta_mng_pasangan_TA extends Component {
       modalTambahDosenPengujiTA1: false,
       modalTambahDosenPengujiAkhir: false,
       modalEditTopic: false,
-      mahasiswa: [],
+      mahasiswa: "",
       topic: "",
       dosenPembimbing: "",
       dosenPengujiTA1: "",
-      dosenPengujiAkhir: "",
-      dataTA : this.props.dataTA
+      dosenPengujiAkhir: ""
     };
   }
 
@@ -73,36 +75,24 @@ class timta_mng_pasangan_TA extends Component {
   handleChangeDosenPengujiAkhir(event, index, dosenPengujiAkhir) {this.setState({dosenPengujiAkhir})};
 
   handleEditTopic() {
-    let tempDataTA = this.state.dataTA;
+    let tempDataTA = this.props.dataTA;
     tempDataTA[this.state.selectedMhs].topik = this.state.topic;
-    this.setState({dataTA: tempDataTA});
+    this.props.edit(tempDataTA, this.state.selectedMhs)
     this.setState({topic: ""});
     this.handleCloseEditTopic();
   }
 
   handleTambahMahasiswa() {
-    let tempDataElemenMhs = [];
-    this.state.mahasiswa.forEach(function(item, i) {
-      let tempMhs = {
-        nama: item,
-        topik: "",
-        dosenPembimbing: [],
-        dosenPengujiTA1: [],
-        dosenPengujiAkhir: []
-      }
-      tempDataElemenMhs.push(tempMhs);
-      console.log("tempDataElemenMhs:", tempDataElemenMhs);
-    })
-    let tempDataTA = this.state.dataTA;
-    tempDataTA = tempDataTA.concat(tempDataElemenMhs);
-    console.log("data Mhs:", tempDataTA);
-    this.setState({dataTA: tempDataTA});
-    this.setState({mahasiswa: []});
+    this.props.newTA(this.state.mahasiswa.id);
+    this.setState({mahasiswa: ""});
     this.handleCloseTambahMahasiswa();
+
   }
 
   componentDidMount(){
     this.props.fetchTA();
+    this.props.fetchMahasiswa();
+    this.props.fetchDosen();
   }
 
   handleDeleteMahasiswa(i) {
@@ -110,54 +100,65 @@ class timta_mng_pasangan_TA extends Component {
   }
 
   handleTambahDosenPembimbing() {
-    let tempDataTA = this.state.dataTA;
-    console.log("Dosen pembimbing tmbah:", this.state.dosenPembimbing);
-    tempDataTA[this.state.selectedMhs].dosenPembimbing.push(this.state.dosenPembimbing);
-    console.log("data Mhs:", tempDataTA);
-    this.setState({dataTA: tempDataTA});
+    let tempDataTA = this.props.dataTA;
+    let tempNewDosen = {
+        user : this.state.dosenPembimbing
+    }
+    tempDataTA[this.state.selectedMhs].pembimbing.push(tempNewDosen);
+    this.props.edit(tempDataTA, this.state.selectedMhs);
     this.setState({dosenPembimbing: ""});
     this.handleCloseTambahDosenPembimbing();
   }
 
   handleDeleteDosenPembimbing(i) {
-    let tempDataTA = this.state.dataTA;
-    tempDataTA[this.state.selectedMhs].dosenPembimbing.splice(i,1);
-    console.log("data Mhs:",i," ", tempDataTA);
-    this.setState({dataTA: tempDataTA});
+    let tempDataTA = this.props.dataTA;
+    tempDataTA[this.state.selectedMhs].pembimbing.splice(i,1);
+    this.props.edit(tempDataTA, this.state.selectedMhs);
+    this.forceUpdate();
   }
 
   handleTambahDosenPengujiTA1() {
-    let tempDataTA = this.state.dataTA;
-    console.log("Dosen peguji 1 tmbah:", this.state.dosenPengujiTA1);
-    tempDataTA[this.state.selectedMhs].dosenPengujiTA1.push(this.state.dosenPengujiTA1);
-    console.log("data Mhs:", tempDataTA);
-    this.setState({dataTA: tempDataTA});
+    let tempDataTA = this.props.dataTA;
+    let tempNewDosen = {
+        user : this.state.dosenPengujiTA1
+    }
+    tempDataTA[this.state.selectedMhs].penguji.push(tempNewDosen);
+    this.props.edit(tempDataTA, this.state.selectedMhs);
     this.setState({dosenPengujiTA1: ""});
     this.handleCloseTambahDosenPengujiTA1();
   }
 
   handleDeleteDosenPengujiTA1(i) {
-    let tempDataTA = this.state.dataTA;
-    tempDataTA[this.state.selectedMhs].dosenPengujiTA1.splice(i,1);
-    console.log("data Mhs:",i," ", tempDataTA);
-    this.setState({dataTA: tempDataTA});
+    let tempDataTA = this.props.dataTA;
+    tempDataTA[this.state.selectedMhs].penguji.splice(i,1);
+    this.props.edit(tempDataTA, this.state.selectedMhs);
+    this.forceUpdate();
   }
 
   handleTambahDosenPengujiAkhir() {
-    let tempDataTA = this.state.dataTA;
-    console.log("Dosen peguji 1 tmbah:", this.state.dosenPengujiAkhir);
-    tempDataTA[this.state.selectedMhs].dosenPengujiAkhir.push(this.state.dosenPengujiAkhir);
-    console.log("data Mhs:", tempDataTA);
-    this.setState({dataTA: tempDataTA});
+    let tempDataTA = this.props.dataTA;
+    let tempNewDosen = {
+        user : this.state.dosenPengujiAkhir
+    }
+    tempDataTA[this.state.selectedMhs].akhir.push(tempNewDosen);
+    this.props.edit(tempDataTA, this.state.selectedMhs);
     this.setState({dosenPengujiAkhir: ""});
     this.handleCloseTambahDosenPengujiAkhir();
   }
 
   handleDeleteDosenPengujiAkhir(i) {
-    let tempDataTA = this.state.dataTA;
-    tempDataTA[this.state.selectedMhs].dosenPengujiAkhir.splice(i,1);
-    console.log("data Mhs:",i," ", tempDataTA);
-    this.setState({dataTA: tempDataTA});
+    let tempDataTA = this.props.dataTA;
+    tempDataTA[this.state.selectedMhs].akhir.splice(i,1);
+    this.props.edit(tempDataTA, this.state.selectedMhs);
+    this.forceUpdate();
+  }
+
+  handleSelect(i, data){
+      this.setState({selectedMhs:i})
+  }
+
+  handleSave(){
+    this.props.editTA(this.props.dataTA);
   }
 
   render() {
@@ -245,6 +246,7 @@ class timta_mng_pasangan_TA extends Component {
           label="SAVE"
           labelPosition="after"
           icon={<i className="material-icons" style={{color:'black'}}>save</i>}
+          onTouchTap={()=>this.handleSave()}
         />
         <AppBar
           title="Dashboard Tim TA - Daftar Pasangan Tugas Akhir"
@@ -287,7 +289,7 @@ class timta_mng_pasangan_TA extends Component {
                       {this.props.dataTA.map((mhs, i) => (
                         <Row>
                           <Col md="8" xs="8">
-                            <ListItem key={i} onTouchTap={()=>this.setState({selectedMhs:i})}>
+                            <ListItem key={i} onTouchTap={()=>this.handleSelect(i,mhs)}>
                             {mhs.mahasiswa.nama}
                             </ListItem>
                           </Col>
@@ -353,7 +355,7 @@ class timta_mng_pasangan_TA extends Component {
                                 <FlatButton
                                   labelPosition="after"
                                   icon={<i className="material-icons" style={{color:'black', fontSize:'14px'}}>close</i>}
-                                  onClick={()=>this.handleDeleteDosenPembimbing(item.id)}
+                                  onClick={()=>this.handleDeleteDosenPembimbing(i)}
                                 />
                               </Col>
                             </Row>
@@ -395,7 +397,7 @@ class timta_mng_pasangan_TA extends Component {
                                 <FlatButton
                                   labelPosition="after"
                                   icon={<i className="material-icons" style={{color:'black', fontSize:'14px'}}>close</i>}
-                                  onClick={()=>this.handleDeleteDosenPengujiTA1(item.id)}
+                                  onClick={()=>this.handleDeleteDosenPengujiTA1(i)}
                                 />
                               </Col>
                             </Row>
@@ -431,7 +433,7 @@ class timta_mng_pasangan_TA extends Component {
                                 <FlatButton
                                   labelPosition="after"
                                   icon={<i className="material-icons" style={{color:'black', fontSize:'14px'}}>close</i>}
-                                  onClick={()=>this.handleDeleteDosenPengujiAkhir(item.id)}
+                                  onClick={()=>this.handleDeleteDosenPengujiAkhir(i)}
                                 />
                               </Col>
                             </Row>
@@ -491,18 +493,17 @@ class timta_mng_pasangan_TA extends Component {
           onRequestClose={()=>this.handleCloseTambahMahasiswa()}
         >
           <SelectField
-            multiple={true}
+            multiple={false}
             hintText="Select a name"
             value={this.state.mahasiswa}
             onChange={(event, index, mahasiswa)=>this.handleChangeMahasiswa(event, index, mahasiswa)}
           >
           {this.props.mahasiswa.map((item) => (
             <MenuItem
-              key={item}
+              key={item.id}
               insetChildren={true}
-              checked={this.state.mahasiswa && this.state.mahasiswa.indexOf(item) > -1}
               value={item}
-              primaryText={item}
+              primaryText={item.nama}
             />
           ))
           }
@@ -518,7 +519,7 @@ class timta_mng_pasangan_TA extends Component {
         >
         <TextField
           hintText="Tulis topik di sini..."
-          defaultValue = {this.state.dataTA.length !== 0 ? this.state.dataTA[this.state.selectedMhs].topik : ""}
+          defaultValue = {this.props.dataTA[this.state.selectedMhs] ? this.props.dataTA[this.state.selectedMhs].topik : ""}
           style={{width:500}}
           onChange={(event)=>this.handleChangeTopic(event)}
         />
@@ -539,11 +540,11 @@ class timta_mng_pasangan_TA extends Component {
           >
           {this.props.dosen.map((item) => (
             <MenuItem
-              key={item}
+              key={item.id}
               insetChildren={true}
               checked={this.state.dosenPembimbing === item}
               value={item}
-              primaryText={item}
+              primaryText={item.nama}
             />
           ))
           }
@@ -565,11 +566,11 @@ class timta_mng_pasangan_TA extends Component {
           >
           {this.props.dosen.map((item) => (
             <MenuItem
-              key={item}
+              key={item.id}
               insetChildren={true}
               checked={this.state.dosenPengujiTA1 === item}
               value={item}
-              primaryText={item}
+              primaryText={item.nama}
             />
           ))
           }
@@ -587,15 +588,15 @@ class timta_mng_pasangan_TA extends Component {
             multiple={false}
             hintText="Select a name"
             value = {this.state.dosenPengujiAkhir}
-            onChange={(event, index, dosenPengujiAkhir) =>this.handleChangeDosenPenguji(event, index, dosenPengujiAkhir) }
+            onChange={(event, index, dosenPengujiAkhir) =>this.handleChangeDosenPengujiAkhir(event, index, dosenPengujiAkhir) }
           >
           {this.props.dosen.map((item) => (
             <MenuItem
-              key={item}
+              key={item.id}
               insetChildren={true}
               checked={this.state.dosenPengujiAkhir === item}
               value={item}
-              primaryText={item}
+              primaryText={item.nama}
             />
           ))
           }
@@ -620,7 +621,10 @@ function matchDispatchToProps(dispatch){
         fetchTA: fetchTA,
         newTA: newTA,
         deleteTA: deleteTA,
-        editTA: editTA
+        editTA: editTA,
+        fetchMahasiswa: fetchMahasiswa,
+        fetchDosen: fetchDosen,
+        edit: tempEditTA
     }, dispatch);
 }
 

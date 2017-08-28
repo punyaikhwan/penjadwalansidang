@@ -1,12 +1,14 @@
 import axios from 'axios'
 
-export const newTA= () => {
+export const newTA= (id) => {
     return function(dispatch) {
 
         dispatch({
             type: "NEW TA"
         })
-        axios.post('http://localhost:3001/ta/new').then(function (data) {
+        axios.post('http://localhost:3001/ta/new', {
+            mahasiswa_id: id
+        }).then(function (data) {
 
             dispatch({
                 type: "DONE NEW TA"

@@ -25,50 +25,39 @@ import BigCalendar from 'react-big-calendar'
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.less';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-
-import imgProfile from '../../scss/public/images/imgprofile.jpg';
+import imgProfile from '../../scss/public/images/dosenprofile.jpg';
 import '../../scss/timTA.scss';
-import events from '../reducers/events';
 import moment from 'moment';
 import dateFormat from 'dateformat';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {moveEvent} from '../actions/event/move-event'
-import {fetchEvent} from '../actions/event/fetch-events'
+import {fetchEvent} from '../actions/event/fetch-events';
 
 BigCalendar.setLocalizer(
   BigCalendar.momentLocalizer(moment)
 );
 
-const DragAndDropCalendar = withDragAndDrop(BigCalendar);
 
-class timta_mng_calendar extends Component {
+class dosen_calendar extends Component {
   constructor(props) {
     super(props);
     this.state = {
       open: false,
-      statusJadwal: 1,
-      /*
-        0: menunggu finalisasi
-        1: sudah difinalisasi
-      */
       selectedEvent: null,
       selectedDate: null,
       modalEvent: false,
       openSnackbar: false,
+      dataUser: {
+        nama: "Dessi Puji Lestari",
+        email: "dessipuji@informatika.org",
+        peran: "Dosen"
+      }
     };
-    this.moveEvent = this.moveEvent.bind(this)
+
   }
 
   componentDidMount(){
     this.props.fetchEvent();
-
-    // setTimeout(()=> {
-    //   if (this.props.events.length !== 0) 
-    //     this.setState({selectedDate: this.props.events[0].start});
-    //     console.log("DATEEEEE", this.state.selectedDate);
-    // }, 1000)
-
   }
 
   handleToggle(){this.setState({open: !this.state.open})};
@@ -77,23 +66,39 @@ class timta_mng_calendar extends Component {
     this.setState({open: false});
   }
 
-  moveEvent({ event, start, end }) {
-    const idx = this.props.events.indexOf(event);
-    let updatedEvent = event;
-    updatedEvent.start = start;
-    updatedEvent.end = end;
-
-
-    const nextEvents = events
-    nextEvents.splice(idx, 1, updatedEvent)
-    this.props.move(nextEvents);
-    // this.setState({events: nextEvents})
-
-  }
+  // moveEvent({ event, start, end }) {
+  //   const { events } = this.state;
+  //   const idx = events.indexOf(event);
+  //   let updatedEvent = event;
+  //   updatedEvent.start = start;
+  //   updatedEvent.end = end;
+  //
+  //   const nextEvents = events
+  //   nextEvents.splice(idx, 1, updatedEvent)
+  //
+  //   this.setState({events: nextEvents})
+  // }
 
   handleSelectedEvent(event) {
     this.setState({selectedEvent: event});
     this.setState({modalEvent: true});
+  }
+
+  eventStyleGetter(event, start, end, isSelected) {
+     console.log(event);
+    var backgroundColor = '204FA7';
+     for (var i=0; i< event.dosen.length; i++) {
+      if (event.dosen[i].nama === this.state.dataUser.nama) {
+        console.log("halooo");
+        backgroundColor = '#247510';
+      }
+     }
+    var style = {
+        backgroundColor: backgroundColor,
+    };
+    return {
+        style: style
+    };
   }
 
   render() {
@@ -109,7 +114,7 @@ class timta_mng_calendar extends Component {
       <MuiThemeProvider>
       <div>
         <AppBar
-          title="Dashboard Tim TA - Manajemen Jadwal Seminar KP"
+          title="Halaman Dosen - Kalender"
           iconElementLeft={
             <IconButton tooltip="Menu" onClick = {()=>this.handleToggle()}>
               <i className="material-icons" style={{color: 'white'}}>menu</i>
@@ -140,52 +145,32 @@ class timta_mng_calendar extends Component {
               </Col>
               <Col md="9" xs="10" className="textProfile">
                 <Row>
-                  <Col className="nameProfile">Ikhwanul Muslimin</Col>
-                  <Col className="emailProfile">ikhwan.m1996@gmail.com</Col>
+                  <Col className="nameProfile">{this.state.dataUser.nama}</Col>
+                  <Col className="emailProfile">{this.state.dataUser.email}</Col>
+                  <Col className="emailProfile">{this.state.dataUser.peran}</Col>
                 </Row>
               </Col>
             </Row>
           </div>
           <hr/>
-          <p className="menuTitle">Manajemen Pengguna</p>
-          <MenuItem insetChildren={true} href="/timta_mng_user">Daftar Pengguna</MenuItem>
-          <MenuItem insetChildren={true} href="/timta_mng_pasangan">Daftar Pasangan</MenuItem>
+          <MenuItem insetChildren={true} style={{backgroundColor:'#b0bec5'}} href="/dosen_calendar">Kalender</MenuItem>
+          <MenuItem insetChildren={true} href="/dosen_setting">Profil dan Pengaturan</MenuItem>
           <br/>
-          <p className="menuTitle">Manajemen Jadwal</p>
-          <MenuItem insetChildren={true} href="/timta_mng_jadwal_seminarKP" style={{backgroundColor:'#b0bec5'}}>Seminar KP</MenuItem>
-          <MenuItem insetChildren={true} href="/timta_mng_jadwal_seminarTA1">Seminar TA 1</MenuItem>
-          <MenuItem insetChildren={true} href="/timta_mng_jadwal_seminarTA2">Seminar TA 2</MenuItem>
-          <MenuItem insetChildren={true} href="/timta_mng_jadwal_sidangTA">Sidang Akhir</MenuItem>
         </Drawer>
 
         <div className="containerCalendar">
-          {this.state.statusJadwal === 0 &&
-          <RaisedButton
-            label="Finalisasi"
-            backgroundColor="#0FC722"
-            labelColor= "#fff"
-            style={{marginBottom: 20}}
-          />
-          }
-          {this.state.statusJadwal === 1 &&
-          <RaisedButton
-            label="Sudah difinalisasi"
-            backgroundColor="#0FC722"
-            labelColor= "#fff"
-            disabled
-            style={{marginBottom: 20}}
-          />
-          }
-          <DragAndDropCalendar
+          <p style={{fontSize: 20}}><i className="material-icons" style={{color: 'black'}}>info</i> Jadwal Anda yang berwarna hijau.</p><br/>
+          <BigCalendar
             selectable
             events={this.props.events}
-            onEventDrop={this.moveEvent}
             defaultView='month'
             onSelectEvent= {event => this.handleSelectedEvent(event)}
             onSelectSlot={(slotInfo) => {
               this.setState({selectedDate: slotInfo.start});
               console.log(this.state.selectedDate);
             }}
+
+            eventPropGetter={(this.eventStyleGetter.bind(this))}
           />
         </div>
 
@@ -236,16 +221,16 @@ class timta_mng_calendar extends Component {
 }
 
 function mapStateToProps(state) {
-    return {
+  console.log(state.events)
+  return {
         events: state.events
     };
 }
 
 function matchDispatchToProps(dispatch){
     return bindActionCreators({
-        move: moveEvent,
-        fetchEvent: fetchEvent
+      fetchEvent: fetchEvent
     }, dispatch);
 }
 
-export default DragDropContext(HTML5Backend)(connect(mapStateToProps, matchDispatchToProps)(timta_mng_calendar));
+export default connect(mapStateToProps, matchDispatchToProps)(dosen_calendar);

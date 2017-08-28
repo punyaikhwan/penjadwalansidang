@@ -1,12 +1,11 @@
 import {combineReducers} from 'redux';
-import UserReducer from './reducer-users';
-import ActiveUserReducer from './reducer-active-user';
 import mhsTA from './mahasiswa-TA'
 import mhsKP from './mahasiswa-KP'
 import dosen from './dosen'
 import kelompok from './kelompok-KP'
 import dataTA from './data-TA'
 import user from './user'
+import events from './events'
 
 /*
  * We combine all reducers into a single object before updated data is dispatched (sent) to store
@@ -14,14 +13,13 @@ import user from './user'
  * */
 
 const allReducers = combineReducers({
-    users: UserReducer,
-    activeUser: ActiveUserReducer,
     mahasiswaTA: mhsTA,
     mahasiswaKP: mhsKP,
     dosen: dosen,
     kelompokKP: kelompok,
     dataTA: dataTA,
     user: user,
+    events: events,
 });
 
 export default allReducers
