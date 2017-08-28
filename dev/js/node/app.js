@@ -195,11 +195,15 @@ app.post('/ruangan/delete', function(request, response){
 	})
 })
 //Calendar====================================================================
-app.get('/calendars', function(request, response){
-	let id = request.query.id;
+app.get('/calendars/:id', function(request, response){
+	let id = request.params.id;
+	console.log(id)
 
 	CalendarList.GetCalendarList(id).then(function(result) {
-		response.send(result)
+		
+		let tempResult = result.data.result[0];
+		console.log(tempResult);
+		response.send(tempResult)
 	}).catch(function(err){
 		console.log(err)
 		response.send(err)
@@ -208,9 +212,11 @@ app.get('/calendars', function(request, response){
 })
 
 app.post('/calendars', function(request, response) {
-	let id = request.body.id
-	CalendarList.InsertCalendarList(id).then(function(result) {
+	let user_id = request.body.user_id;
+	let calendarList = request.body.calendarList;
+	CalendarList.InsertCalendarList(user_id, calendarList).then(function(result) {
 		response.send(result)
+		console.log(result)
 	}).catch(function(err){
 		console.log(err)
 		response.send(err)
