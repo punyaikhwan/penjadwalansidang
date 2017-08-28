@@ -222,7 +222,8 @@ app.post('/schedule', function(request, response){
 	let event_type = request.body.event_type
 	let start = request.body.start
 	let end = request.body.end
-	Event.ScheduleEvent(event_type, start, end).then(function(result){
+	let pasangans = request.body.pasangans
+	Event.ScheduleEvent(event_type, start, end, pasangans).then(function(result){
 		response.send(result)
 	}).catch(function(err){
 		console.log(err)
