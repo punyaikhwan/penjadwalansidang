@@ -205,6 +205,8 @@ var ScheduleEvent = async function(event_type, start, end, pasangans){
 			rooms = await Room.model.fetchAll({withRelated: 'event'})
 		}
 
+		await TA.model.where('id','IN', pasangans).save({status_penjadwalan: 0},{patch: true})
+
 		//getRaw
 		console.log("collecting calendar data================")
 		events = await GetRawEvent(start, end)
@@ -341,6 +343,21 @@ var FinalizeEvent = async function(events, event_type){
 				gloi++
 
 			}))
+
+			//ubah status
+			
+			if(event_type == 1){
+				await KP.model.where({'status_penjadwalan': 0}).save({status_penjadwalan: event_type},{method: 'update', patch: true}).catch(function(err){
+					
+				})
+				
+			}
+			else{
+				await TA.model.where({'status_penjadwalan': 0}).save({status_penjadwalan: event_type},{method: 'update', patch: true}).catch(function(err){
+					
+				})
+			}
+			
 		}
 		
 		
@@ -708,7 +725,7 @@ var test = async function(){
 
 
 		console.log("ScheduleEvent=========")
-		ScheduleEvent(3, "2017-08-08T00:00:00+07:00", "2017-10-10T23:59:59+07:00", [1])
+		ScheduleEvent(1, "2017-08-08T00:00:00+07:00", "2017-10-10T23:59:59+07:00", [1])
 		return
 		console.log("GETEVENT=========")
 		GetRawEvent("2017-08-08T00:00:00+07:00", "2017-10-10T23:59:59+07:00")
