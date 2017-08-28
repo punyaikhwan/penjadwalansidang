@@ -152,10 +152,11 @@ class timta_mng_jadwal_seminarKP extends Component {
           }
       })
       console.log(kel)
-      this.props.schedule(2, this.state.startDate, this.state.endDate, kel);
+      this.props.schedule(1, this.state.startDate, this.state.endDate, kel);
   }
 
   render() {
+      if (this.props.calonEvent.length === 0){
     return (
       <MuiThemeProvider>
       <div>
@@ -314,13 +315,19 @@ class timta_mng_jadwal_seminarKP extends Component {
         >
           <CircularProgress size={80} thickness={5} />
           <p>Sedang menjadwalkan...</p>
-            {this.props.calonEvent.length !== 0 &&
-            <Redirect to="/timta_calendar" />
-            }
+
         </Dialog>
       </div>
       </MuiThemeProvider>
     );
+  } else {
+    return(
+<div>
+{console.log(JSON.stringify(this.props.calonEvent))}
+<Redirect to="/timta_calendar" />
+</div>
+)
+}
   }
 }
 function mapStateToProps(state) {

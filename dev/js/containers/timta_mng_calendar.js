@@ -237,7 +237,7 @@ class timta_mng_calendar extends Component {
 
 function mapStateToProps(state) {
     return {
-        events: state.events
+        events: state.calonEvent
     };
 }
 
