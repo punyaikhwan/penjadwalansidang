@@ -8,7 +8,7 @@ var DeleteKP = async function(id){
 
 		//delete pasangan kp
 		task.push(new KP.model({"id": id}).destroy())
-		//delete anggota pasangan
+		//delete mahasiswa pasangan
 		var old = await Anggota.model.where({pasangan_id: id}).fetchAll()
 		old = old.toJSON();
 		if(old){ //if old defined/found
@@ -41,7 +41,7 @@ var EditKP = async function(ids, objs){
 			 	.save({topik: objs[i].topik}, {patch: true})
 			)
 
-			//delete anggota lama
+			//delete mahasiswa lama
 			var old = await Anggota.model.where({pasangan_id: ids[i]}).fetchAll()
 			old = old.toJSON();
 			if(old){ //if old defined/found
@@ -53,18 +53,18 @@ var EditKP = async function(ids, objs){
 			}
 			
 
-			//new anggota
-			for(var k=0; k<objs[i].anggotas.length; k++){
+			//new mahasiswa
+			for(var k=0; k<objs[i].mahasiswas.length; k++){
 				task.push(
 					new Anggota.model({
-						user_id: objs[i].anggotas[k],
+						user_id: objs[i].mahasiswas[k],
 						peran_pasangan: 0,
 						pasangan_id: ids[i]
 					}).save()
 				)
 			}
 
-			//new dosen
+			//new pembimbing
 			for(var l=0; l<objs[i].pembimbings.length; l++){
 				task.push(
 					new Anggota.model({
@@ -83,29 +83,29 @@ var EditKP = async function(ids, objs){
 }
 //===============================================================================
 var FetchKP = function(){
-	return KP.model.fetchAll({withRelated:['dosen.user', 'anggota.user']})
+	return KP.model.fetchAll({withRelated:['pembimbing.user', 'mahasiswa.user']})
 }
 //===============================================================================
 var FetchSpecificKP = async function(nama){
 	try{
-		let temp = await KP.model.fetchAll({withRelated:['dosen.user', 'anggota.user']})
+		let temp = await KP.model.fetchAll({withRelated:['pembimbing.user', 'mahasiswa.user']})
 		temp = temp.toJSON()
 
 		//loop ilangin yang ngga sesuai nama
 		var n = nama
 		var mark = []
 		for(var i=0; i<temp.length; i++){
-			//check dosen
-			for(var j1=0; j1<temp[i].dosen.length; j1++){
-				if(temp[i].dosen[j1].user.nama == n){
+			//check pembimbing
+			for(var j1=0; j1<temp[i].pembimbing.length; j1++){
+				if(temp[i].pembimbing[j1].user.nama == n){
 					mark.push(i)
 					break
 				}
 			}
 
-			//check anggota
-			for(var j2=0; j2<temp[i].anggota.length; j2++){
-				if(temp[i].anggota[j2].user.nama == n){
+			//check mahasiswa
+			for(var j2=0; j2<temp[i].mahasiswa.length; j2++){
+				if(temp[i].mahasiswa[j2].user.nama == n){
 					mark.push(i)
 					break
 				}
@@ -126,9 +126,9 @@ var FetchSpecificKP = async function(nama){
 	}
 }
 //===============================================================================
-var CreateKPObj = function(anggotas, topik, pembimbings){
+var CreateKPObj = function(mahasiswas, topik, pembimbings){
 	var obj = {
-		"anggotas": anggotas,
+		"mahasiswas": mahasiswas,
 		"topik": topik,
 		"pembimbings": pembimbings,
 	}
@@ -138,15 +138,15 @@ var CreateKPObj = function(anggotas, topik, pembimbings){
 //===============================================================================
 var test = async function(){
 	try{
-		var anggotas = [1,2]
+		var mahasiswas = [1,2]
 		var pembimbings = [1,2]
 		var topik = "makan sate"
-		var obj = CreateKPObj(anggotas, topik, pembimbings)
+		var obj = CreateKPObj(mahasiswas, topik, pembimbings)
 
-		var anggotas2 = [1]
+		var mahasiswas2 = [1]
 		var pembimbings2 = [2]
 		var topik2 = "makan ayam"
-		var obj2 = CreateKPObj(anggotas2, topik2, pembimbings2)
+		var obj2 = CreateKPObj(mahasiswas2, topik2, pembimbings2)
 
 		//test fetch
 		console.log("FETCH===============================")
