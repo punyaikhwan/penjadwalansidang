@@ -31,6 +31,8 @@ import imgProfile from '../../scss/public/images/imgprofile.jpg';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {fetchTA} from '../actions/ta/fetch-ta'
+import {schedule} from '../actions/event/schedule'
+import {Router, Redirect} from 'react-router'
 
 class timta_mng_jadwal_seminarTA2 extends Component {
 
@@ -38,7 +40,6 @@ class timta_mng_jadwal_seminarTA2 extends Component {
     super(props);
     this.state = {
       open: false,
-      modalLoadScheduling: false,
       selectAll: false,
       checkBoxTA: [],
       listDosen: [],
@@ -139,7 +140,7 @@ class timta_mng_jadwal_seminarTA2 extends Component {
   }
 
   handleRequestSchedule() {
-    this.setState({modalLoadScheduling: true});
+    this.props.schedule();
     //send request schedule to BE
   }
 
@@ -296,12 +297,15 @@ class timta_mng_jadwal_seminarTA2 extends Component {
         </Drawer>
 
         <Dialog
-          modal={false}
-          open={this.state.modalLoadScheduling}
-          contentStyle = {{width: 300, textAlign: 'center'}}
+            modal={false}
+            open={this.props.loading}
+            contentStyle = {{width: 300, textAlign: 'center'}}
         >
           <CircularProgress size={80} thickness={5} />
           <p>Sedang menjadwalkan...</p>
+            {this.props.calonEvent.length !== 0 &&
+            <Redirect to="/timta_calendar" />
+            }
         </Dialog>
       </div>
       </MuiThemeProvider>
@@ -310,11 +314,13 @@ class timta_mng_jadwal_seminarTA2 extends Component {
 }
 function mapStateToProps(state) {
     return {
-        dataTA: state.dataTA
+        dataTA: state.dataTA,
+        loading: state.loading,
+        calonEvent: state.calonEvent,
     };
 }
 
 function matchDispatchToProps(dispatch){
-    return bindActionCreators({fetchTA:fetchTA}, dispatch);
+    return bindActionCreators({fetchTA:fetchTA, schedule:schedule}, dispatch);
 }
 export default connect(mapStateToProps, matchDispatchToProps)(timta_mng_jadwal_seminarTA2);
