@@ -78,6 +78,7 @@ class timta_mng_calendar extends Component {
   }
 
   moveEvent({ event, start, end }) {
+    let events = this.props.events;
     const idx = this.props.events.indexOf(event);
     let updatedEvent = event;
     updatedEvent.start = start;
