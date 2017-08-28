@@ -30,20 +30,59 @@ exports.seed = function(knex, Promise) {
 
     //Inserts seed entries for each table
     //user
-    for (var i_4 = 1; i_4 < 31; i_4++) {
+
+    let nameList = [
+        'dosen1',
+        'dosen2',
+        'dosen3',
+        'dosen4',
+        'dosen5',
+        'dosen6',
+        'dosen7',
+        'mahasiswa1',
+        'mahasiswa2',
+        'mahasiswa3',
+    ]
+
+    let emailList = [
+        'monstergelo@gmail.com',
+        'hasnurk@gmail.com',
+        '13514106@std.stei.itb.ac.id',
+        '13514066@std.stei.itb.ac.id',
+        '13514010@std.stei.itb.ac.id',
+        'heinrichcxxxv@gmail.com',
+        'bimawansatrianto@gmail.com',
+        '',
+        '',
+        '',
+    ]
+
+    let peranList = [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+    ]
+    for (var i_4 = 1; i_4 < 11; i_4++) {
         tasks.push(
             knex('user').insert({
                 id: i_4,
-                nama: faker.name.firstName(),
-                email: faker.internet.email(),
-                peran: random(0,2),
+                nama: nameList[i_4-1],
+                email: emailList[i_4-1],
+                peran: peranList[i_4-1],
                 NIM: faker.phone.phoneNumberFormat(),
             }).then(function(){console.log('populate user')})
         );
     };
 
     ///pasangan_kp
-    for (var i_4 = 1; i_4 < 31; i_4++) {
+    for (var i_4 = 1; i_4 < 4; i_4++) {
         tasks.push(
             knex('pasangan_kp').insert({
                 id: i_4,
@@ -53,54 +92,92 @@ exports.seed = function(knex, Promise) {
     };
 
     ///pasangan_ta
-    for (var i_4 = 1; i_4 < 31; i_4++) {
+    for (var i_4 = 1; i_4 < 4; i_4++) {
         tasks.push(
             knex('pasangan_ta').insert({
                 id: i_4,
                 topik: faker.hacker.phrase(),
-                mahasiswa_id: i_4,
+                mahasiswa_id: i_4+6,
             }).then(function(){console.log('pasangan_ta')})
         );
     };
 
+    let KP_userID = [
+        1,
+        2,
+        3,
+        7,
+        8,
+        9
+    ]
+
+    let KP_peran = [
+        1,
+        1,
+        1,
+        0,
+        0,
+        0
+    ]
+
+    let KP_pasangan = [
+        1,
+        2,
+        3,
+        1,
+        2,
+        3
+    ]
     ///anggota_pasangan_kp
-    for (var i_4 = 1; i_4 < 31; i_4++) {
+    for (var i_4 = 1; i_4 < 7; i_4++) {
         tasks.push(
             knex('anggota_pasangan_kp').insert({
                 id: i_4,
-                user_id: i_4,
-                peran_pasangan: random(0,2),
-                pasangan_id: i_4,
+                user_id: KP_userID[i_4-1],
+                peran_pasangan: KP_peran[i_4-1],
+                pasangan_id: KP_pasangan[i_4-1],
             }).then(function(){console.log('populate anggota_pasangan_kp')})
         );
     };
 
     ///anggota_pasangan_ta
-    for (var i_4 = 1; i_4 < 31; i_4++) {
+    for (var i_4 = 1; i_4 < 7; i_4++) {
         tasks.push(
             knex('anggota_pasangan_ta').insert({
                 id: i_4,
                 user_id: i_4,
-                peran_pasangan: random(0,2),
-                pasangan_id: i_4,
+                peran_pasangan: random(1,3),
+                pasangan_id: random(1,3),
             }).then(function(){console.log('populate anggota_pasangan_ta')})
         );
     };
 
-    ///event
-    for (var i_4 = 1; i_4 < 31; i_4++) {
+    //ruangan
+    for (var i_4 = 1; i_4 < 3; i_4++) {
         tasks.push(
-            knex('event').insert({
+            knex('ruangan').insert({
                 id: i_4,
-                event_id: faker.phone.phoneNumberFormat(),
-                tipe_event: random(1,2),
-                pasangan_id: i_4,
-                topik: faker.hacker.phrase(),
-                title: faker.name.title(),
-                room_id: i_4,
-                start: faker.date.recent(),
-                end: faker.date.future(),
-            }).then(function(){console.log('populate event')})
+                nama: "ruangan "+i_4
+            }).then(function(){console.log('populate anggota_pasangan_ta')})
+        );
+    };
+
+    //event ruangan
+    let room_list = [
+        1,
+        1,
+        2,
+        2
+    ]
+    for (var i_4 = 1; i_4 < 5; i_4++) {
+        tasks.push(
+            knex('event_ruangan').insert({
+                id: i_4,
+                room_id: room_list[i_4-1],
+                title: "event "+i_4,
+                start: faker.date.past(),
+                end: faker.date.recent(),
+            }).then(function(){console.log('populate anggota_pasangan_ta')})
         );
     };
 
