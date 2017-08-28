@@ -438,7 +438,7 @@ var test = async function(){
 }
 //===============================================================================
 //main program
-test()
+// test()
 
 module.exports = {
   DeleteEvent, 

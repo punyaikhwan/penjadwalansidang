@@ -6,6 +6,11 @@ import kelompok from './kelompok-KP'
 import dataTA from './data-TA'
 import user from './user'
 import events from './events'
+import active from './active-user'
+import calendar from './calendars'
+import eventCalon from './event-calon'
+import loading from './loading'
+
 
 /*
  * We combine all reducers into a single object before updated data is dispatched (sent) to store
@@ -20,6 +25,10 @@ const allReducers = combineReducers({
     dataTA: dataTA,
     user: user,
     events: events,
+    activeUser: active,
+    calendar: calendar,
+    calonEvent: eventCalon,
+    loading: loading,
 });
 
 export default allReducers
