@@ -49,6 +49,7 @@ class timta_mng_ruangan extends Component {
       startDate: null,
       endDate: null,
       selectedRuangan: 0,
+      selectedEvent: 0,
       idRuangan: "",
       // dataRuangan: [
       //   {
@@ -155,6 +156,19 @@ class timta_mng_ruangan extends Component {
     this.setState({startDate: startDateFull});
     this.setState({endDate: endDateFull});
     this.setState({modalEditEvent:true});
+    this.setState({selectedEvent: i})
+  }
+
+  handleEditEvent(i){
+    let tempDataRuangan = this.props.dataRuangan;
+    console.log(tempDataRuangan[this.state.selectedRuangan].event[i])
+    tempDataRuangan[this.state.selectedRuangan].event[i].title = this.state.titleEvent;
+    tempDataRuangan[this.state.selectedRuangan].event[i].start = this.state.startDate;
+    tempDataRuangan[this.state.selectedRuangan].event[i].end = this.state.endDate;
+    console.log(tempDataRuangan[this.state.selectedRuangan].event[i])
+    console.log(tempDataRuangan[this.state.selectedRuangan])
+    this.props.edit(tempDataRuangan, this.state.selectedRuangan)
+      this.handleCloseEditEvent();
   }
 
   handleCloseEditEvent(){
@@ -195,7 +209,7 @@ class timta_mng_ruangan extends Component {
         label="Submit"
         primary={true}
         keyboardFocused={true}
-        onClick={()=>this.handleEditEvent()}
+        onClick={()=>this.handleEditEvent(this.state.selectedEvent)}
       />,
     ];
 
@@ -216,17 +230,17 @@ class timta_mng_ruangan extends Component {
       <MuiThemeProvider>
       <div>
         <RaisedButton
-          style={{
-            position: 'fixed',
-            marginTop: this.props.height-50,
-            marginLeft: this.props.width-200,
-            alignItems: 'center'
-          }}
-          backgroundColor="#F1D600"
-          label="SAVE"
-          labelPosition="after"
-          icon={<i className="material-icons" style={{color:'black'}}>save</i>}
-          onClick={()=>this.handleSave()}
+            style={{
+                position: 'fixed',
+                marginTop: this.props.height-50,
+                marginLeft: this.props.width-200,
+                alignItems: 'center'
+            }}
+            backgroundColor="#F1D600"
+            label="SAVE"
+            labelPosition="after"
+            icon={<i className="material-icons" style={{color:'black'}}>save</i>}
+            onTouchTap={()=>this.handleSave()}
         />
         <AppBar
           title="Dashboard Tim TA - Manajemen Ruangan"
