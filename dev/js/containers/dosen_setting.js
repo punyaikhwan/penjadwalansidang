@@ -26,9 +26,9 @@ import imgProfile from '../../scss/public/images/dosenprofile.jpg';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import Checkbox from 'material-ui/Checkbox';
-import {login} from '../actions/auth/login'
 import {fetchCalendar} from '../actions/calendar/fetch-calendar'
 import {selectCalendar} from '../actions/calendar/select-calendar'
+import {changeStatus} from '../actions/calendar/change-status'
 
 class dosen_setting extends Component {
 
@@ -46,11 +46,28 @@ class dosen_setting extends Component {
   handleSelect(i){
       let tempCalList = this.props.calendarList;
       tempCalList[i].status = !this.props.calendarList[i].status;
-      this.setState({calendarList: tempCalList});
+      // this.setState({calendarList: tempCalList});
+      this.props.changeStatus(tempCalList);
       console.log(this.props.calendarList);
   }
 
   handleSave(){
+    let arr = []
+    this.props.calendarList.forEach(function(item){
+      if (item.status == 1){
+        let obj = {
+          id: item.calendar_id,
+          name: item.calendar_name
+        }
+        arr.push(obj)
+      }
+    })
+      let objs = {
+        calendarList: arr,
+          user_id: this.props.dataUser.id
+      }
+      console.log(objs)
+    this.props.selectCalendar(objs)
     //kirim data calendarlist ke BE
   }
   
@@ -98,7 +115,7 @@ class dosen_setting extends Component {
             <p style={{fontSize: 20}}>Shared Calendar</p>
               <List>
                 {this.props.calendarList.map((item, i) => (
-                  <ListItem key={i} primaryText={item.calName} leftCheckbox={<Checkbox checked={this.props.calendarList[i].status} onCheck={()=>this.handleSelect(i)}/>}/>
+                  <ListItem key={i} primaryText={item.calendar_name} leftCheckbox={<Checkbox checked={this.props.calendarList[i].status} onCheck={()=>this.handleSelect(i)}/>}/>
                 ))}
               </List>
               <RaisedButton
@@ -154,7 +171,9 @@ function mapStateToProps(state) {
 
 function matchDispatchToProps(dispatch){
     return bindActionCreators({
-        login: login
+        fetchCalendar: fetchCalendar,
+        selectCalendar: selectCalendar,
+        changeStatus: changeStatus
     }, dispatch);
 }
 

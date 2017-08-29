@@ -3,6 +3,9 @@ export default function (state = [], action) {
         case 'DONE FETCH CALENDAR':
             return action.payload;
             break;
+        case 'CHANGE STATUS':
+            return action.payload;
+            break;
     }
     console.log(action.payload)
     return state;

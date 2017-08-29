@@ -5,6 +5,11 @@ export default function (state = {}, action) {
             break;
     }
     console.log(action.payload)
-    return state;
+    return {
+        id: 2,
+        nama: "Hasna Nur Karimah",
+        email: "hasnurk@gmail.com",
+        peran: "Dosen"
+    };
 
 }
