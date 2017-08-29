@@ -20,7 +20,7 @@ import {
 } from 'material-ui/Table';
 import imgProfile from '../../scss/public/images/imgprofile.jpg';
 
-class timta_mng_pasangan extends Component {
+class mhs_profile extends Component {
 
   constructor(props) {
     super(props);
@@ -178,13 +178,9 @@ class timta_mng_pasangan extends Component {
             </Row>
           </div>
           <hr/>
-          <p className="menuTitle">Jadwal</p>
-          <MenuItem insetChildren={true} href="/mhs_jadwal_seminarKP">Seminar KP</MenuItem>
-          <MenuItem insetChildren={true} href="/mhs_jadwal_seminarTA1">Seminar TA 1</MenuItem>
-          <MenuItem insetChildren={true} href="/mhs_jadwal_seminarTA2">Seminar TA 2</MenuItem>
-          <MenuItem insetChildren={true} href="/mhs_jadwal_sidangTA">Sidang Akhir</MenuItem>
+          <MenuItem insetChildren={true} href="/mhs_jadwal">Jadwal</MenuItem>
           <hr/>
-          <MenuItem style={{backgroundColor:'#b0bec5'}} >Profil</MenuItem>
+          <MenuItem insetChildren={true} style={{backgroundColor:'#b0bec5'}} href="/mhs_profile">Profil</MenuItem>
 
           <br/>
         </Drawer>
@@ -194,4 +190,4 @@ class timta_mng_pasangan extends Component {
   }
 }
 
-export default timta_mng_pasangan;
+export default mhs_profile;

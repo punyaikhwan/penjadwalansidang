@@ -199,7 +199,10 @@ app.get('/calendars/:id', function(request, response){
 	let id = request.params.id;
 	console.log(id)
 	CalendarList.GetCalendarList(id).then(function(result) {
-		response.send(result)
+		
+		let tempResult = result.data.result[0];
+		console.log(tempResult);
+		response.send(tempResult)
 	}).catch(function(err){
 		console.log(err)
 		response.send(err)
@@ -208,9 +211,11 @@ app.get('/calendars/:id', function(request, response){
 })
 
 app.post('/calendars', function(request, response) {
-	let id = request.body.id
-	CalendarList.InsertCalendarList(id).then(function(result) {
+	let user_id = request.body.user_id;
+	let calendarList = request.body.calendarList;
+	CalendarList.InsertCalendarList(user_id, calendarList).then(function(result) {
 		response.send(result)
+		console.log(result)
 	}).catch(function(err){
 		console.log(err)
 		response.send(err)
@@ -243,6 +248,15 @@ app.get('/events', function(request, response){
 app.post('/eventmahasiswa', function(request, response){
 	Event.FetchEventMahasiswa(request.body.id).then(function(result){
 		response.send(result)
+	}).catch(function(err){
+		console.log(err)
+		response.send(err)
+	})
+})
+
+app.post('/finalize', function(request, response){
+	Event.FinalizeEvent(request.body.events, request.body.event_type).then(function(result){
+		response.send("success")
 	}).catch(function(err){
 		console.log(err)
 		response.send(err)

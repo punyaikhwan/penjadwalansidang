@@ -31,41 +31,49 @@ var GetCalendarList= async function(id){
 	})
 }	
 
-var UpdateCalendarList = async function(instanc, chosen) {
-    var user_id = instanc.user_id;
-    var calendar_id = instanc.calendar_id
-    var calendar_name = instanc.calendar_name
+var UpdateCalendarList = async function(insert_cal) {
+    var user_id = insert_cal.user_id;
+    var calendar_id = insert_cal.calendar_id;
+    var calendar_name = insert_cal.calendar_name;
 
     return CalendarList.model.where({"user_id": user_id, "calendar_id": calendar_id}).fetch().then(function(data) {
-        if(data) { // user found
-            if (chosen != 'nope') { // kalau ga ada perubahan
-                return new CalendarList.model({id: data.get('id')}).save({"user_id": user_id, "calendar_id": calendar_id, "calendar_name": calendar_name, "status": chosen }, {patch: true})
-            } else {
-                return new CalendarList.model({id: data.get('id')}).save({"user_id": user_id, "calendar_id": calendar_id, "calendar_name": calendar_name}, {patch: true})
-            }   
-        } else { // buat baru
-            return NewCalendar({"user_id": user_id, "calendar_id": calendar_id, "calendar_name": calendar_name, "status": true});
-        }
+        if(data.get('status') == 1) { // calendar status is shared / active
+            console.log(data.get('status'));
+            return new CalendarList.model({id: data.get('id')}).save({"calendar_id": calendar_id, "calendar_name": calendar_name, "status": 0}, {patch: true})
+        } else if (data.get('status') == 0) {
+            return new CalendarList.model({id: data.get('id')}).save({"calendar_id": calendar_id, "calendar_name": calendar_name, "status": 1}, {patch: true})
+        } // }  else { // buat baru
+    }).catch(function(err) {
+        console.log("new calendarlist");
+        return NewCalendar({"user_id": user_id, "calendar_id": calendar_id, "calendar_name": calendar_name, "status": true});
+
+        console.log(err);
+        return err;
     })
 }
 
 // Ini khusus cuma satu id aja
-var InsertCalendarList = async function(id, chosen='nope') {
-    var res = await GetCalendarList(id).then(function(data) {
-        console.log(data);
-        var temp = data.result[0].calendarList;
-        console.log(temp);   
-    
-        for (var i = 0; i < temp.length; i++) {
-            var insert_cal = {user_id: id, calendar_id: temp[i].id, calendar_name: temp[i].name}
-            UpdateCalendarList(insert_cal, chosen);
-        }
+var InsertCalendarList = async function(user_id, calendarList) {
+    // var res = await GetCalendarList(user_id).then(function(data) {
+    //     console.log(data);
+    //     var temp = data.result[0].calendarList;
+    //     console.log(temp);   
 
-        return temp
-    }) .catch(function(err) {
-        console.log(err);
-        return err
-    })
+    var temp = calendarList;
+    
+    for (var i = 0; i < temp.length; i++) {
+        var insert_cal = {user_id: user_id, calendar_id: temp[i].id, calendar_name: temp[i].name}
+        var update = UpdateCalendarList(insert_cal).then(function(result){
+            // console.log(result);
+            console.log( {"status": "SUCCESS"});
+        }).catch(function(err) {
+            // console.log(err);
+            console.log({"status": "ERROR"});
+            return ({"status": "ERROR"});
+        })
+    }
+
+    return ({"status": "SUCCESS"});
 
 }
 
