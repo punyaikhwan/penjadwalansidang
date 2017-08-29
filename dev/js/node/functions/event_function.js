@@ -504,7 +504,7 @@ var FetchEventMahasiswa = function(id){
 
 		for(var i=0; i<result.length; i++){
 			for(var j=0; j<result[i].mahasiswa.length; j++){
-				if(result[i].mahasiswa[j].id == id){
+				if(result[i].mahasiswa[j].user.id == id){
 					events.push(result[i])
 				}
 			}	
