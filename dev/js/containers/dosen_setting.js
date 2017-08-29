@@ -26,6 +26,9 @@ import imgProfile from '../../scss/public/images/dosenprofile.jpg';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import Checkbox from 'material-ui/Checkbox';
+import {login} from '../actions/auth/login'
+import {fetchCalendar} from '../actions/calendar/fetch-calendar'
+import {selectCalendar} from '../actions/calendar/select-calendar'
 
 class dosen_setting extends Component {
 
@@ -33,25 +36,18 @@ class dosen_setting extends Component {
     super(props);
     this.state = {
       open: false,
-      calendarList: [
-        {calId: 1, calName: "primary", status: true},
-        {calId: 2, calName: "secondary calendar", status: true},
-        {calId: 3, calName: "third calendar", status: true}
-      ],
-      dataUser: {
-        nama: "Dessi Puji Lestari",
-        email: "dessipuji@informatika.org",
-        peran: "Dosen"
-      }
     };
   }
 
-
+  componentDidMount(){
+    this.props.fetchCalendar(this.props.dataUser.id)
+  }
+  
   handleSelect(i){
-      let tempCalList = this.state.calendarList;
-      tempCalList[i].status = !this.state.calendarList[i].status;
+      let tempCalList = this.props.calendarList;
+      tempCalList[i].status = !this.props.calendarList[i].status;
       this.setState({calendarList: tempCalList});
-      console.log(this.state.calendarList);
+      console.log(this.props.calendarList);
   }
 
   handleSave(){
@@ -89,9 +85,9 @@ class dosen_setting extends Component {
               </Col>
               <Col md="9" xs="12">
                 <Card className="infoProfile">
-                  <CardTitle title={this.state.dataUser.nama}/>
+                  <CardTitle title={this.props.dataUser.nama}/>
                   <CardText>
-                    Email: {this.state.dataUser.email}                        
+                    Email: {this.props.dataUser.email}                        
                   </CardText>
                 </Card>
                 <br/>
@@ -101,8 +97,8 @@ class dosen_setting extends Component {
           <Col md="6" xs ="12">
             <p style={{fontSize: 20}}>Shared Calendar</p>
               <List>
-                {this.state.calendarList.map((item, i) => (
-                  <ListItem key={i} primaryText={item.calName} leftCheckbox={<Checkbox checked={this.state.calendarList[i].status} onCheck={()=>this.handleSelect(i)}/>}/>
+                {this.props.calendarList.map((item, i) => (
+                  <ListItem key={i} primaryText={item.calName} leftCheckbox={<Checkbox checked={this.props.calendarList[i].status} onCheck={()=>this.handleSelect(i)}/>}/>
                 ))}
               </List>
               <RaisedButton
@@ -131,9 +127,9 @@ class dosen_setting extends Component {
               </Col>
               <Col md="9" xs="10" className="textProfile">
                 <Row>
-                  <Col className="nameProfile">{this.state.dataUser.nama}</Col>
-                  <Col className="emailProfile">{this.state.dataUser.email}</Col>
-                  <Col className="emailProfile">{this.state.dataUser.peran}</Col>
+                  <Col className="nameProfile">{this.props.dataUser.nama}</Col>
+                  <Col className="emailProfile">{this.props.dataUser.email}</Col>
+                  <Col className="emailProfile">{this.props.dataUser.peran}</Col>
                 </Row>
               </Col>
             </Row>
@@ -151,11 +147,14 @@ class dosen_setting extends Component {
 
 function mapStateToProps(state) {
     return {
+      dataUser: state.activeUser,
+        calendarList: state.calendar
     };
 }
 
 function matchDispatchToProps(dispatch){
     return bindActionCreators({
+        login: login
     }, dispatch);
 }
 

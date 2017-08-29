@@ -12,7 +12,7 @@ export const fetchCalendar= (id) => {
 
             dispatch({
                 type: "DONE FETCH CALENDAR",
-                payload: data.data
+                payload: data.data.calendarList
 
             })
         })
