@@ -12,6 +12,7 @@ import eventCalon from './event-calon'
 import loading from './loading'
 import ruangan from './ruangan'
 import tipe from './tipe_event'
+import eventMhs from './event-mhs'
 
 /*
  * We combine all reducers into a single object before updated data is dispatched (sent) to store
@@ -32,6 +33,7 @@ const allReducers = combineReducers({
     loading: loading,
     ruangan: ruangan,
     tipeEvent: tipe,
+    eventMhs: eventMhs
 });
 
 export default allReducers

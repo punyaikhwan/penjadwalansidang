@@ -54,20 +54,15 @@ class dosen_setting extends Component {
   handleSave(){
     let arr = []
     this.props.calendarList.forEach(function(item){
-      if (item.status == 1){
-        let obj = {
+      let obj = {
           id: item.calendar_id,
-          name: item.calendar_name
-        }
-        arr.push(obj)
+          name: item.calendar_name,
+          status: item.status
       }
+      arr.push(obj)
+
     })
-      let objs = {
-        calendarList: arr,
-          user_id: this.props.dataUser.id
-      }
-      console.log(objs)
-    this.props.selectCalendar(objs)
+    this.props.selectCalendar(arr, this.props.dataUser.id)
     //kirim data calendarlist ke BE
   }
   
