@@ -6,7 +6,7 @@ export default function (state = {}, action) {
     }
     console.log(action.payload)
     return {
-        id: 8,
+        id: 2,
         nama: "Hasna Nur Karimah",
         email: "hasnurk@gmail.com",
         peran: "Dosen"

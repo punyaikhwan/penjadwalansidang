@@ -62,6 +62,7 @@ class dosen_setting extends Component {
       arr.push(obj)
 
     })
+      console.log("arr", arr)
     this.props.selectCalendar(arr, this.props.dataUser.id)
     //kirim data calendarlist ke BE
   }

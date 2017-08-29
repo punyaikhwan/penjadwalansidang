@@ -72,6 +72,7 @@ var UpdateCalendarList = async function(insert_cal, mode) {
 
     return CalendarList.model.where({"user_id": user_id, "calendar_id": calendar_id}).fetch().then(function(data) {
         if(mode == 2) { // calendar status is shared / active
+            console.log("ini status" + status);
             return new CalendarList.model({id: data.get('id')}).save({"calendar_id": calendar_id, "calendar_name": calendar_name, "status": status}, {patch: true}) // cuma update yg dibutuhkan saja
         } else {
             return new CalendarList.model({id: data.get('id')}).save({"calendar_id": calendar_id, "calendar_name": calendar_name}, {patch: true})
