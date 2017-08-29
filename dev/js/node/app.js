@@ -10,6 +10,7 @@ var Room = require('./functions/room_function.js')
 var CalendarList = require('./functions/calendar_list_function')
 // var googleUtil = require('./GoogleLogin.js')
 var secretHandler = require('./sessionSecret.js')
+var cors = require('cors')
 
 var google = require('googleapis');
 var OAuth2 = google.auth.OAuth2;
@@ -23,6 +24,7 @@ const RedirectionUrl = "http://localhost:3000/"
 
 // Starting the express app
 var app = express()
+app.use(cors())
 
 app.use(bodyParser.json()); // for parsing application/json
 

@@ -9,50 +9,100 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
 import Row from 'muicss/lib/react/row';
 import Col from 'muicss/lib/react/col';
+import {checkToken} from '../actions/auth/check-token'
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+
+import {Router, Redirect} from 'react-router'
 
 const responseGoogle = (response) => {
   console.log(response);
 }
 
 class App extends Component {
+  componentDidMount(){
+    console.log("wawa", this.props.location)
+  }
+
+  // getUser(token){
+  //   return axios.post('http://localhost:3001/getUserInfo', {
+  //     token: token
+  //   })
+  // }
+
   render() {
     // console.log(googleLoginUrl)
-    return (
-      <MuiThemeProvider>
-        <div>
-          <div className="barTop">
-            <Row>
-              <Col md="1" xs="1">
-                <img src={itbLogo} className="logoItb"/>
-              </Col>
-              <Col md="11" xs="1">
-                <p style={{fontFamily: "Lato", fontSize: 30, paddingTop: 20, paddingLeft: 20}}>Program Studi Teknik Informatika</p>
-                <p style={{fontFamily: "Lato", fontSize: 20, paddingLeft: 20}}>Institut Teknologi Bandung</p>
-              </Col>
-            </Row>
-          </div>
+    if(this.props.location.search.length > 10){
 
-          <div className="container">
-            <img src={logo} className="logoApp" />
-            <p style={{fontFamily: "Lato", fontSize: 30, paddingTop: 20, paddingLeft: 20}}>APLIKASI PENJADWALAN SIDANG</p>
-            <RaisedButton
-              href="https://accounts.google.com/o/oauth2/auth?access_type=offline&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fplus.me%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&response_type=code&client_id=1031302495796-7vb2i3hqj2q5o632ggreuca6cvsuvjn9.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2F"
-              labelPosition="before"
-              target="_self"
-              label="Login with Google"
-              labelColor="#fff"
-              backgroundColor="#2196F3"
-              style={{height: 50}}
-              icon={<FontIcon className="muidocs-icon-custom-github" />}
-            />
-            <div className="loginBtnContainer">
 
-            </div>
-          </div>
-        </div>
-      </MuiThemeProvider>
-    );
+      let token = this.props.location.search.substring(6)
+      let tokenlagi = token.substring(0,token.length)
+      console.log(tokenlagi)
+      this.props.checkToken(tokenlagi)
+
+      if(this.props.check){
+          return(
+              <div>
+                <Redirect to="/timta_mng_user"/>
+              </div>
+          )
+      }
+      else{
+          return(
+              <div></div>
+          )
+
+      }
+    }
+
+
+    else {
+        return (
+            <MuiThemeProvider>
+              <div>
+                <div className="barTop">
+                  <Row>
+                    <Col md="1" xs="1">
+                      <img src={itbLogo} className="logoItb"/>
+                    </Col>
+                    <Col md="11" xs="1">
+                      <p style={{fontFamily: "Lato", fontSize: 30, paddingTop: 20, paddingLeft: 20}}>Program Studi Teknik Informatika</p>
+                      <p style={{fontFamily: "Lato", fontSize: 20, paddingLeft: 20}}>Institut Teknologi Bandung</p>
+                    </Col>
+                  </Row>
+                </div>
+
+                <div className="container">
+                  <img src={logo} className="logoApp" />
+                  <p style={{fontFamily: "Lato", fontSize: 30, paddingTop: 20, paddingLeft: 20}}>APLIKASI PENJADWALAN SIDANG</p>
+                  <RaisedButton
+                      href="https://accounts.google.com/o/oauth2/auth?access_type=offline&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fplus.me%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&response_type=code&client_id=1031302495796-7vb2i3hqj2q5o632ggreuca6cvsuvjn9.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2F"
+                      labelPosition="before"
+                      target="_self"
+                      label="Login with Google"
+                      labelColor="#fff"
+                      backgroundColor="#2196F3"
+                      style={{height: 50}}
+                      icon={<FontIcon className="muidocs-icon-custom-github" />}
+                  />
+                  <div className="loginBtnContainer">
+
+                  </div>
+                </div>
+              </div>
+            </MuiThemeProvider>
+        )
+    }
+
   }
 }
+function mapStateToProps(state) {
+    return {
+        check: state.checkToken
+    };
+}
 
-export default App;
+function matchDispatchToProps(dispatch){
+    return bindActionCreators({checkToken:checkToken}, dispatch);
+}
+export default connect(mapStateToProps, matchDispatchToProps)(App);
