@@ -1,21 +1,21 @@
 import axios from 'axios'
 
-export const fetchEvent= (item) => {
+export const fetchRuangan= () => {
     return function(dispatch) {
 
         dispatch({
-            type: "FETCH EVENT",
+            type: "FETCH RUANGAN",
             payload: []
         })
-        axios.get('http://localhost:3001/events').then(function (data) {
+        axios.get('http://localhost:3001/ruangan').then(function (data) {
             console.log(data.data)
 
             dispatch({
-                type: "DONE FETCH EVENT",
+                type: "DONE FETCH RUANGAN",
                 payload: data.data
 
             })
         })
-    }
 
+    }
 }

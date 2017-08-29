@@ -5,7 +5,7 @@ let Promise = require('bluebird')
 let knex = require('../db/models/db.js')
 //===============================================================================
 // ini khusus buat 1 id aja
-var GetCalendarList= async function(id){
+var GetCalendarListGoogle = async function(id){
 	return User.model.where({'id': id}).fetchAll().then(function(result){
         result = result.toJSON();
 
@@ -19,50 +19,81 @@ var GetCalendarList= async function(id){
                 "refreshToken": result[i].token,
             })
         }
+        // now we have ensure that user ada di db
 
-        //request to python
-        return axios.post('http://localhost:5000/calendars', request_param)
-        .catch(function (error) {
+        //request to pythone
+        // we need to update the database periodically
+
+        let res
+        axios.post('http://localhost:5000/calendars', request_param).then(
+            function(temp_result) {
+                res = temp_result.data.result[0];
+                        // console.log(res);
+                let status = InsertCalendarList(id, res.calendarList, 1);
+            }
+        ).catch(function(error) {
             console.log(error);
             return error
-        });
+        })
+
+        
 	}).catch(function(error){
 		return error
 	})
 }	
 
-var UpdateCalendarList = async function(insert_cal) {
+var GetCalendarList = function(id) {
+    var update = GetCalendarListGoogle(id);
+    return CalendarList.model.where({"user_id": id}).fetchAll({columns: ["calendar_id", "calendar_name", "status"]}).then(function(result){
+        result = result.toJSON();
+        var temp = {
+            calendarList: []
+        }
+        for (var i = 0; i < result.length; i++) {
+            temp.calendarList.push(result[i]);
+        }
+
+        return temp;
+        
+	}).catch(function(error){
+		return error
+	})
+}
+
+var UpdateCalendarList = async function(insert_cal, mode) {
+    // mode 1 update dari server google
+    // mode 2 update checklist user
+
     var user_id = insert_cal.user_id;
     var calendar_id = insert_cal.calendar_id;
     var calendar_name = insert_cal.calendar_name;
 
     return CalendarList.model.where({"user_id": user_id, "calendar_id": calendar_id}).fetch().then(function(data) {
-        if(data.get('status') == 1) { // calendar status is shared / active
+        if((data.get('status') == 1) && (mode == 2)) { // calendar status is shared / active
             console.log(data.get('status'));
             return new CalendarList.model({id: data.get('id')}).save({"calendar_id": calendar_id, "calendar_name": calendar_name, "status": 0}, {patch: true})
-        } else if (data.get('status') == 0) {
+        } else if ((data.get('status') == 0)  && (mode == 2)) {
             return new CalendarList.model({id: data.get('id')}).save({"calendar_id": calendar_id, "calendar_name": calendar_name, "status": 1}, {patch: true})
-        }  else { // buat baru
-            return NewCalendar({"user_id": user_id, "calendar_id": calendar_id, "calendar_name": calendar_name, "status": true});
+        } else {
+            return new CalendarList.model({id: data.get('id')}).save({"calendar_id": calendar_id, "calendar_name": calendar_name}, {patch: true}) // cuma update yg dibutuhkan saja
         }
     }).catch(function(err) {
+        console.log("new calendarlist");
+        return NewCalendar({"user_id": user_id, "calendar_id": calendar_id, "calendar_name": calendar_name, "status": true});
+
         console.log(err);
         return err;
     })
 }
 
 // Ini khusus cuma satu id aja
-var InsertCalendarList = async function(user_id, calendarList) {
-    // var res = await GetCalendarList(user_id).then(function(data) {
-    //     console.log(data);
-    //     var temp = data.result[0].calendarList;
-    //     console.log(temp);   
+var InsertCalendarList = async function(user_id, calendarList, mode) {   
 
     var temp = calendarList;
     
     for (var i = 0; i < temp.length; i++) {
         var insert_cal = {user_id: user_id, calendar_id: temp[i].id, calendar_name: temp[i].name}
-        var update = UpdateCalendarList(insert_cal).then(function(result){
+        var update = UpdateCalendarList(insert_cal, mode).then(function(result){
             // console.log(result);
             console.log( {"status": "SUCCESS"});
         }).catch(function(err) {
@@ -105,5 +136,6 @@ var test = async function(){
 
 module.exports = {
   GetCalendarList,
+  GetCalendarListGoogle,
   InsertCalendarList
 }

@@ -1,6 +1,6 @@
 export default function (state = [], action) {
     switch (action.type) {
-        case 'FETCH EVENT':
+        case 'DONE FETCH EVENT':
             return action.payload;
             break;
         case 'MOVE EVENT':

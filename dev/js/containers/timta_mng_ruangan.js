@@ -31,6 +31,11 @@ import {
   TableRowColumn,
 } from 'material-ui/Table';
 import imgProfile from '../../scss/public/images/imgprofile.jpg';
+import {fetchRuangan} from '../actions/ruangan/fetch-ruangan'
+import {deleteRuangan} from '../actions/ruangan/delete-ruangan'
+import {newRuangan} from '../actions/ruangan/new-ruangan'
+import {editRuangan} from '../actions/ruangan/edit-ruangan'
+import {tempEditRuangan} from '../actions/ruangan/temp-edit-ruangan'
 
 class timta_mng_ruangan extends Component {
   constructor(props) {
@@ -44,42 +49,46 @@ class timta_mng_ruangan extends Component {
       startDate: null,
       endDate: null,
       selectedRuangan: 0,
+      selectedEvent: 0,
       idRuangan: "",
-      dataRuangan: [
-        {
-          id: "7606",
-          events: [
-            {
-              title: "Rapat kerja dosen",
-              start: "2017-05-01T10:20:00",
-              end: "2017-05-01T15:20:00"
-            },
-            {
-              title: "Rapat HMIF",
-              start: "2017-05-02T10:20:00",
-              end: "2017-05-02T15:20:00"
-            },
-          ]
-        },
-        {
-          id: "7602",
-          events: [
-            {
-              title: "Rapat kerja dosen X",
-              start: "2017-05-03T12:00:00",
-              end: "2017-05-03T16:00:00"
-            },
-            {
-              title: "Rapat HMIF 2",
-              start: "2017-05-02T10:20:00",
-              end: "2017-05-02T15:20:00"
-            },
-          ]
-        }
-      ]
+      // dataRuangan: [
+      //   {
+      //     id: "7606",
+      //     event: [
+      //       {
+      //         title: "Rapat kerja dosen",
+      //         start: "2017-05-01T10:20:00",
+      //         end: "2017-05-01T15:20:00"
+      //       },
+      //       {
+      //         title: "Rapat HMIF",
+      //         start: "2017-05-02T10:20:00",
+      //         end: "2017-05-02T15:20:00"
+      //       },
+      //     ]
+      //   },
+      //   {
+      //     id: "7602",
+      //     event: [
+      //       {
+      //         title: "Rapat kerja dosen X",
+      //         start: "2017-05-03T12:00:00",
+      //         end: "2017-05-03T16:00:00"
+      //       },
+      //       {
+      //         title: "Rapat HMIF 2",
+      //         start: "2017-05-02T10:20:00",
+      //         end: "2017-05-02T15:20:00"
+      //       },
+      //     ]
+      //   }
+      // ]
     };
   }
 
+  componentDidMount(){
+    this.props.fetchRuangan();
+  }
   handleToggle() {this.setState({open: !this.state.open})};
 
   handleClose () { this.setState({open: false})};
@@ -88,21 +97,23 @@ class timta_mng_ruangan extends Component {
   handleCloseTambahRuangan () { this.setState({modalTambahRuangan: false})};
   handleChangeRuangan(event) { this.setState({idRuangan: event.target.value})};
   handleTambahRuangan() {
-    let data = {
-      id: this.state.idRuangan,
-      events: []
-    };
-    let tempDataRuangan = this.state.dataRuangan;
-    tempDataRuangan.push(data);
-    this.setState({dataRuangan: tempDataRuangan});
+    // let data = {
+    //   id: this.state.idRuangan,
+    //   event: []
+    // };
+    // let tempDataRuangan = this.props.dataRuangan;
+    // tempDataRuangan.push(data);
+    // this.setState({dataRuangan: tempDataRuangan});
+      this.props.newRuangan(this.state.idRuangan)
     this.handleCloseTambahRuangan();
   }
 
   handleDeleteRuangan(i) {
-    let tempDataRuangan = this.state.dataRuangan;
-    tempDataRuangan.splice(i,1)
-    console.log(this.state.dataRuangan);
-    this.setState({dataRuangan: tempDataRuangan});
+    // let tempDataRuangan = this.props.dataRuangan;
+    // tempDataRuangan.splice(i,1)
+    // console.log(this.props.dataRuangan);
+    // this.setState({dataRuangan: tempDataRuangan});
+      this.props.deleteRuangan(i)
   }
 
   handleOpenTambahEvent () {this.setState({modalTambahEvent: true})};
@@ -114,35 +125,50 @@ class timta_mng_ruangan extends Component {
   handleChangeEventStartDate(event, date) {this.setState({startDate: date})};
   handleChangeEventEndDate(event, date) {this.setState({endDate: date})};
   handleTambahEvent() {
-    let tempDataRuangan = this.state.dataRuangan;
+    let tempDataRuangan = this.props.dataRuangan;
     let dataEvent = {
       title: this.state.titleEvent,
       start: this.state.startDate,
       end: this.state.endDate,
     }
-    console.log("new data event:", dataEvent);
-    console.log(tempDataRuangan[this.state.selectedRuangan].events);
-    tempDataRuangan[this.state.selectedRuangan].events.push(dataEvent);
-    this.setState({dataRuangan: tempDataRuangan});
+    // console.log("new data event:", dataEvent);
+    // console.log(tempDataRuangan[this.state.selectedRuangan].event);
+      tempDataRuangan[this.state.selectedRuangan].event.push(dataEvent);
+    // this.setState({dataRuangan: tempDataRuangan});
+      this.props.edit(tempDataRuangan, this.state.selectedRuangan)
     this.handleCloseTambahEvent();
   }
 
   handleDeleteEvent(i) {
-    let tempDataRuangan = this.state.dataRuangan;
-    tempDataRuangan[this.state.selectedRuangan].events.splice(i,1);
+    let tempDataRuangan = this.props.dataRuangan;
+    tempDataRuangan[this.state.selectedRuangan].event.splice(i,1);
     console.log("data Ruangan:", tempDataRuangan);
-    this.setState({dataRuangan: tempDataRuangan});
+    // this.setState({dataRuangan: tempDataRuangan});
+      this.props.edit(tempDataRuangan, this.state.selectedRuangan)
   }
 
   handleOpenEditEvent(i) {
     this.setState({editedEvent: i});
-    this.setState({titleEvent: this.state.dataRuangan[this.state.selectedRuangan].events[i].title});
-    let startDateFull = new Date(this.state.dataRuangan[this.state.selectedRuangan].events[i].start);
-    let endDateFull = new Date(this.state.dataRuangan[this.state.selectedRuangan].events[i].end);
+    this.setState({titleEvent: this.props.dataRuangan[this.state.selectedRuangan].event[i].title});
+    let startDateFull = new Date(this.props.dataRuangan[this.state.selectedRuangan].event[i].start);
+    let endDateFull = new Date(this.props.dataRuangan[this.state.selectedRuangan].event[i].end);
     console.log(startDateFull);
     this.setState({startDate: startDateFull});
     this.setState({endDate: endDateFull});
     this.setState({modalEditEvent:true});
+    this.setState({selectedEvent: i})
+  }
+
+  handleEditEvent(i){
+    let tempDataRuangan = this.props.dataRuangan;
+    console.log(tempDataRuangan[this.state.selectedRuangan].event[i])
+    tempDataRuangan[this.state.selectedRuangan].event[i].title = this.state.titleEvent;
+    tempDataRuangan[this.state.selectedRuangan].event[i].start = this.state.startDate;
+    tempDataRuangan[this.state.selectedRuangan].event[i].end = this.state.endDate;
+    console.log(tempDataRuangan[this.state.selectedRuangan].event[i])
+    console.log(tempDataRuangan[this.state.selectedRuangan])
+    this.props.edit(tempDataRuangan, this.state.selectedRuangan)
+      this.handleCloseEditEvent();
   }
 
   handleCloseEditEvent(){
@@ -152,6 +178,10 @@ class timta_mng_ruangan extends Component {
 
   isEmpty(str) {
     return (str.length === 0)
+  }
+
+  handleSave(){
+    this.props.editRuangan(this.props.dataRuangan)
   }
 
   render() {
@@ -179,7 +209,7 @@ class timta_mng_ruangan extends Component {
         label="Submit"
         primary={true}
         keyboardFocused={true}
-        onClick={()=>this.handleEditEvent()}
+        onClick={()=>this.handleEditEvent(this.state.selectedEvent)}
       />,
     ];
 
@@ -200,16 +230,17 @@ class timta_mng_ruangan extends Component {
       <MuiThemeProvider>
       <div>
         <RaisedButton
-          style={{
-            position: 'fixed',
-            marginTop: this.props.height-50,
-            marginLeft: this.props.width-200,
-            alignItems: 'center'
-          }}
-          backgroundColor="#F1D600"
-          label="SAVE"
-          labelPosition="after"
-          icon={<i className="material-icons" style={{color:'black'}}>save</i>}
+            style={{
+                position: 'fixed',
+                marginTop: this.props.height-50,
+                marginLeft: this.props.width-200,
+                alignItems: 'center'
+            }}
+            backgroundColor="#F1D600"
+            label="SAVE"
+            labelPosition="after"
+            icon={<i className="material-icons" style={{color:'black'}}>save</i>}
+            onTouchTap={()=>this.handleSave()}
         />
         <AppBar
           title="Dashboard Tim TA - Manajemen Ruangan"
@@ -239,22 +270,22 @@ class timta_mng_ruangan extends Component {
                   icon={<i className="material-icons" style={{color:'black'}}>add</i>}
                   onTouchTap={()=>this.handleOpenTambahRuangan()}
                 />
-                {this.state.dataRuangan.length !== 0 &&
+                {this.props.dataRuangan.length !== 0 &&
                 <ScrollArea
                   horizontal={false}
                   style={{height: 500, borderLeftWidth: 2}}
                   speed={0.8}
                 >
                   <List>
-                    {this.state.dataRuangan.map((item, i) => (
+                    {this.props.dataRuangan.map((item, i) => (
                       <Row>
                         <Col md="6" xs="8">
                           <ListItem key={i} onTouchTap={()=>this.setState({selectedRuangan:i})}>
-                            {item.id}
+                            {item.nama}
                           </ListItem>
                         </Col>
                         <Col md="6" xs ="4" style={{marginTop:7}}>
-                          <IconButton style={{color:'black'}}  onClick={()=>this.handleDeleteRuangan(i)}>
+                          <IconButton style={{color:'black'}}  onClick={()=>this.handleDeleteRuangan(item.id)}>
                                 <i className="material-icons">close</i>
                           </IconButton>
                         </Col>
@@ -264,15 +295,15 @@ class timta_mng_ruangan extends Component {
                   </List>
                 </ScrollArea>
                 }
-                {this.state.dataRuangan.length === 0 &&
+                {this.props.dataRuangan.length === 0 &&
                   <p><i>Tidak ada ruangan.</i></p>
                 }
               </div>
             </Col>
             <Col md="10" xs="12">
-              {this.state.dataRuangan.length !== 0 &&
+              {this.props.dataRuangan.length !== 0 &&
               <div>
-                <p style={{fontSize:20, fontWight:'bold', textAlign: 'center'}}>{"Ruangan "+(this.state.dataRuangan[this.state.selectedRuangan].id)}</p>
+                <p style={{fontSize:20, fontWight:'bold', textAlign: 'center'}}>{"Ruangan "+(this.props.dataRuangan[this.state.selectedRuangan].id)}</p>
 
                 <br/>
                 <p style={{fontSize:16}}>Daftar Event</p>
@@ -290,7 +321,7 @@ class timta_mng_ruangan extends Component {
                       onClick={()=>this.handleOpenTambahEvent()}
                     />
 
-                    {this.state.dataRuangan.length > 0 &&
+                    {this.props.dataRuangan.length > 0 &&
                       <Table fixedHeader={true}>
                         <TableHeader displaySelectAll={false} enableSelectAll={false}>
                           <TableRow>
@@ -301,7 +332,7 @@ class timta_mng_ruangan extends Component {
                           </TableRow>
                         </TableHeader>
                         <TableBody displayRowCheckbox = {false}>
-                        {this.state.dataRuangan[this.state.selectedRuangan].events.map((item, i)=> (
+                        {this.props.dataRuangan[this.state.selectedRuangan].event.map((item, i)=> (
                             <TableRow key={i}>
                               <TableRowColumn style={{width:3}}></TableRowColumn>
                               <TableRowColumn style={{width:200}}>{item.title}</TableRowColumn>
@@ -322,7 +353,7 @@ class timta_mng_ruangan extends Component {
                         </TableBody>
                       </Table>
                     }
-                    {this.state.dataRuangan.length === 0 &&
+                    {this.props.dataRuangan.length === 0 &&
                       <p style={{fontSize:14}}><i>Tidak ada ruangan</i></p>
                     }
                   </ScrollArea>
@@ -523,14 +554,18 @@ class timta_mng_ruangan extends Component {
 
 function mapStateToProps(state) {
     return {
-        mahasiswa: state.mahasiswaKP,
-        dosen: state.dosen,
-        Ruangan: state.RuanganKP,
+        dataRuangan: state.ruangan,
     };
 }
 
 function matchDispatchToProps(dispatch){
-    return bindActionCreators({}, dispatch);
+    return bindActionCreators({
+        fetchRuangan:fetchRuangan,
+        deleteRuangan: deleteRuangan,
+        newRuangan: newRuangan,
+        editRuangan: editRuangan,
+        edit: tempEditRuangan,
+    }, dispatch);
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(windowDimensions()(timta_mng_ruangan));

@@ -198,10 +198,9 @@ app.post('/ruangan/delete', function(request, response){
 app.get('/calendars/:id', function(request, response){
 	let id = request.params.id;
 	console.log(id)
-
 	CalendarList.GetCalendarList(id).then(function(result) {
 		
-		let tempResult = result.data.result[0];
+		let tempResult = result; //.data.result[0];
 		console.log(tempResult);
 		response.send(tempResult)
 	}).catch(function(err){
@@ -214,7 +213,9 @@ app.get('/calendars/:id', function(request, response){
 app.post('/calendars', function(request, response) {
 	let user_id = request.body.user_id;
 	let calendarList = request.body.calendarList;
-	CalendarList.InsertCalendarList(user_id, calendarList).then(function(result) {
+	let mode = 2 // mode 2 adalah update checklist user
+	// mode 1 adalah update dari google calendar
+	CalendarList.InsertCalendarList(user_id, calendarList, mode).then(function(result) {
 		response.send(result)
 		console.log(result)
 	}).catch(function(err){

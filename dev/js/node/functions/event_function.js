@@ -808,5 +808,6 @@ module.exports = {
   FetchKPEvent,
   ScheduleEvent,
   FetchEvent,
-  FetchEventMahasiswa
+  FetchEventMahasiswa,
+	FinalizeEvent
 }

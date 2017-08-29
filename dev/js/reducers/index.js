@@ -10,7 +10,8 @@ import active from './active-user'
 import calendar from './calendars'
 import eventCalon from './event-calon'
 import loading from './loading'
-
+import ruangan from './ruangan'
+import tipe from './tipe_event'
 
 /*
  * We combine all reducers into a single object before updated data is dispatched (sent) to store
@@ -29,6 +30,8 @@ const allReducers = combineReducers({
     calendar: calendar,
     calonEvent: eventCalon,
     loading: loading,
+    ruangan: ruangan,
+    tipeEvent: tipe,
 });
 
 export default allReducers

@@ -7,8 +7,10 @@ export const selectCalendar= (id) => {
             type: "SELECT CALENDAR",
             payload: []
         })
+        console.log(JSON.stringify(id))
         axios.post('http://localhost:3001/calendars', {
-            id: id
+            calendarList: id.calendarList,
+            user_id: id.user_id
         }).then(function (data) {
             console.log(data.data)
 

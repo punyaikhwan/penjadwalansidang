@@ -7,12 +7,12 @@ export const fetchCalendar= (id) => {
             type: "FETCH CALENDAR",
             payload: []
         })
-        axios.get('http://localhost:3001/calendars'+id).then(function (data) {
+        axios.get('http://localhost:3001/calendars/'+id).then(function (data) {
             console.log(data.data)
 
             dispatch({
                 type: "DONE FETCH CALENDAR",
-                payload: data.data
+                payload: data.data.calendarList
 
             })
         })

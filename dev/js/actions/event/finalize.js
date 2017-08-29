@@ -1,17 +1,15 @@
 import axios from 'axios'
 
-export const schedule= (event_type, start, end, pasangans) => {
+export const finalize= (event_type, events) => {
     return function(dispatch) {
 
         dispatch({
             type: "FINALIZE",
             payload: []
         })
-        axios.post('http://localhost:3001/schedule', {
+        axios.post('http://localhost:3001/finalize', {
             event_type: event_type,
-            start: start,
-            end: end,
-            pasangans: pasangans
+            events: events
         }).then(function (data) {
             console.log(data.data)
 

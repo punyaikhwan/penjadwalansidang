@@ -33,6 +33,7 @@ import {connect} from 'react-redux';
 import {fetchTA} from '../actions/ta/fetch-ta'
 import {schedule} from '../actions/event/schedule'
 import {Router, Redirect} from 'react-router'
+import {tipeEvent} from '../actions/event/tipe-event'
 
 class timta_mng_jadwal_seminarTA2 extends Component {
 
@@ -151,6 +152,7 @@ class timta_mng_jadwal_seminarTA2 extends Component {
       })
       console.log(kel)
       this.props.schedule(3, this.state.startDate, this.state.endDate, kel);
+      this.props.tipe(3);
   }
 
   render() {
@@ -337,6 +339,6 @@ function mapStateToProps(state) {
 }
 
 function matchDispatchToProps(dispatch){
-    return bindActionCreators({fetchTA:fetchTA, schedule:schedule}, dispatch);
+    return bindActionCreators({fetchTA:fetchTA, schedule:schedule, tipe:tipeEvent}, dispatch);
 }
 export default connect(mapStateToProps, matchDispatchToProps)(timta_mng_jadwal_seminarTA2);

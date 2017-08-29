@@ -1,8 +1,8 @@
-export const fetchEvent= (item) => {
+export const login= () => {
     return function(dispatch) {
 
         dispatch({
-            type: "FETCH EVENT",
+            type: "USER",
             payload: {
 
             }
