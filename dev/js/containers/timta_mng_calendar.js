@@ -35,6 +35,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {moveEvent} from '../actions/event/move-event'
 import {fetchEvent} from '../actions/event/fetch-events'
+import {finalize} from '../actions/event/finalize'
 
 BigCalendar.setLocalizer(
   BigCalendar.momentLocalizer(moment)
@@ -47,7 +48,7 @@ class timta_mng_calendar extends Component {
     super(props);
     this.state = {
       open: false,
-      statusJadwal: 1,
+      statusJadwal: 0,
       /*
         0: menunggu finalisasi
         1: sudah difinalisasi
@@ -61,7 +62,7 @@ class timta_mng_calendar extends Component {
   }
 
   componentDidMount(){
-    this.props.fetchEvent();
+
 
     // setTimeout(()=> {
     //   if (this.props.events.length !== 0) 
@@ -95,6 +96,10 @@ class timta_mng_calendar extends Component {
   handleSelectedEvent(event) {
     this.setState({selectedEvent: event});
     this.setState({modalEvent: true});
+  }
+
+  finalize(){
+    this.props.finalize(this.props.tipe, this.props.events)
   }
 
   render() {
@@ -166,6 +171,7 @@ class timta_mng_calendar extends Component {
             backgroundColor="#0FC722"
             labelColor= "#fff"
             style={{marginBottom: 20}}
+            onTouchTap = {()=>this.finalize()}
           />
           }
           {this.state.statusJadwal === 1 &&
@@ -238,14 +244,16 @@ class timta_mng_calendar extends Component {
 
 function mapStateToProps(state) {
     return {
-        events: state.calonEvent
+        events: state.calonEvent,
+        tipe: state.tipeEvent,
     };
 }
 
 function matchDispatchToProps(dispatch){
     return bindActionCreators({
         move: moveEvent,
-        fetchEvent: fetchEvent
+        fetchEvent: fetchEvent,
+        finalize: finalize
     }, dispatch);
 }
 

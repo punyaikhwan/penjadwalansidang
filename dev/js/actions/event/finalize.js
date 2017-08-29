@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export const schedule= (event_type, start, end, pasangans) => {
+export const schedule= (event_type, events) => {
     return function(dispatch) {
 
         dispatch({
@@ -9,9 +9,7 @@ export const schedule= (event_type, start, end, pasangans) => {
         })
         axios.post('http://localhost:3001/schedule', {
             event_type: event_type,
-            start: start,
-            end: end,
-            pasangans: pasangans
+            events: events
         }).then(function (data) {
             console.log(data.data)
 
