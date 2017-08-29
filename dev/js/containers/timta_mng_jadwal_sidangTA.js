@@ -34,6 +34,7 @@ import windowDimensions from 'react-window-dimensions';
 import {fetchTA} from '../actions/ta/fetch-ta'
 import {schedule} from '../actions/event/schedule'
 import {Router, Redirect} from 'react-router'
+import {tipeEvent} from '../actions/event/tipe-event'
 
 class timta_mng_jadwal_sidangTA extends Component {
 
@@ -155,6 +156,7 @@ class timta_mng_jadwal_sidangTA extends Component {
       })
       console.log(kel)
       this.props.schedule(4, this.state.startDate, this.state.endDate, kel);
+      this.props.tipe(4)
   }
 
   render() {
@@ -341,6 +343,6 @@ function mapStateToProps(state) {
 }
 
 function matchDispatchToProps(dispatch){
-    return bindActionCreators({fetchTA:fetchTA, schedule:schedule}, dispatch);
+    return bindActionCreators({fetchTA:fetchTA, schedule:schedule, tipe:tipeEvent}, dispatch);
 }
 export default connect(mapStateToProps, matchDispatchToProps)(windowDimensions()(timta_mng_jadwal_sidangTA));

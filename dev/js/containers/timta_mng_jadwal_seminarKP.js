@@ -33,6 +33,7 @@ import {connect} from 'react-redux';
 import {fetchKP} from '../actions/kp/fetch-kp'
 import {schedule} from '../actions/event/schedule'
 import {Router, Redirect} from 'react-router'
+import {tipeEvent} from '../actions/event/tipe-event'
 
 class timta_mng_jadwal_seminarKP extends Component {
 
@@ -81,7 +82,7 @@ class timta_mng_jadwal_seminarKP extends Component {
     var tempListDosen = [];
     for (var i=0; i<this.state.checkBoxKelompok.length; i++) {
       if (this.state.checkBoxKelompok[i] === 1) {
-        this.union_arrays(tempListDosen, this.props.kelompok[i].dosen);
+        this.union_arrays(tempListDosen, this.props.kelompok[i].pembimbing);
       }
     }
     this.setState({listDosen: tempListDosen});
@@ -95,7 +96,7 @@ class timta_mng_jadwal_seminarKP extends Component {
       this.setState({selectAll: true});
       for (var i=0; i<this.state.checkBoxKelompok.length; i++) {
         tempcheckBoxKelompok[i] = 1;
-        this.union_arrays(tempListDosen, tempdataKelompok[i].dosen);
+        this.union_arrays(tempListDosen, tempdataKelompok[i].pembimbing);
       }
       this.setState({listDosen: tempListDosen});
     } else {
@@ -114,7 +115,7 @@ class timta_mng_jadwal_seminarKP extends Component {
     let tempListDosen = this.state.listDosen;
     if (tempCheckBoxKelompok[i] === 0) {
       tempCheckBoxKelompok[i] = 1;
-      this.union_arrays(tempListDosen, tempDataKelompok[i].dosen);
+      this.union_arrays(tempListDosen, tempDataKelompok[i].pembimbing);
       this.setState({checkBoxKelompok: tempCheckBoxKelompok});
     } else {
       tempCheckBoxKelompok[i] = 0;
@@ -153,6 +154,7 @@ class timta_mng_jadwal_seminarKP extends Component {
       })
       console.log(kel)
       this.props.schedule(1, this.state.startDate, this.state.endDate, kel);
+      this.props.tipe(1);
   }
 
   render() {
@@ -341,7 +343,8 @@ function mapStateToProps(state) {
 function matchDispatchToProps(dispatch){
     return bindActionCreators({
         fetchKP: fetchKP,
-        schedule: schedule
+        schedule: schedule,
+        tipe:tipeEvent
     }, dispatch);
 }
 export default connect(mapStateToProps, matchDispatchToProps)(timta_mng_jadwal_seminarKP);
