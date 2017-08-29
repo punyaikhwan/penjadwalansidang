@@ -7,6 +7,9 @@ let Anggota = require('../db/models/anggota_pasangan_event.js')
 let axios = require('axios')
 let Promise = require('bluebird')
 let knex = require('../db/models/db.js')
+
+let shared_email = 'ruang.labtek5@gmail.com'
+let shared_token = '1/QPHqu2Xu2VSvUZVoQXc8F9BMC6F7eAqEzROWIyfphyQ'
 //===============================================================================
 var GetRawEvent = function(start, end){
 	return User.model.fetchAll().then(function(result){
@@ -366,6 +369,8 @@ var FinalizeEvent = async function(events, event_type){
 			}
 			
 		}
+
+		NotifyEvent(1, shared_email, shared_token)
 		
 		
 		
@@ -376,6 +381,49 @@ var FinalizeEvent = async function(events, event_type){
 
 	return Promise.each(task, function(){})
 }
+//===============================================================================
+var NotifyEvent = async function(event_type, shared_email, shared_token){
+	try{
+		let events = await Event.model.where("tipe_event", 1 ).fetchAll({withRelated: ['mahasiswa.user', 'dosen.user']})
+		events = events.toJSON()
+
+		let notifRequest = {
+			data: []
+		}
+
+		for(var i=0; i<events.length; i++){
+			let accounts = []
+
+			accounts.push({
+				email: shared_email,
+				refreshToken: shared_token
+			})
+
+
+			notifRequest.data.push({
+				period:{
+					start: events[i].start,
+					end: events[i].end,
+					name: events[i].title
+				},
+				accounts: accounts
+			})
+		}
+		
+
+
+		axios.post('http://localhost:5000/events/create', notifRequest)
+		.catch(function (error) {
+			console.log(error);
+			return error
+		});
+
+	}
+	catch(err){
+		console.log(err)
+	}
+}
+
 //===============================================================================
 var DeleteEvent = async function(id){
 	try{
@@ -751,7 +799,7 @@ var test = async function(){
 }
 //===============================================================================
 //main program
-test()
+// test()
 
 module.exports = {
   DeleteEvent, 
