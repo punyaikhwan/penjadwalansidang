@@ -10,6 +10,7 @@ import active from './active-user'
 import calendar from './calendars'
 import eventCalon from './event-calon'
 import loading from './loading'
+import ruangan from './ruangan'
 
 
 /*
@@ -29,6 +30,7 @@ const allReducers = combineReducers({
     calendar: calendar,
     calonEvent: eventCalon,
     loading: loading,
+    ruangan: ruangan
 });
 
 export default allReducers
