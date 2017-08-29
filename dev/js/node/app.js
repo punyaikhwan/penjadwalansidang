@@ -195,9 +195,9 @@ app.post('/ruangan/delete', function(request, response){
 	})
 })
 //Calendar====================================================================
-app.get('/calendars', function(request, response){
-	let id = request.query.id;
-
+app.get('/calendars/:id', function(request, response){
+	let id = request.params.id;
+	console.log(id)
 	CalendarList.GetCalendarList(id).then(function(result) {
 		response.send(result)
 	}).catch(function(err){
