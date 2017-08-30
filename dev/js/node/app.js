@@ -82,19 +82,17 @@ function getAuthUrl () {
 //GOOGLE====================================================================
 app.use('/googleLogin', function(request, response){
 	var url = getAuthUrl();
-	console.log(url);
+	// console.log(url);
+	console.log('url generated: ' + url);
 	response.send(url)
 });
 
 
 app.use('/logout', function(request, response){
 	var oauth2Client = getOAuthClient();
-	var session = request.session;
-	oauth2Client.signOut().then(function() {
-		request.session.reset();
+		request.session.destroy();
 		response.redirect('/');
 		console.log('User signed out.')
-	})
 });
 
 app.use('/getUserInfo', function(request, response){
@@ -117,9 +115,19 @@ app.use('/getUserInfo', function(request, response){
 			}).then(function (data) {
 				let email = data.emails[0].value;
 				user.UpdateEmail(email, tokens.refresh_token).then(function(result){
+					// console.log('this is update email result' + result);
 					if (result != 'gagal') {
 						// response.status(200).send({status: "SUCCESS", session: session});
-						response.status(200).send({status: "SUCCESS"});
+						user.FetchOneUser(email).then(function(data){
+							session["userInfo"] = data;
+							console.log("THIS IS USER INFO : " + data);
+							response.status(200).send({status: "SUCCESS", userInfo: session["userInfo"]});
+						}).catch(function(err) {
+							console.log("ERROR when fetching user by email: " + err);							
+							response.status(404).send({status: "FAILED"});
+						});
+						// console.log("THIS IS USER SESSION : " + session["userInfo"]);
+						
 					} else {
 						// response.status(404).send({status: "FAILED", session: session});
 						response.status(404).send({status: "FAILED"});
