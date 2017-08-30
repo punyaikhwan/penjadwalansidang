@@ -85,12 +85,10 @@ class timta_mng_calendar extends Component {
     updatedEvent.start = start;
     updatedEvent.end = end;
 
-
     const nextEvents = events
     nextEvents.splice(idx, 1, updatedEvent)
     this.props.move(nextEvents);
     // this.setState({events: nextEvents})
-
   }
 
   handleSelectedEvent(event) {

@@ -227,7 +227,8 @@ class timta_mng_user extends Component {
           <hr/>
           <p className="menuTitle">Manajemen Pengguna</p>
           <MenuItem insetChildren={true} style={{backgroundColor:'#b0bec5'}}>Daftar Pengguna</MenuItem>
-          <MenuItem insetChildren={true} href="/timta_mng_pasangan">Daftar Pasangan</MenuItem>
+          <MenuItem insetChildren={true} href="/timta_mng_pasangan_TA">Daftar Pasangan TA</MenuItem>
+          <MenuItem insetChildren={true} href="/timta_mng_pasangan_KP">Daftar Pasangan KP</MenuItem>
           <br/>
           <p className="menuTitle">Manajemen Jadwal</p>
           <MenuItem insetChildren={true} href="/timta_mng_jadwal_seminarKP">Seminar KP</MenuItem>

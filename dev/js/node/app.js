@@ -127,6 +127,7 @@ app.use('/getUserInfo', function(request, response){
 					
 					console.log(data.emails[0].value);	
 				});
+
 			})
 		} else {
 			// response.status(404).send({status: "FAILED", session: session});

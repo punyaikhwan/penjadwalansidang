@@ -15,6 +15,10 @@ var UpdateEmail = function(email, token) {
 }
 
 //===============================================================================
+var FetchOneUser = function(email){
+    return User.model.where('email', email).fetch()
+}
+//===============================================================================
 var DeleteUser = function(id){
 	return new User.model({"id": id}).destroy()
 }
