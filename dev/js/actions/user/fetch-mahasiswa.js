@@ -10,7 +10,7 @@ export const fetchMahasiswa= () => {
         axios.get('http://localhost:3001/user').then(function (data) {
             var mhs = []
             data.data.forEach(function(item) {
-                if (item.peran == 1) {
+                if (item.peran == 0) {
                     mhs.push(item);
                 }
             })
