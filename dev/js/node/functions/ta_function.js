@@ -28,6 +28,7 @@ var NewTA = function(mahasiswa_id){
 //===============================================================================
 var EditTA = async function(ids, objs){
 	try{
+		console.log("EDITED:", objs);
 		var task = []
 		for(var i=0; i<ids.length; i++){
 			//change topik & mahasiswaid

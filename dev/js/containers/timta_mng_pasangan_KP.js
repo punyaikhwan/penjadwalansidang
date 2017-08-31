@@ -73,7 +73,7 @@ class timta_mng_pasangan_KP extends Component {
 
   handleDeleteDosen(i) {
     let tempDataKelompok = this.props.kelompok;
-    tempDataKelompok[this.state.selectedKelompok].dosen.splice(i,1);
+    tempDataKelompok[this.state.selectedKelompok].pembimbing.splice(i,1);
     console.log("data Kelompok:", tempDataKelompok);
     this.props.edit(tempDataKelompok, this.state.selectedKelompok);
     this.forceUpdate();
@@ -121,7 +121,7 @@ class timta_mng_pasangan_KP extends Component {
       let tempNewDosen = {
           user : this.state.dosen
       }
-    tempDataKelompok[this.state.selectedKelompok].dosen.push(tempNewDosen);
+    tempDataKelompok[this.state.selectedKelompok].pembimbing.push(tempNewDosen);
     console.log("data Kelompok:", tempDataKelompok);
     this.props.edit(tempDataKelompok, this.state.selectedKelompok);
     this.setState({dosen: ""});
@@ -155,7 +155,7 @@ class timta_mng_pasangan_KP extends Component {
       <FlatButton
         label="Cancel"
         primary={true}
-        onClick={this.handleCloseEditTopic}
+        onClick={()=>this.handleCloseEditTopic()}
       />,
       <FlatButton
         label="Submit"
@@ -169,7 +169,7 @@ class timta_mng_pasangan_KP extends Component {
       <FlatButton
         label="Cancel"
         primary={true}
-        onClick={this.handleCloseTambahDosen}
+        onClick={()=>this.handleCloseTambahDosen()}
       />,
       <FlatButton
         label="Submit"
@@ -311,7 +311,7 @@ class timta_mng_pasangan_KP extends Component {
                 <br/>
                 <br/>
                 <p style={{fontSize:16}}>Dosen Pembimbing</p>
-                {this.props.kelompok[this.state.selectedKelompok].dosen.length < 2 &&
+                {this.props.kelompok[this.state.selectedKelompok].pembimbing.length < 2 &&
                   <RaisedButton
                     label="Tambah Dosen"
                     labelPosition="after"
@@ -320,9 +320,9 @@ class timta_mng_pasangan_KP extends Component {
                     onClick={()=>this.handleOpenTambahDosen()}
                   />
                 }
-                {this.props.kelompok[this.state.selectedKelompok].dosen.length > 0 &&
+                {this.props.kelompok[this.state.selectedKelompok].pembimbing.length > 0 &&
                   <List>
-                    {this.props.kelompok[this.state.selectedKelompok].dosen.map((item, i) =>(
+                    {this.props.kelompok[this.state.selectedKelompok].pembimbing.map((item, i) =>(
                       <Row>
                         <Col md="8" xs="8">
                           <ListItem key={i}>
@@ -339,7 +339,7 @@ class timta_mng_pasangan_KP extends Component {
                     ))}
                   </List>
                 }
-                {this.props.kelompok[this.state.selectedKelompok].dosen.length == 0 &&
+                {this.props.kelompok[this.state.selectedKelompok].pembimbing.length == 0 &&
                     <p style={{fontSize:14}}><i>Belum ada dosen.</i></p>
                 }
               </div>

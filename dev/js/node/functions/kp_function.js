@@ -83,12 +83,12 @@ var EditKP = async function(ids, objs){
 }
 //===============================================================================
 var FetchKP = function(){
-	return KP.model.fetchAll({withRelated:['pembimbing.user', 'mahasiswa.user']})
+	return KP.model.fetchAll({withRelated:['pembimbing.user', 'mahasiswa']})
 }
 //===============================================================================
 var FetchSpecificKP = async function(nama){
 	try{
-		let temp = await KP.model.fetchAll({withRelated:['pembimbing.user', 'mahasiswa.user']})
+		let temp = await KP.model.fetchAll({withRelated:['pembimbing.user', 'mahasiswa']})
 		temp = temp.toJSON()
 
 		//loop ilangin yang ngga sesuai nama
