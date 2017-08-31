@@ -22,7 +22,7 @@ import {
   TableRowColumn,
 } from 'material-ui/Table';
 import DatePicker from 'material-ui/DatePicker';
-import SubHeader from 'material-ui/SubHeader';
+import {SubHeader} from 'material-ui/SubHeader';
 import CircularProgress from 'material-ui/CircularProgress';
 import Dialog from 'material-ui/Dialog';
 
