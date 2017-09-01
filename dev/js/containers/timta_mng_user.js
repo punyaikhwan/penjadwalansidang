@@ -171,7 +171,7 @@ class timta_mng_user extends Component {
                 <TableHeaderColumn>Nama</TableHeaderColumn>
                 <TableHeaderColumn>NIM</TableHeaderColumn>
                 <TableHeaderColumn>Email</TableHeaderColumn>
-                <TableHeaderColumn>Refresh Token</TableHeaderColumn>
+                <TableHeaderColumn>Akses Kalender</TableHeaderColumn>
                 <TableHeaderColumn>Peran</TableHeaderColumn>
                 <TableHeaderColumn></TableHeaderColumn>
               </TableRow>
@@ -185,7 +185,9 @@ class timta_mng_user extends Component {
                   <TableRowColumn>{user.nama}</TableRowColumn>
                   <TableRowColumn>{user.NIM}</TableRowColumn>
                   <TableRowColumn>{user.email}</TableRowColumn>
-                  <TableRowColumn>{user.token}</TableRowColumn>
+                  <TableRowColumn>{(user.token !== null && user.peran === 1) ? "OK" : (
+                    (user.token === null && user.peran === 1) ? <div style={{color: '#ff0000'}}>Belum</div> : "Tidak perlu"
+                    )}</TableRowColumn>
                   <TableRowColumn>{this.state.listperan[user.peran]}</TableRowColumn>
                       {user.nama !== "Ruangan" &&
                       <TableRowColumn>
