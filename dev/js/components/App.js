@@ -14,6 +14,7 @@ import mhsJadwalSeminarTA1 from '../containers/mhs_jadwal_seminarTA1';
 import mhsJadwalSeminarTA2 from '../containers/mhs_jadwal_seminarTA2';
 import mhsJadwalSidangAkhir from '../containers/mhs_jadwal_sidangTA';
 import mngCalendar from '../containers/timta_mng_calendar';
+import mngAllCalendar from '../containers/timta_mng_allCalendars';
 import dsnSetting from '../containers/dosen_setting';
 import dsnCalendar from '../containers/dosen_calendar';
 import notFound from '../containers/not_found';
@@ -49,6 +50,7 @@ const App = () => (
         <Route exact path="/mhs_jadwal_sidangTA" component={mngJadwalSidangAkhir}/>
 	      <Route exact path="/mhs_profile" component={mhsProfile}/>
 	      <Route exact path="/timta_calendar" component={mngCalendar}/>
+        <Route exact path="/timta_allcalendars" component={mngAllCalendar}/>
         <Route exact path="/dosen_setting" component={dsnSetting}/>
         <Route exact path="/dosen_calendar" component={dsnCalendar}/>
 	      <Route path="*" component={notFound}/>
