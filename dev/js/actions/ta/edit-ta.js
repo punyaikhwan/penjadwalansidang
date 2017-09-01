@@ -5,7 +5,7 @@ export const editTA= (item) => {
         var id = []
         var obj = []
         item.forEach(function (kelompok) {
-            if (kelompok.isEdit == 1){
+            if (kelompok.isEdit === 1){
                 id.push(kelompok.id);
                 var pembimbing = []
                 var penguji = []
@@ -16,7 +16,7 @@ export const editTA= (item) => {
                 kelompok.penguji.forEach(function(ang){
                     penguji.push(ang.user.id)
                 })
-                kelompok.pembimbing.forEach(function(ang){
+                kelompok.akhir.forEach(function(ang){
                     akhir.push(ang.user.id)
                 })
                 var object = {

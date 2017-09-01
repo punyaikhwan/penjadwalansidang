@@ -97,6 +97,7 @@ class timta_mng_pasangan_KP extends Component {
   }
 
   handleTambahKelompok() {
+    console.log("KELOMPOKKK", this.props.kelompok)
     this.props.newKP();
   }
 

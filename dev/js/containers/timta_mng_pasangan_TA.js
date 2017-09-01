@@ -93,9 +93,6 @@ class timta_mng_pasangan_TA extends Component {
     this.props.fetchTA();
     this.props.fetchMahasiswa();
     this.props.fetchDosen();
-    setTimeout(()=>{
-      console.log("DATA TA:", this.props.dataTA);
-    }, 1000);
   }
 
   handleDeleteMahasiswa(i) {
@@ -103,7 +100,6 @@ class timta_mng_pasangan_TA extends Component {
   }
 
   handleTambahDosenPembimbing() {
-    console.log("tambah dosen pembimbing:", this.props.dataTA);
     let tempDataTA = this.props.dataTA;
     let tempNewDosen = {
         user : this.state.dosenPembimbing
@@ -122,7 +118,6 @@ class timta_mng_pasangan_TA extends Component {
   }
 
   handleTambahDosenPengujiTA1() {
-    console.log("tambah dosen penguji TA1:", this.props.dataTA);
     let tempDataTA = this.props.dataTA;
     let tempNewDosen = {
         user : this.state.dosenPengujiTA1
@@ -141,7 +136,6 @@ class timta_mng_pasangan_TA extends Component {
   }
 
   handleTambahDosenPengujiAkhir() {
-    console.log("tambah dosen penguji akhir:", this.props.dataTA);
     let tempDataTA = this.props.dataTA;
     let tempNewDosen = {
         user : this.state.dosenPengujiAkhir
@@ -165,7 +159,6 @@ class timta_mng_pasangan_TA extends Component {
 
   handleSave(){
     this.props.editTA(this.props.dataTA);
-    console.log("EDITED:", this.props.dataTA)
   }
 
   render() {
@@ -240,6 +233,7 @@ class timta_mng_pasangan_TA extends Component {
     ];
 
     return (
+      
       <MuiThemeProvider>
       <div>
         <RaisedButton

@@ -33,6 +33,7 @@ var NewKP = function(){
 //===============================================================================
 var EditKP = async function(ids, objs){
 	try{
+		console.log(objs)
 		var task = []
 		for(var i=0; i<ids.length; i++){
 			//change topik
@@ -83,12 +84,13 @@ var EditKP = async function(ids, objs){
 }
 //===============================================================================
 var FetchKP = function(){
-	return KP.model.fetchAll({withRelated:['pembimbing.user', 'mahasiswa']})
+	let result = KP.model.fetchAll({withRelated:['pembimbing.user', 'mahasiswa.user']})
+	return result
 }
 //===============================================================================
 var FetchSpecificKP = async function(nama){
 	try{
-		let temp = await KP.model.fetchAll({withRelated:['pembimbing.user', 'mahasiswa']})
+		let temp = await KP.model.fetchAll({withRelated:['pembimbing.user', 'mahasiswa.user']})
 		temp = temp.toJSON()
 
 		//loop ilangin yang ngga sesuai nama

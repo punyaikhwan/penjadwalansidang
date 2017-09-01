@@ -7,17 +7,17 @@ export const editKP= (item) => {
         item.forEach(function (kelompok) {
             if (kelompok.isEdit == 1){
                 id.push(kelompok.id);
-                var anggota = []
+                var mahasiswa = []
                 var pembimbing = []
-                kelompok.anggota.forEach(function(ang){
-                    anggota.push(ang.user.id)
+                kelompok.mahasiswa.forEach(function(ang){
+                    mahasiswa.push(ang.user.id)
                 })
-                kelompok.dosen.forEach(function(ang){
+                kelompok.pembimbing.forEach(function(ang){
                     pembimbing.push(ang.user.id)
                 })
                 var object = {
                     topik: kelompok.topik,
-                    anggotas: anggota,
+                    mahasiswas: mahasiswa,
                     pembimbings: pembimbing
                 }
                 obj.push(object)
