@@ -79,6 +79,7 @@ class timta_mng_calendar extends Component {
   }
 
   moveEvent({ event, start, end }) {
+    console.log("start ", start, "end ",end);
     let events = this.props.events;
     const idx = this.props.events.indexOf(event);
     let updatedEvent = event;
@@ -92,6 +93,7 @@ class timta_mng_calendar extends Component {
   }
 
   handleSelectedEvent(event) {
+    console.log(this.props.events)
     this.setState({selectedEvent: event});
     this.setState({modalEvent: true});
   }
@@ -222,13 +224,13 @@ class timta_mng_calendar extends Component {
                 {this.state.selectedEvent.anggota.map((item, i) => (
                   <TableRow key={i} displayBorder={false}>
                     <TableRowColumn className="attributeTable">{i===0 ? "Mahasiswa":""}</TableRowColumn>
-                    <TableRowColumn>{item.nim+" "+item.nama}</TableRowColumn>
+                    <TableRowColumn>{item.user.NIM+" "+item.user.nama}</TableRowColumn>
                   </TableRow>
                 ))}
                 {this.state.selectedEvent.dosen.map((item, i) => (
                 <TableRow key={i} displayBorder={false}>
                   <TableRowColumn className="attributeTable">{i === 0 ? "Dosen": ""}</TableRowColumn>
-                  <TableRowColumn>{item.nama}</TableRowColumn>
+                  <TableRowColumn>{item.user.nama}</TableRowColumn>
                 </TableRow>
                 ))}
               </TableBody>
