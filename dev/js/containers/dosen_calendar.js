@@ -198,16 +198,16 @@ class dosen_calendar extends Component {
                   <TableRowColumn className="attributeTable">Topik</TableRowColumn>
                   <TableRowColumn>{this.state.selectedEvent.topik}</TableRowColumn>
                 </TableRow>
-                {this.state.selectedEvent.anggota.map((item, i) => (
+                {this.state.selectedEvent.mahasiswa.map((item, i) => (
                   <TableRow key={i} displayBorder={false}>
                     <TableRowColumn className="attributeTable">{i===0 ? "Mahasiswa":""}</TableRowColumn>
-                    <TableRowColumn>{item.nim+" "+item.nama}</TableRowColumn>
+                    <TableRowColumn>{item.user.NIM+" "+item.user.nama}</TableRowColumn>
                   </TableRow>
                 ))}
                 {this.state.selectedEvent.dosen.map((item, i) => (
                 <TableRow key={i} displayBorder={false}>
                   <TableRowColumn className="attributeTable">{i === 0 ? "Dosen": ""}</TableRowColumn>
-                  <TableRowColumn>{item.nama}</TableRowColumn>
+                  <TableRowColumn>{item.user.nama}</TableRowColumn>
                 </TableRow>
                 ))}
               </TableBody>
