@@ -137,43 +137,59 @@ class timta_mng_allCalendars extends Component {
         />
 
         <Drawer
-          docked={false}
-          width={400}
-          open={this.state.open}
-          onRequestChange={(open) => this.setState({open})}
-        >
-        <IconButton tooltip="Tutup" onClick = {()=>this.handleClose()}>
-          <i className="material-icons" style={{color: 'white'}}>close</i>
-        </IconButton>
-          <div className="userProfile">
-            <Row>
-              <Col md="3" xs="2">
-                <img src={imgProfile} className="imgProfile"/>
-              </Col>
-              <Col md="9" xs="10" className="textProfile">
-                <Row>
-                  <Col className="nameProfile">{this.state.dataUser.nama}</Col>
-                  <Col className="emailProfile">{this.state.dataUser.email}</Col>
-                  <Col className="emailProfile">{this.state.dataUser.peran}</Col>
-                </Row>
-              </Col>
-            </Row>
-          </div>
+            docked={false}
+            width={400}
+            open={this.state.open}
+            onRequestChange={(open) => this.setState({open})}
+          >
+          <IconButton tooltip="Tutup" onClick = {()=>this.handleClose()}>
+            <i className="material-icons" style={{color: 'white'}}>close</i>
+          </IconButton>
+            <div className="userProfile">
+              <Row>
+                <Col md="3" xs="2">
+                  <img src={imgProfile} className="imgProfile"/>
+                </Col>
+                <Col md="9" xs="10" className="textProfile">
+                  <Row>
+                    <Col className="nameProfile">Ikhwanul Muslimin</Col>
+                    <Col className="emailProfile">ikhwan.m1996@gmail.com</Col>
+                  </Row>
+                </Col>
+              </Row>
+            </div>
+            <hr/>
+            <p className="menuTitle">Manajemen Pengguna</p>
+            <MenuItem insetChildren={true} href="/timta_mng_user">Daftar Pengguna</MenuItem>
+            <MenuItem insetChildren={true} href="/timta_mng_pasangan_TA">Daftar Pasangan TA</MenuItem>
+            <br/>
+            <p className="menuTitle">Manajemen Jadwal</p>
+            <MenuItem insetChildren={true} href="/timta_mng_jadwal_seminarTA1">Seminar TA 1</MenuItem>
+            <MenuItem insetChildren={true} href="/timta_mng_jadwal_seminarTA2">Seminar TA 2</MenuItem>
+            <MenuItem insetChildren={true} href="/timta_mng_jadwal_sidangTA">Sidang Akhir</MenuItem>
+            <hr/>
+            <MenuItem insetChildren={true} style={{backgroundColor:'#b0bec5'}} href="/timta_allcalendars">Manajemen Kalender</MenuItem>
           <hr/>
-          <MenuItem insetChildren={true} style={{backgroundColor:'#b0bec5'}} href="/dosen_calendar">Kalender</MenuItem>
-          <MenuItem insetChildren={true} href="/dosen_setting">Profil dan Pengaturan</MenuItem>
-          <br/>
-        </Drawer>
+          <MenuItem insetChildren={true} href="/timta_mng_ruangan">Manajemen Ruangan</MenuItem>
+          </Drawer>
+
 
         <div className="containerCalendar">
-          <RaisedButton
-            label="Simpan"
-            backgroundColor="#0FC722"
-            labelColor= "#fff"
-            disabled = {this.state.disabled}
-            style={{marginBottom: 20}}
-            onTouchTap = {()=>this.handleSave()}
-          />
+          <Row>
+            <Col md="1" xs="3">
+              <RaisedButton
+              label="Simpan"
+              backgroundColor="#0FC722"
+              labelColor= "#fff"
+              disabled = {this.state.disabled}
+              style={{marginBottom: 20}}
+              onTouchTap = {()=>this.handleSave()}
+              />
+            </Col>
+            <Col md="11" xs="9">
+              <p style={{fontSize: 14}}><i className="material-icons" style={{color: 'black'}}>info</i> Drag and drop untuk memindahkan jadwal.</p><br/>
+            </Col>
+          </Row>
           <DragAndDropCalendar
             selectable
             events={this.props.events}
@@ -199,14 +215,18 @@ class timta_mng_allCalendars extends Component {
           >
             <Table selectable={false}>
               <TableBody displayRowCheckbox={false}>
-              <TableRow displayBorder={false}>
-                <TableRowColumn className="attributeTable">Hari</TableRowColumn>
-                <TableRowColumn>{dateFormat(this.state.selectedEvent.start, "dddd, dd mmmm yyyy")}</TableRowColumn>
-              </TableRow>
+                <TableRow displayBorder={false}>
+                  <TableRowColumn className="attributeTable">Hari</TableRowColumn>
+                  <TableRowColumn>{dateFormat(this.state.selectedEvent.start, "dddd, dd mmmm yyyy")}</TableRowColumn>
+                </TableRow>
                 <TableRow displayBorder={false}>
                   <TableRowColumn className="attributeTable">Waktu</TableRowColumn>
                   <TableRowColumn>{dateFormat(this.state.selectedEvent.start, "HH.MM")}</TableRowColumn>
                 </TableRow>
+                <TableRow displayBorder={false}>
+                    <TableRowColumn className="attributeTable">Ruang</TableRowColumn>
+                    <TableRowColumn>{this.state.selectedEvent.room_id}</TableRowColumn>
+                  </TableRow>
                 <TableRow displayBorder={false}>
                   <TableRowColumn className="attributeTable">Topik</TableRowColumn>
                   <TableRowColumn>{this.state.selectedEvent.topik}</TableRowColumn>

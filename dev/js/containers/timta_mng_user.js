@@ -39,6 +39,8 @@ class timta_mng_user extends Component {
       listperan: ['Mahasiswa', 'Dosen', 'Tim TA'],
       modalTambahUser: false,
       modalEditUser: false,
+      modalConfirmDelete: false,
+      selectedUser: "",
       nama: "",
       email: "",
       peran: "",
@@ -63,9 +65,15 @@ class timta_mng_user extends Component {
     this.props.newUser(this.state.nama, this.state.email, this.state.peran, this.state.nim)
     this.handleCloseTambahUser();
   }
+  handleOpenConfirmDelete(i){
+    this.setState({selectedUser: i});
+    this.setState({modalConfirmDelete:true})
+  };
+  handleCloseConfirmDelete(){this.setState({modalConfirmDelete:false})};
 
-  handleDeleteUser(i) {
-    this.props.deleteUser(i.id);
+  handleDeleteUser() {
+    this.props.deleteUser(this.state.selectedUser.id);
+    this.handleCloseConfirmDelete();
   }
 
   handleOpenEditUser(user){
@@ -112,7 +120,7 @@ class timta_mng_user extends Component {
   render() {
     const actionsTambahUser = [
       <FlatButton
-        label="Cancel"
+        label="Batal"
         primary={true}
         onClick={()=>this.handleCloseTambahUser()}
       />,
@@ -126,7 +134,7 @@ class timta_mng_user extends Component {
 
     const actionsEditUser = [
       <FlatButton
-        label="Cancel"
+        label="Batal"
         primary={true}
         onClick={()=>this.handleCloseEditUser()}
       />,
@@ -135,6 +143,19 @@ class timta_mng_user extends Component {
         primary={true}
         keyboardFocused={true}
         onClick={()=>this.handleEditUser()}
+      />,
+    ];
+
+    const actionsConfirmDelete = [
+      <FlatButton
+        label="Batal"
+        primary={true}
+        onClick={()=>this.handleCloseConfirmDelete()}
+      />,
+      <FlatButton
+        label="Hapus"
+        primary={true}
+        onClick={()=>this.handleDeleteUser()}
       />,
     ];
 
@@ -194,7 +215,7 @@ class timta_mng_user extends Component {
                         <IconButton style={{color: 'blue'}} onClick={() => this.handleOpenEditUser(user)}>
                           <i className="material-icons">edit</i>
                         </IconButton>
-                        <IconButton style={{color: 'red'}} onClick={() => this.handleDeleteUser(user)}>
+                        <IconButton style={{color: 'red'}} onClick={() => this.handleOpenConfirmDelete(user)}>
                           <i className="material-icons">delete</i>
                         </IconButton>
                       </TableRowColumn>
@@ -228,15 +249,17 @@ class timta_mng_user extends Component {
           </div>
           <hr/>
           <p className="menuTitle">Manajemen Pengguna</p>
-          <MenuItem insetChildren={true} style={{backgroundColor:'#b0bec5'}}>Daftar Pengguna</MenuItem>
+          <MenuItem insetChildren={true} style={{backgroundColor:'#b0bec5'}} href="/timta_mng_user">Daftar Pengguna</MenuItem>
           <MenuItem insetChildren={true} href="/timta_mng_pasangan_TA">Daftar Pasangan TA</MenuItem>
-          <MenuItem insetChildren={true} href="/timta_mng_pasangan_KP">Daftar Pasangan KP</MenuItem>
           <br/>
           <p className="menuTitle">Manajemen Jadwal</p>
-          <MenuItem insetChildren={true} href="/timta_mng_jadwal_seminarKP">Seminar KP</MenuItem>
           <MenuItem insetChildren={true} href="/timta_mng_jadwal_seminarTA1">Seminar TA 1</MenuItem>
           <MenuItem insetChildren={true} href="/timta_mng_jadwal_seminarTA2">Seminar TA 2</MenuItem>
           <MenuItem insetChildren={true} href="/timta_mng_jadwal_sidangTA">Sidang Akhir</MenuItem>
+          <hr/>
+          <MenuItem insetChildren={true} href="/timta_allcalendars">Manajemen Kalender</MenuItem>
+          <hr/>
+          <MenuItem insetChildren={true} href="/timta_mng_ruangan">Manajemen Ruangan</MenuItem>
         </Drawer>
 
         <Dialog
@@ -364,7 +387,16 @@ class timta_mng_user extends Component {
             style = {{width: 350}}
           />
           <br />
-          
+        </Dialog>
+        <Dialog
+          title="Konfirmasi Hapus"
+          actions= {actionsConfirmDelete}
+          modal={false}
+          contentStyle={{width: 400}}
+          open={this.state.modalConfirmDelete}
+          onRequestClose={()=>this.handleCloseConfirmDelete()}
+        >
+          Anda yakin ingin menghapus pengguna ini?
         </Dialog>
       </div>
       </MuiThemeProvider>

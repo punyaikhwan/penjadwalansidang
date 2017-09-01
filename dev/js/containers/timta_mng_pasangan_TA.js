@@ -233,7 +233,7 @@ class timta_mng_pasangan_TA extends Component {
     ];
 
     return (
-      
+
       <MuiThemeProvider>
       <div>
         <RaisedButton
@@ -476,16 +476,17 @@ class timta_mng_pasangan_TA extends Component {
           </div>
           <hr/>
           <p className="menuTitle">Manajemen Pengguna</p>
-          <MenuItem insetChildren={true} href="/timta_mng_">Daftar Pengguna</MenuItem>
-          <MenuItem insetChildren={true} href="/timta_mng_pasangan_TA">Daftar Pasangan TA</MenuItem>
-          <MenuItem insetChildren={true} href="/timta_mng_pasangan_KP">Daftar Pasangan KP</MenuItem>
-
+          <MenuItem insetChildren={true} href="/timta_mng_user">Daftar Pengguna</MenuItem>
+          <MenuItem insetChildren={true} style={{backgroundColor:'#b0bec5'}} href="/timta_mng_pasangan_TA">Daftar Pasangan TA</MenuItem>
           <br/>
           <p className="menuTitle">Manajemen Jadwal</p>
-          <MenuItem insetChildren={true} href="/timta_mng_jadwal_seminarKP">Seminar KP</MenuItem>
           <MenuItem insetChildren={true} href="/timta_mng_jadwal_seminarTA1">Seminar TA 1</MenuItem>
           <MenuItem insetChildren={true} href="/timta_mng_jadwal_seminarTA2">Seminar TA 2</MenuItem>
           <MenuItem insetChildren={true} href="/timta_mng_jadwal_sidangTA">Sidang Akhir</MenuItem>
+          <hr/>
+          <MenuItem insetChildren={true} href="/timta_allcalendars">Manajemen Kalender</MenuItem>
+          <hr/>
+          <MenuItem insetChildren={true} href="/timta_mng_ruangan">Manajemen Ruangan</MenuItem>
         </Drawer>
 
         <Dialog
