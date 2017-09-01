@@ -13,7 +13,7 @@ export const schedule= (event_type, start, end, pasangans) => {
             end: end,
             pasangans: pasangans
         }).then(function (data) {
-            console.log(data.data)
+            console.log("SCHEDULE:", data.data)
 
             dispatch({
                 type: "DONE SCHEDULING",
