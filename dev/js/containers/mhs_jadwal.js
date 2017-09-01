@@ -390,9 +390,6 @@ class mhs_jadwal extends Component {
                     open={this.state.open}
                     onRequestChange={(open) => this.setState({open})}
                 >
-                  <IconButton tooltip="Tutup" onClick = {()=>this.handleClose()}>
-                    <i className="material-icons" style={{color: 'white'}}>close</i>
-                  </IconButton>
                   <div className="userProfile">
                     <Row>
                       <Col md="3" xs="2">
@@ -409,7 +406,6 @@ class mhs_jadwal extends Component {
                   </div>
                   <hr/>
                   <MenuItem insetChildren={true} href="/mhs_jadwal" style={{backgroundColor:'#b0bec5'}}>Jadwal</MenuItem>
-                  <hr/>
                   <MenuItem insetChildren={true} href="/mhs_profile">Profil</MenuItem>
 
                   <br/>

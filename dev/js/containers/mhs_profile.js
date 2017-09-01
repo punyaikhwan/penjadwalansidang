@@ -19,6 +19,8 @@ import {
   TableRowColumn,
 } from 'material-ui/Table';
 import imgProfile from '../../scss/public/images/imgprofile.jpg';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 
 class mhs_profile extends Component {
 
@@ -161,9 +163,6 @@ class mhs_profile extends Component {
           open={this.state.open}
           onRequestChange={(open) => this.setState({open})}
         >
-        <IconButton tooltip="Tutup" onClick = {()=>this.handleClose()}>
-          <i className="material-icons" style={{color: 'white'}}>close</i>
-        </IconButton>
           <div className="userProfile">
             <Row>
               <Col md="3" xs="2">
@@ -171,15 +170,15 @@ class mhs_profile extends Component {
               </Col>
               <Col md="9" xs="10" className="textProfile">
                 <Row>
-                  <Col className="nameProfile">Ikhwanul Muslimin</Col>
-                  <Col className="emailProfile">ikhwan.m1996@gmail.com</Col>
+                  <Col className="nameProfile">{this.props.userInfo.nama}</Col>
+                  <Col className="emailProfile">{this.props.userInfo.email}</Col>
+                  <Col className="emailProfile">{this.props.userInfo.peran}</Col>
                 </Row>
               </Col>
             </Row>
           </div>
           <hr/>
           <MenuItem insetChildren={true} href="/mhs_jadwal">Jadwal</MenuItem>
-          <hr/>
           <MenuItem insetChildren={true} style={{backgroundColor:'#b0bec5'}} href="/mhs_profile">Profil</MenuItem>
 
           <br/>
@@ -190,4 +189,15 @@ class mhs_profile extends Component {
   }
 }
 
-export default mhs_profile;
+function mapStateToProps(state) {
+    return {
+        userInfo: state.activeUser
+    };
+}
+
+function matchDispatchToProps(dispatch){
+    return bindActionCreators({
+
+    }, dispatch);
+}
+export default connect(mapStateToProps, matchDispatchToProps)(mhs_profile);

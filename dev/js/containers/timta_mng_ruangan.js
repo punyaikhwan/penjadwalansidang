@@ -369,9 +369,6 @@ class timta_mng_ruangan extends Component {
           open={this.state.open}
           onRequestChange={(open) => this.setState({open})}
         >
-        <IconButton tooltip="Tutup" onClick = {()=>this.handleClose()}>
-          <i className="material-icons" style={{color: 'white'}}>close</i>
-        </IconButton>
           <div className="userProfile">
             <Row>
               <Col md="3" xs="2">
@@ -379,8 +376,9 @@ class timta_mng_ruangan extends Component {
               </Col>
               <Col md="9" xs="10" className="textProfile">
                 <Row>
-                  <Col className="nameProfile">Ikhwanul Muslimin</Col>
-                  <Col className="emailProfile">ikhwan.m1996@gmail.com</Col>
+                  <Col className="nameProfile">{this.props.userInfo.nama}</Col>
+                  <Col className="emailProfile">{this.props.userInfo.email}</Col>
+                  <Col className="emailProfile">{this.props.userInfo.peran}</Col>
                 </Row>
               </Col>
             </Row>
@@ -396,7 +394,6 @@ class timta_mng_ruangan extends Component {
           <MenuItem insetChildren={true} href="/timta_mng_jadwal_sidangTA">Sidang Akhir</MenuItem>
           <hr/>
           <MenuItem insetChildren={true} href="/timta_allcalendars">Manajemen Kalender</MenuItem>
-          <hr/>
           <MenuItem insetChildren={true} style={{backgroundColor:'#b0bec5'}} href="/timta_mng_ruangan">Manajemen Ruangan</MenuItem>
         </Drawer>
 
@@ -558,6 +555,7 @@ class timta_mng_ruangan extends Component {
 function mapStateToProps(state) {
     return {
         dataRuangan: state.ruangan,
+        userInfo: state.activeUser
     };
 }
 

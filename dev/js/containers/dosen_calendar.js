@@ -145,9 +145,9 @@ class dosen_calendar extends Component {
               </Col>
               <Col md="9" xs="10" className="textProfile">
                 <Row>
-                  <Col className="nameProfile">{this.state.dataUser.nama}</Col>
-                  <Col className="emailProfile">{this.state.dataUser.email}</Col>
-                  <Col className="emailProfile">{this.state.dataUser.peran}</Col>
+                  <Col className="nameProfile">{this.props.userInfo.nama}</Col>
+                  <Col className="emailProfile">{this.props.userInfo.email}</Col>
+                  <Col className="emailProfile">{this.props.userInfo.peran}</Col>
                 </Row>
               </Col>
             </Row>
@@ -223,7 +223,8 @@ class dosen_calendar extends Component {
 function mapStateToProps(state) {
   console.log(state.events)
   return {
-        events: state.events
+        events: state.events,
+        userInfo: state.activeUser
     };
 }
 

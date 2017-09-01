@@ -140,9 +140,9 @@ class dosen_setting extends Component {
               </Col>
               <Col md="9" xs="10" className="textProfile">
                 <Row>
-                  <Col className="nameProfile">{this.props.dataUser.nama}</Col>
-                  <Col className="emailProfile">{this.props.dataUser.email}</Col>
-                  <Col className="emailProfile">{this.props.dataUser.peran}</Col>
+                  <Col className="nameProfile">{this.props.userInfo.nama}</Col>
+                  <Col className="emailProfile">{this.props.userInfo.email}</Col>
+                  <Col className="emailProfile">{this.props.userInfo.peran}</Col>
                 </Row>
               </Col>
             </Row>

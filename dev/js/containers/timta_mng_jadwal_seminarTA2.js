@@ -280,9 +280,6 @@ class timta_mng_jadwal_seminarTA2 extends Component {
             open={this.state.open}
             onRequestChange={(open) => this.setState({open})}
           >
-          <IconButton tooltip="Tutup" onClick = {()=>this.handleClose()}>
-            <i className="material-icons" style={{color: 'white'}}>close</i>
-          </IconButton>
             <div className="userProfile">
               <Row>
                 <Col md="3" xs="2">
@@ -290,8 +287,9 @@ class timta_mng_jadwal_seminarTA2 extends Component {
                 </Col>
                 <Col md="9" xs="10" className="textProfile">
                   <Row>
-                    <Col className="nameProfile">Ikhwanul Muslimin</Col>
-                    <Col className="emailProfile">ikhwan.m1996@gmail.com</Col>
+                    <Col className="nameProfile">{this.props.userInfo.nama}</Col>
+                    <Col className="emailProfile">{this.props.userInfo.email}</Col>
+                    <Col className="emailProfile">{this.props.userInfo.peran}</Col>
                   </Row>
                 </Col>
               </Row>
@@ -307,8 +305,7 @@ class timta_mng_jadwal_seminarTA2 extends Component {
             <MenuItem insetChildren={true} href="/timta_mng_jadwal_sidangTA">Sidang Akhir</MenuItem>
             <hr/>
             <MenuItem insetChildren={true} href="/timta_allcalendars">Manajemen Kalender</MenuItem>
-          <hr/>
-          <MenuItem insetChildren={true} href="/timta_mng_ruangan">Manajemen Ruangan</MenuItem>
+            <MenuItem insetChildren={true} href="/timta_mng_ruangan">Manajemen Ruangan</MenuItem>
           </Drawer>
 
           <Dialog
@@ -338,6 +335,7 @@ function mapStateToProps(state) {
         dataTA: state.dataTA,
         loading: state.loading,
         calonEvent: state.calonEvent,
+        userInfo: state.activeUser
     };
 }
 
