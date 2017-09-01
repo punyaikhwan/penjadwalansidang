@@ -293,7 +293,8 @@ class timta_mng_user extends Component {
             hintText="Email (untuk login)"
             floatingLabelText="Email"
             floatingLabelFixed={true}
-            errorText = {this.isErrorEmail(this.state.email) ? "Email tidak valid" : ""}
+            errorText = {this.isEmpty(this.state.email) ? "Email tidak boleh kosong" : (
+              this.isErrorEmail(this.state.email) ? "Email tidak valid" : "")}
             onChange = {(event)=>this.handleChangeEmail(event)}
             style = {{width: 350}}
           />
