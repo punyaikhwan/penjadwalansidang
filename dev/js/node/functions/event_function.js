@@ -258,6 +258,7 @@ var ScheduleEvent = async function(event_type, start, end, pasangans){
 				"title": preResult[i].title,
 				"id": preResult[i].i,
 				"topik": preResult[i].topik,
+				"room_id": preResult[i].ruangan.id,
 				"ruangan": preResult[i].ruangan,
 				"start": preResult[i].start,
 				"end": preResult[i].end,
@@ -289,7 +290,7 @@ var FinalizeEvent = async function(events, event_type){
 				"tipe_event": event_type,
 				"topik": events[i].topik,
 				"title": events[i].title,
-				"room_id": events[i].room,
+				"room_id": events[i].room_id,
 				"start": events[i].start,
 				"end": events[i].end
 			})
