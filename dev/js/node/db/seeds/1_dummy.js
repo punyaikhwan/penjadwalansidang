@@ -45,7 +45,7 @@ exports.seed = function(knex, Promise) {
     ]
 
     let emailList = [
-        'monstergelo@gmail.com',
+        'imathenoor@gmail.com',
         'hasnurk@gmail.com',
         '13514106@std.stei.itb.ac.id',
         '13514066@std.stei.itb.ac.id',
@@ -55,6 +55,19 @@ exports.seed = function(knex, Promise) {
         '',
         '',
         '',
+    ]
+    
+    let tokenList = [
+        '1/L8SlUq5jfDvdkkXaa-9KYoGNiCnF_9YiaRQurYQ0smU',
+        '1/_g-iXRlxmEsvCxTIqGbnIilmyUfv_ZJFqQqvIzLmPoyWkA1jDYhXHhRgCn0X01-P',
+        '1/RZ4jXAx5rGIuINunnyiJBAM9q8rfqudDgE7kEeQ2Njg',
+        '1/V3aB4os9qqqIuDPRyoxk9RFn9DRBGGhDwzrwyD7D0LM',
+        '1/xByf_l_7r_ywN8xjYnpRhPrJijtPWQTAcc645LCKHBBgjqL2xyBiYdNlUZdhR6sm',
+        '1/DFBTahhCVUQ36ITN3vSIaYnXseiYIE2Njgyf51ir8CE',
+        '1/1_CATwHqO4ef8OtemdVy_R-B9LjjGejRLpLZCuwRcwk',
+        '',
+        '',
+        ''
     ]
 
     let peranList = [
@@ -76,6 +89,7 @@ exports.seed = function(knex, Promise) {
                 nama: nameList[i_4-1],
                 email: emailList[i_4-1],
                 peran: peranList[i_4-1],
+                token: tokenList[i_4-1],
                 NIM: faker.phone.phoneNumberFormat(),
             }).then(function(){console.log('populate user')})
         );
