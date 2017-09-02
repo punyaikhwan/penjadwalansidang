@@ -2,6 +2,7 @@ let helper = require('./db.js');
 require('./pasangan_ta.js')
 require('./pasangan_kp.js')
 require('./anggota_pasangan_event.js')
+require('./ruangan.js')
 
 
 Model = helper.bookshelf.Model.extend({
@@ -18,6 +19,9 @@ Model = helper.bookshelf.Model.extend({
     },
     dosen: function(){
     	return this.hasMany('AnggotaEvent', 'pasangan_id').query({where: {peran_pasangan: 1}, orWhere: {peran_pasangan: 2}});
+    },
+    ruangan: function(){
+        return this.belongsTo('Ruangan', 'room_id');
     }
 
 });	
