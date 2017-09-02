@@ -18,6 +18,16 @@ export default function (state = [], action) {
             console.log("eventtsss", tempEvents);
             return tempEvents;
             break;
+
+        case 'NEW EVENT':
+            tempEvents = action.payload;
+            for (var i=0; i<tempEvents.length; i++) {
+                tempEvents[i].start = new Date(tempEvents[i].start);
+                tempEvents[i].end = new Date(tempEvents[i].end);
+            }
+            console.log("eventtsss", tempEvents);
+            return tempEvents;
+            break;
     }
     return state;
 

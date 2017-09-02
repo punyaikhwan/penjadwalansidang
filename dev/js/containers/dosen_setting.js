@@ -77,7 +77,7 @@ class dosen_setting extends Component {
         <AppBar
           title="Halaman Dosen - Profil dan Pengaturan"
           iconElementLeft={
-            <IconButton tooltip="Menu" onClick = {()=>this.handleToggle()}>
+            <IconButton onClick = {()=>this.handleToggle()}>
               <i className="material-icons" style={{color: 'white'}}>menu</i>
             </IconButton>
           }
@@ -130,9 +130,6 @@ class dosen_setting extends Component {
           open={this.state.open}
           onRequestChange={(open) => this.setState({open})}
         >
-        <IconButton tooltip="Tutup" onClick = {()=>this.handleClose()}>
-          <i className="material-icons" style={{color: 'white'}}>close</i>
-        </IconButton>
           <div className="userProfile">
             <Row>
               <Col md="3" xs="2">

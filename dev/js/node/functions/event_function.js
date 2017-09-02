@@ -259,8 +259,8 @@ var ScheduleEvent = async function(event_type, start, end, pasangans){
 				"id": preResult[i].i,
 				"topik": preResult[i].topik,
 				"room": preResult[i].room_id,
-				"start": preResult[i].start),
-				"end": preResult[i].end),
+				"start": preResult[i].start,
+				"end": preResult[i].end,
 				"anggota": preResult[i].mahasiswa,
 				"dosen": preResult[i].dosen
 			})

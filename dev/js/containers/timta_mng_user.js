@@ -165,7 +165,7 @@ class timta_mng_user extends Component {
         <AppBar
           title="Dashboard Tim TA - Manajemen Pengguna"
           iconElementLeft={
-            <IconButton tooltip="Menu" onClick = {()=>this.handleToggle()}>
+            <IconButton onClick = {()=>this.handleToggle()}>
               <i className="material-icons" style={{color: 'white'}}>menu</i>
             </IconButton>
           }

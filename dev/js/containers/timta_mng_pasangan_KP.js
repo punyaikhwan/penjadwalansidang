@@ -198,7 +198,7 @@ class timta_mng_pasangan_KP extends Component {
         <AppBar
           title="Dashboard Tim TA - Daftar Pasangan Kerja Praktik"
           iconElementLeft={
-            <IconButton tooltip="Menu" onClick = {()=>this.handleToggle()}>
+            <IconButton onClick = {()=>this.handleToggle()}>
               <i className="material-icons" style={{color: 'white'}}>menu</i>
             </IconButton>
           }

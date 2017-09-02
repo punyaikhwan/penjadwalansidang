@@ -163,7 +163,7 @@ class timta_mng_jadwal_seminarTA2 extends Component {
           <AppBar
             title="Dashboard Tim TA - Manajemen Jadwal Seminar TA2"
             iconElementLeft={
-              <IconButton tooltip="Menu" onClick = {()=>this.handleToggle()}>
+              <IconButton onClick = {()=>this.handleToggle()}>
                 <i className="material-icons" style={{color: 'white'}}>menu</i>
               </IconButton>
             }

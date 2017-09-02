@@ -245,7 +245,7 @@ class timta_mng_ruangan extends Component {
         <AppBar
           title="Dashboard Tim TA - Manajemen Ruangan"
           iconElementLeft={
-            <IconButton tooltip="Menu" onClick = {()=>this.handleToggle()}>
+            <IconButton onClick = {()=>this.handleToggle()}>
               <i className="material-icons" style={{color: 'white'}}>menu</i>
             </IconButton>
           }

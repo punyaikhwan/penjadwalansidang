@@ -29,9 +29,15 @@ import imgProfile from '../../scss/public/images/dosenprofile.jpg';
 import '../../scss/timTA.scss';
 import moment from 'moment';
 import dateFormat from 'dateformat';
+import SelectField from 'material-ui/SelectField';
+import DatePicker from 'material-ui/DatePicker';
+import TimePicker from 'material-ui/TimePicker';
+import Subheader from 'material-ui/Subheader';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {fetchEvent} from '../actions/event/fetch-events';
+import {fetchTA} from '../actions/ta/fetch-ta';
+import {fetchRuangan} from '../actions/ruangan/fetch-ruangan';
 import {moveEvent} from '../actions/event/move-event';
 
 BigCalendar.setLocalizer(
@@ -50,12 +56,14 @@ class timta_mng_allCalendars extends Component {
       selectedDate: null,
       modalEvent: false,
       openSnackbar: false,
+      modalTambahEvent: false,
       disabled: true,
-      dataUser: {
-        nama: "Dessi Puji Lestari",
-        email: "dessipuji@informatika.org",
-        peran: "Dosen"
-      }
+      eventWillAdded: null,
+      tipeEvent: null,
+      startDate: null,
+      endDate: null,
+      selectedPasangan: null,
+      room: null,
     };
 
     this.moveEvent = this.moveEvent.bind(this)
@@ -63,6 +71,8 @@ class timta_mng_allCalendars extends Component {
 
   componentDidMount(){
     this.props.fetchEvent();
+    this.props.fetchTA();
+    this.props.fetchRuangan();
   }
 
   handleToggle(){this.setState({open: !this.state.open})};
@@ -85,13 +95,15 @@ class timta_mng_allCalendars extends Component {
   // }
 
   handleSelectedEvent(event) {
+    console.log(event);
     this.setState({selectedEvent: event});
     this.setState({modalEvent: true});
   }
 
   moveEvent({ event, start, end }) {
-    console.log("start ", start, "end ",end);
+
     let events = this.props.events;
+    console.log("event moved:", events);
     const idx = this.props.events.indexOf(event);
     let updatedEvent = event;
     updatedEvent.start = start;
@@ -102,6 +114,73 @@ class timta_mng_allCalendars extends Component {
     this.props.move(nextEvents);
     this.setState({disabled: false});
     // this.setState({events: nextEvents})
+  }
+
+  handleOpenTambahEvent(slotInfo) {
+    this.setState({startDate: slotInfo.start, endDate: slotInfo.end});
+    this.setState({modalTambahEvent: true});
+  }
+
+  handleCloseTambahEvent() {
+    this.setState({modalTambahEvent: false});
+    this.setState({eventWillAdded: null});
+  }
+
+  handleChangeTipeEvent(event, index, tipe_event) {
+    this.setState({tipeEvent: tipe_event})
+  }
+
+  handleChangeSelectedPasangan(event, index, selectedPasangan) {
+    console.log("pasangan:",selectedPasangan);
+    this.setState({selectedPasangan: selectedPasangan})
+  }
+
+  handleChangeRoom(event, index, room) {
+    console.log("room:",room);
+    this.setState({room: room})
+  }
+
+  handleChangeEventStartDate(event, date) {this.setState({startDate: date})};
+  handleChangeEventEndDate(event, date) {this.setState({endDate: date})};
+
+  handleTambahEvent() {
+    let events = this.props.events;
+    let dosen = [];
+    for (var i=0; i<this.state.selectedPasangan.pembimbing.length; i++) {
+      dosen.push(this.state.selectedPasangan.pembimbing[i])
+    }
+    for (var i=0; i<this.state.selectedPasangan.penguji.length; i++) {
+      dosen.push(this.state.selectedPasangan.penguji[i])
+    }
+    for (var i=0; i<this.state.selectedPasangan.akhir.length; i++) {
+      dosen.push(this.state.selectedPasangan.akhir[i])
+    }
+    let title ="";
+    if (this.state.tipeEvent === "0") {
+      title = "Seminar TA1";
+    } else
+    if (this.state.tipeEvent === "1") {
+      title = "Seminar TA2";
+    } else
+    if (this.state.tipeEvent === "2") {
+      title = "Sidang Akhir";
+    }
+    console.log("DOSEN:", dosen);
+    console.log("Pasangan:", this.state.selectedPasangan);
+    let eventWillAdded = {
+      title: title+" "+this.state.selectedPasangan.mahasiswa.nama,
+      dosen: dosen,
+      mahasiswa: [{user:this.state.selectedPasangan.mahasiswa}],
+      start: this.state.startDate,
+      end: this.state.endDate,
+      topik: this.state.selectedPasangan.topik,
+      room_id : this.state.room,
+      tipe_event: this.state.tipeEvent
+    }
+    events.push(eventWillAdded);
+    this.props.move(events);
+    this.handleCloseTambahEvent();
+    this.setState({disabled: false});
   }
 
   handleSave() {
@@ -116,6 +195,20 @@ class timta_mng_allCalendars extends Component {
         onClick={()=>this.setState({modalEvent: false})}
       />
     ];
+    const actionsTambahEvent = [
+      <FlatButton
+        label="Cancel"
+        primary={true}
+        onClick={()=>this.handleCloseTambahEvent()}
+      />,
+      <FlatButton
+        label="Submit"
+        primary={true}
+        keyboardFocused={true}
+        onClick={()=>this.handleTambahEvent()}
+      />,
+    ];
+
 
     return (
       <MuiThemeProvider>
@@ -123,7 +216,7 @@ class timta_mng_allCalendars extends Component {
         <AppBar
           title="Dashboard Tim TA - Kalender"
           iconElementLeft={
-            <IconButton tooltip="Menu" onClick = {()=>this.handleToggle()}>
+            <IconButton onClick = {()=>this.handleToggle()}>
               <i className="material-icons" style={{color: 'white'}}>menu</i>
             </IconButton>
           }
@@ -193,10 +286,8 @@ class timta_mng_allCalendars extends Component {
             onEventDrop={this.moveEvent}
             defaultView='month'
             onSelectEvent= {event => this.handleSelectedEvent(event)}
-            onSelectSlot={(slotInfo) => {
-              this.setState({selectedDate: slotInfo.start});
-              console.log(this.state.selectedDate);
-            }}
+            onSelectSlot={(slotInfo) => this.handleOpenTambahEvent(slotInfo)
+            }
           />
         </div>
 
@@ -244,6 +335,120 @@ class timta_mng_allCalendars extends Component {
             </Table>
           </Dialog>
         }
+        {this.state.slotInfo !== null &&
+          <Dialog
+          title="Tambah Acara"
+          actions= {actionsTambahEvent}
+          modal={false}
+          open={this.state.modalTambahEvent}
+          contentStyle={{width: 700}}
+          onRequestClose={()=>this.handleCloseTambahEvent()}
+        >
+          <SelectField
+            multiple={false}
+            hintText="Pilih Tipe Acara"
+            value={this.state.tipeEvent}
+            onChange={(event, index, tipe_event)=>this.handleChangeTipeEvent(event, index, tipe_event)}
+            style = {{width: 350}}
+          >
+            <MenuItem
+            insetChildren={true}
+            value="0"
+            primaryText="Seminar TA1"
+            /><MenuItem
+            insetChildren={true}
+            value="1"
+            primaryText="Seminar TA2"
+            /><MenuItem
+            insetChildren={true}
+            value="2"
+            primaryText="Sidang Akhir"
+            />
+          </SelectField>
+          <SelectField
+            multiple={false}
+            hintText="Pilih Mahasiswa"
+            value={this.state.selectedPasangan}
+            onChange={(event, index, selectedPasangan)=>this.handleChangeSelectedPasangan(event, index, selectedPasangan)}
+            style = {{width: 350}}
+          >
+            {this.props.dataTA.map((item, i) => (
+              <MenuItem
+                key = {i}
+                insetChildren={true}
+                value={item}
+                primaryText={item.mahasiswa.NIM+" "+item.mahasiswa.nama}
+                />
+              ))}
+          </SelectField>
+          <SelectField
+            multiple={false}
+            hintText="Pilih Ruangan"
+            value={this.state.room}
+            onChange={(event, index, room)=>this.handleChangeRoom(event, index, room)}
+            style = {{width: 350}}
+          >
+            {this.props.ruangan.map((item, i) => (
+            <MenuItem
+              key = {i}
+              insetChildren={true}
+              value={item.id}
+              primaryText={item.nama}
+              />
+            ))}
+          </SelectField>
+
+          <Row>
+            <Col md="5" xs="5">
+              <Row>
+                <Col md="12" xs="12">
+                  <Subheader>Tanggal mulai</Subheader>
+                  <DatePicker
+                    hintText="Pilih tanggal mulai"
+                    mode="landscape"
+                    value = {this.state.startDate}
+                    onChange={(event, date)=>this.handleChangeEventStartDate(event, date)}
+                  />
+                </Col>
+                <Col md="12" xs="12">
+                  <Subheader>Jam Mulai</Subheader>
+                  <TimePicker
+                    format="24hr"
+                    hintText="Pilih waktu mulai"
+                    value={this.state.startDate}
+                    onChange={(event, date) =>this.handleChangeEventStartDate(event, date)}
+                  />
+                </Col>
+              </Row>
+            </Col>
+            <Col md="2" xs="2">
+
+            </Col>
+            <Col md="5" xs="5">
+              <Row>
+                <Col md="12" xs="12">
+                  <Subheader>Tanggal akhir</Subheader>
+                  <DatePicker
+                    hintText="Pilih tanggal akhir"
+                    mode="landscape"
+                    value = {this.state.endDate}
+                    onChange={(event, date)=>this.handleChangeEventEndDate(event, date)}
+                  />
+                </Col>
+                <Col md="12" xs="12">
+                  <Subheader>Jam Akhir</Subheader>
+                  <TimePicker
+                    format="24hr"
+                    hintText="Pilih waktu akhir"
+                    value={this.state.endDate}
+                    onChange={(event, date) =>this.handleChangeEventEndDate(event, date)}
+                  />
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </Dialog>
+        }
       </div>
       </MuiThemeProvider>
     );
@@ -254,14 +459,18 @@ function mapStateToProps(state) {
   console.log(state.events)
   return {
         events: state.events,
-        userInfo: state.activeUser
+        userInfo: state.activeUser,
+        dataTA: state.dataTA,
+        ruangan: state.ruangan
     };
 }
 
 function matchDispatchToProps(dispatch){
     return bindActionCreators({
       fetchEvent: fetchEvent,
+      fetchTA: fetchTA,
       move: moveEvent,
+      fetchRuangan: fetchRuangan,
     }, dispatch);
 }
 

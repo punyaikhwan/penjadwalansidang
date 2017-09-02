@@ -58,7 +58,7 @@ class mhs_profile extends Component {
         <AppBar
           title="Halaman Mahasiswa - Jadwal Sidang"
           iconElementLeft={
-            <IconButton tooltip="Menu" onClick = {()=>this.handleToggle()}>
+            <IconButton onClick = {()=>this.handleToggle()}>
               <i className="material-icons" style={{color: 'white'}}>menu</i>
             </IconButton>
           }

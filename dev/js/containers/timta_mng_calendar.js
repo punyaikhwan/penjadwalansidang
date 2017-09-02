@@ -119,7 +119,7 @@ class timta_mng_calendar extends Component {
           <AppBar
             title="Dashboard Tim TA - Finalisasi Kalender"
             iconElementLeft={
-              <IconButton tooltip="Menu" onClick = {()=>this.handleToggle()}>
+              <IconButton onClick = {()=>this.handleToggle()}>
                 <i className="material-icons" style={{color: 'white'}}>menu</i>
               </IconButton>
             }
