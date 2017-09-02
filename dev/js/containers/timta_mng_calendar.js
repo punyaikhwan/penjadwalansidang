@@ -220,7 +220,7 @@ class timta_mng_calendar extends Component {
                   </TableRow>
                   <TableRow displayBorder={false}>
                     <TableRowColumn className="attributeTable">Ruang</TableRowColumn>
-                    <TableRowColumn>{this.state.selectedEvent.room_id}</TableRowColumn>
+                    <TableRowColumn>{this.state.selectedEvent.ruangan.nama}</TableRowColumn>
                   </TableRow>
                   <TableRow displayBorder={false}>
                     <TableRowColumn className="attributeTable">Topik</TableRowColumn>

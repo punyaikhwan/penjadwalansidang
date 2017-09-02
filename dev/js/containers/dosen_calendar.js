@@ -183,13 +183,17 @@ class dosen_calendar extends Component {
           >
             <Table selectable={false}>
               <TableBody displayRowCheckbox={false}>
-              <TableRow displayBorder={false}>
-                <TableRowColumn className="attributeTable">Hari</TableRowColumn>
-                <TableRowColumn>{dateFormat(this.state.selectedEvent.start, "dddd, dd mmmm yyyy")}</TableRowColumn>
-              </TableRow>
+                <TableRow displayBorder={false}>
+                  <TableRowColumn className="attributeTable">Hari</TableRowColumn>
+                  <TableRowColumn>{dateFormat(this.state.selectedEvent.start, "dddd, dd mmmm yyyy")}</TableRowColumn>
+                </TableRow>
                 <TableRow displayBorder={false}>
                   <TableRowColumn className="attributeTable">Waktu</TableRowColumn>
                   <TableRowColumn>{dateFormat(this.state.selectedEvent.start, "HH.MM")}</TableRowColumn>
+                </TableRow>
+                <TableRow displayBorder={false}>
+                  <TableRowColumn className="attributeTable">Ruang</TableRowColumn>
+                  <TableRowColumn>{this.state.selectedEvent.ruangan.nama}</TableRowColumn>
                 </TableRow>
                 <TableRow displayBorder={false}>
                   <TableRowColumn className="attributeTable">Topik</TableRowColumn>
