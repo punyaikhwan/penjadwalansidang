@@ -258,15 +258,6 @@ app.get('/events', function(request, response){
 	})
 })
 
-app.get('/events/new', function(request, response){
-	Event.NewEvent(request.body.event).then(function(result){
-		response.send('success')
-	}).catch(function(err){
-		console.log(err)
-		response.send(err)
-	})
-})
-
 app.post('/eventmahasiswa', function(request, response){
 	Event.FetchEventMahasiswa(request.body.id).then(function(result){
 		response.send(result)

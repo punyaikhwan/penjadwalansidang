@@ -53,8 +53,7 @@ class timta_mng_jadwal_seminarTA1 extends Component {
   }
 
   componentDidMount() {
-    console.log("DidMount")
-      this.props.fetchTA();
+    this.props.fetchTA();
     setTimeout(()=> {
       let tempcheckBoxTA = [];
       for (var i=0; i < this.props.dataTA.length; i++) {
@@ -219,7 +218,7 @@ class timta_mng_jadwal_seminarTA1 extends Component {
                                 <TableRow key={i}>
                                   <TableRowColumn></TableRowColumn>
                                   <TableRowColumn>{item.user.nama}</TableRowColumn>
-                                  <TableRowColumn>{item.user.status_kalender}</TableRowColumn>
+                                  <TableRowColumn>{item.user.token !== null ? "Sudah" : <div style={{color: '#ff0000'}}>Belum</div>}</TableRowColumn>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -347,6 +346,6 @@ function mapStateToProps(state) {
 }
 
 function matchDispatchToProps(dispatch){
-    return bindActionCreators({fetchTA:fetchTA, schedule: schedule, tipe:tipeEvent}, dispatch);
+    return bindActionCreators({fetchTA:fetchTA, schedule: schedule, tipe:tipeEvent, }, dispatch);
 }
 export default connect(mapStateToProps, matchDispatchToProps)(timta_mng_jadwal_seminarTA1);

@@ -217,7 +217,7 @@ class timta_mng_jadwal_sidangTA extends Component {
                       <TableRow key={i}>
                         <TableRowColumn></TableRowColumn>
                         <TableRowColumn>{item.user.nama}</TableRowColumn>
-                        <TableRowColumn>{item.user.status_kalender}</TableRowColumn>
+                        <TableRowColumn>{item.user.token !== null ? "Sudah" : <div style={{color: '#ff0000'}}>Belum</div>}</TableRowColumn>
                       </TableRow>
                     ))}
                 </TableBody>
