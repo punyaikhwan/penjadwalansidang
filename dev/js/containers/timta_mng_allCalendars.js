@@ -9,7 +9,6 @@ import IconButton from 'material-ui/IconButton';
 import FontIcon from 'material-ui/FontIcon';
 import Row from 'muicss/lib/react/row';
 import Col from 'muicss/lib/react/col';
-import TextField from 'material-ui/TextField';
 import Dialog from 'material-ui/Dialog';
 import {
   Table,
@@ -46,6 +45,9 @@ BigCalendar.setLocalizer(
 
 
 const DragAndDropCalendar = withDragAndDrop(BigCalendar);
+var seminarTA1 = 2;
+var seminarTA2 = 3;
+var sidangAkhir = 4;
 
 class timta_mng_allCalendars extends Component {
   constructor(props) {
@@ -57,6 +59,7 @@ class timta_mng_allCalendars extends Component {
       modalEvent: false,
       openSnackbar: false,
       modalTambahEvent: false,
+      modalEditEvent: false,
       disabled: true,
       eventWillAdded: null,
       tipeEvent: null,
@@ -64,6 +67,7 @@ class timta_mng_allCalendars extends Component {
       endDate: null,
       selectedPasangan: null,
       room: null,
+      timeout: false,
     };
 
     this.moveEvent = this.moveEvent.bind(this)
@@ -123,10 +127,17 @@ class timta_mng_allCalendars extends Component {
 
   handleCloseTambahEvent() {
     this.setState({modalTambahEvent: false});
-    this.setState({eventWillAdded: null});
+    this.setState({
+      eventWillAdded: null,
+      startDate: null,
+      endDate: null,
+      room: null,
+      tipeEvent: null
+    });
   }
 
   handleChangeTipeEvent(event, index, tipe_event) {
+    console.log("tipe event:", tipe_event)
     this.setState({tipeEvent: tipe_event})
   }
 
@@ -156,13 +167,13 @@ class timta_mng_allCalendars extends Component {
       dosen.push(this.state.selectedPasangan.akhir[i])
     }
     let title ="";
-    if (this.state.tipeEvent === "0") {
+    if (this.state.tipeEvent === 0) {
       title = "Seminar TA1";
     } else
-    if (this.state.tipeEvent === "1") {
+    if (this.state.tipeEvent === 1) {
       title = "Seminar TA2";
     } else
-    if (this.state.tipeEvent === "2") {
+    if (this.state.tipeEvent === 2) {
       title = "Sidang Akhir";
     }
     console.log("DOSEN:", dosen);
@@ -183,21 +194,52 @@ class timta_mng_allCalendars extends Component {
     this.setState({disabled: false});
   }
 
+  handleOpenEditEvent() {
+    let roomtemp = this.state.selectedEvent.ruangan;
+    roomtemp.event = [];
+    roomtemp.isEdit = 0;
+    this.setState({
+      tipeEvent: this.state.selectedEvent.tipe_event,
+      room: roomtemp,
+      startDate: this.state.selectedEvent.start,
+      endDate: this.state.selectedEvent.end,
+    })
+    this.setState({modalEvent: false});
+    this.setState({modalEditEvent: true});
+    setTimeout(()=> {
+      this.setState({timeout: true});
+      console.log(this.state.room);
+      console.log("tipe event", this.state.tipeEvent);
+    }, 500)
+  }
+
+  handleCloseEditEvent() {
+    this.setState({
+      selectedEvent: null,
+      startDate: null,
+      endDate: null,
+      room: null,
+      tipeEvent: null
+    });
+    this.setState({modalEditEvent: false});
+  }
+
   handleSave() {
     this.setState({disabled: true});
     //Add function to change events in DB
   }
   render() {
     const actionsModalEvent = [
-      <FlatButton
-        label="OK"
-        primary={true}
-        onClick={()=>this.setState({modalEvent: false})}
-      />
+      <IconButton onClick = {()=>this.handleOpenEditEvent()}>
+        <i className="material-icons" style={{color: 'blue'}}>edit</i>
+      </IconButton>,
+      <IconButton onClick = {()=>this.handleOpenDeleteEvent()}>
+        <i className="material-icons" style={{color: 'red'}}>delete</i>
+      </IconButton>
     ];
     const actionsTambahEvent = [
       <FlatButton
-        label="Cancel"
+        label="Batal"
         primary={true}
         onClick={()=>this.handleCloseTambahEvent()}
       />,
@@ -208,7 +250,19 @@ class timta_mng_allCalendars extends Component {
         onClick={()=>this.handleTambahEvent()}
       />,
     ];
-
+    const actionsEditEvent = [
+      <FlatButton
+        label="Batal"
+        primary={true}
+        onClick={()=>this.handleCloseEditEvent()}
+      />,
+      <FlatButton
+        label="Submit"
+        primary={true}
+        keyboardFocused={true}
+        onClick={()=>this.handleEditEvent()}
+      />,
+    ];
 
     return (
       <MuiThemeProvider>
@@ -353,15 +407,15 @@ class timta_mng_allCalendars extends Component {
           >
             <MenuItem
             insetChildren={true}
-            value="0"
+            value={seminarTA1}
             primaryText="Seminar TA1"
             /><MenuItem
             insetChildren={true}
-            value="1"
+            value={seminarTA2}
             primaryText="Seminar TA2"
             /><MenuItem
             insetChildren={true}
-            value="2"
+            value={sidangAkhir}
             primaryText="Sidang Akhir"
             />
           </SelectField>
@@ -384,6 +438,105 @@ class timta_mng_allCalendars extends Component {
           <SelectField
             multiple={false}
             hintText="Pilih Ruangan"
+            value={this.state.room}
+            onChange={(event, index, room)=>this.handleChangeRoom(event, index, room)}
+            style = {{width: 350}}
+          >
+            {this.props.ruangan.map((item, i) => (
+            <MenuItem
+              key = {i}
+              insetChildren={true}
+              value={item}
+              primaryText={item.nama}
+              />
+            ))}
+          </SelectField>
+
+          <Row>
+            <Col md="5" xs="5">
+              <Row>
+                <Col md="12" xs="12">
+                  <Subheader>Tanggal mulai</Subheader>
+                  <DatePicker
+                    hintText="Pilih tanggal mulai"
+                    mode="landscape"
+                    value = {this.state.startDate}
+                    onChange={(event, date)=>this.handleChangeEventStartDate(event, date)}
+                  />
+                </Col>
+                <Col md="12" xs="12">
+                  <Subheader>Jam Mulai</Subheader>
+                  <TimePicker
+                    format="24hr"
+                    hintText="Pilih waktu mulai"
+                    value={this.state.startDate}
+                    onChange={(event, date) =>this.handleChangeEventStartDate(event, date)}
+                  />
+                </Col>
+              </Row>
+            </Col>
+            <Col md="2" xs="2">
+
+            </Col>
+            <Col md="5" xs="5">
+              <Row>
+                <Col md="12" xs="12">
+                  <Subheader>Tanggal akhir</Subheader>
+                  <DatePicker
+                    hintText="Pilih tanggal akhir"
+                    mode="landscape"
+                    value = {this.state.endDate}
+                    onChange={(event, date)=>this.handleChangeEventEndDate(event, date)}
+                  />
+                </Col>
+                <Col md="12" xs="12">
+                  <Subheader>Jam Akhir</Subheader>
+                  <TimePicker
+                    format="24hr"
+                    hintText="Pilih waktu akhir"
+                    value={this.state.endDate}
+                    onChange={(event, date) =>this.handleChangeEventEndDate(event, date)}
+                  />
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </Dialog>
+        }
+
+        {this.state.selectedEvent !== null &&
+          <Dialog
+          title="Edit Acara"
+          actions= {actionsEditEvent}
+          modal={false}
+          open={this.state.modalEditEvent}
+          contentStyle={{width: 700}}
+          onRequestClose={()=>this.handleCloseEditEvent()}
+        >
+          <SelectField
+            multiple={false}
+            hintText="Pilih Tipe Acara"
+            value={this.state.tipeEvent}
+            onChange={(event, index, tipe_event)=>this.handleChangeTipeEvent(event, index, tipe_event)}
+            style = {{width: 350}}
+          >
+            <MenuItem
+            insetChildren={true}
+            value={seminarTA1}
+            primaryText="Seminar TA1"
+            /><MenuItem
+            insetChildren={true}
+            value={seminarTA2}
+            primaryText="Seminar TA2"
+            /><MenuItem
+            insetChildren={true}
+            value={sidangAkhir}
+            primaryText="Sidang Akhir"
+            />
+          </SelectField>
+          <SelectField
+            multiple={false}
+            hintText="Pilih ruangan"
             value={this.state.room}
             onChange={(event, index, room)=>this.handleChangeRoom(event, index, room)}
             style = {{width: 350}}

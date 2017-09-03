@@ -165,11 +165,16 @@ var FormatForSave = function(events, event_type, pasangan){
 		temp.tipe_event = 99
 
 		if(event_type == 1){
-			temp.title = ("Event "+additionalInfo.mahasiswa[0].user.nama)
-		}
-
-		if(event_type == 2 || event_type == 3 || event_type == 4){
-			temp.title = ("Event "+additionalInfo.mahasiswa.nama)
+			temp.title = ("Seminar KP "+additionalInfo.mahasiswa[0].user.nama)
+		} else
+		if(event_type == 2){
+			temp.title = ("Seminar TA1 "+additionalInfo.mahasiswa.nama)
+		} else
+		if(event_type == 3){
+			temp.title = ("Seminar TA2 "+additionalInfo.mahasiswa.nama)
+		} else
+		if(event_type == 4){
+			temp.title = ("Sidang Akhir "+additionalInfo.mahasiswa.nama)
 		}
 			
 		temp.topik = additionalInfo.topik
@@ -810,5 +815,5 @@ module.exports = {
   ScheduleEvent,
   FetchEvent,
   FetchEventMahasiswa,
-	FinalizeEvent
+  FinalizeEvent
 }
