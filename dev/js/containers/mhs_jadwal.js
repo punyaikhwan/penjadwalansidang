@@ -388,7 +388,55 @@ class mhs_jadwal extends Component {
         );
     } else {
       return (
-          <div> tak ada jadwal </div>
+      <MuiThemeProvider>
+        <div>
+          <AppBar
+              title="Halaman Mahasiswa - Jadwal"
+              iconElementLeft={
+                <IconButton onClick = {()=>this.handleToggle()}>
+                  <i className="material-icons" style={{color: 'white'}}>menu</i>
+                </IconButton>
+              }
+              iconElementRight={
+                <RaisedButton
+                    label="Logout"
+                    backgroundColor="#F44336"
+                    labelColor= "#fff"
+                />
+              }
+          />
+
+          <p> Belum ada jadwal </p>
+
+          <Drawer
+              docked={false}
+              width={400}
+              open={this.state.open}
+              onRequestChange={(open) => this.setState({open})}
+          >
+            <div className="userProfile">
+              <Row>
+                <Col md="3" xs="2">
+                  <img src={imgProfile} className="imgProfile"/>
+                </Col>
+                <Col md="9" xs="10" className="textProfile">
+                  <Row>
+                    <Col className="nameProfile">{this.props.userInfo.nama}</Col>
+                    <Col className="emailProfile">{this.props.userInfo.email}</Col>
+                    <Col className="emailProfile">{this.props.userInfo.peran}</Col>
+                  </Row>
+                </Col>
+              </Row>
+            </div>
+            <hr/>
+            <MenuItem insetChildren={true} href="/mhs_jadwal" style={{backgroundColor:'#b0bec5'}}>Jadwal</MenuItem>
+            <MenuItem insetChildren={true} href="/mhs_profile">Profil</MenuItem>
+
+            <br/>
+          </Drawer>
+        </div>
+      </MuiThemeProvider>
+
       )
     }
 
