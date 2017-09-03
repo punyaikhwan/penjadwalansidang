@@ -40,7 +40,7 @@ module.exports = [
             ],
         },
         output: {
-            path: 'src',
+            path: 'C:\\\Users\\CXXXV\\Documents\\Project\\nodejs\\penjadwalansidang\\src',
             filename: 'js/bundle.min.js'
         },
         plugins: [
