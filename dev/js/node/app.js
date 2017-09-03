@@ -258,9 +258,6 @@ app.get('/node/events', function(request, response){
 	})
 })
 
-<<<<<<< HEAD
-app.post('/eventmahasiswa', function(request, response){
-=======
 app.get('/node/events/new', function(request, response){
 	Event.NewEvent(request.body.event).then(function(result){
 		response.send('success')
@@ -271,7 +268,6 @@ app.get('/node/events/new', function(request, response){
 })
 
 app.post('/node/eventmahasiswa', function(request, response){
->>>>>>> 1be66ef9bdcdbb442d04a2168310a8f7881ac0ad
 	Event.FetchEventMahasiswa(request.body.id).then(function(result){
 		response.send(result)
 	}).catch(function(err){
