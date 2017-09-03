@@ -7,6 +7,7 @@ let Anggota = require('../db/models/anggota_pasangan_event.js')
 let axios = require('axios')
 let Promise = require('bluebird')
 let knex = require('../db/models/db.js')
+let moment = require('moment')
 
 let shared_email = 'ruang.labtek5@gmail.com'
 let shared_token = '1/QPHqu2Xu2VSvUZVoQXc8F9BMC6F7eAqEzROWIyfphyQ'
@@ -165,11 +166,16 @@ var FormatForSave = function(events, event_type, pasangan){
 		temp.tipe_event = 99
 
 		if(event_type == 1){
-			temp.title = ("Event "+additionalInfo.mahasiswa[0].user.nama)
-		}
-
-		if(event_type == 2 || event_type == 3 || event_type == 4){
-			temp.title = ("Event "+additionalInfo.mahasiswa.nama)
+			temp.title = ("Seminar KP "+additionalInfo.mahasiswa[0].user.nama)
+		} else
+		if(event_type == 2){
+			temp.title = ("Seminar TA1 "+additionalInfo.mahasiswa.nama)
+		} else
+		if(event_type == 3){
+			temp.title = ("Seminar TA2 "+additionalInfo.mahasiswa.nama)
+		} else
+		if(event_type == 4){
+			temp.title = ("Sidang Akhir "+additionalInfo.mahasiswa.nama)
 		}
 			
 		temp.topik = additionalInfo.topik
@@ -382,6 +388,90 @@ var FinalizeEvent = async function(events, event_type){
 
 	return Promise.each(task, function(){})
 }
+
+//===============================================================================
+var OverwriteEvent = async function(events){
+	try{
+		await knex.emptyTable('event')
+		console.log("events", JSON.stringify(events))
+		console.log(moment(events[0].start).toString())
+		//format json
+		let objs = []
+		let anggotas = []
+		for(var i=0; i<events.length; i++){
+			objs.push({
+				"event_id": i,
+				"tipe_event": events[i].tipe_event,
+				"topik": events[i].topik,
+				"title": events[i].title,
+				"room_id": events[i].ruangan.id,
+				"start": moment(new Date(events[i].start)).format("YYYY-MM-DD HH:mm:ss"),
+				"end": moment(new Date(events[i].end)).format("YYYY-MM-DD HH:mm:ss")
+			})
+
+			anggotas.push({
+				idStudent: [],
+				idPembimbing: [],
+				idPenguji: []
+			})
+
+			//dosen
+			for(var j=0; j<events[i].dosen.length; j++){
+				if(events[i].dosen[j].peran_pasangan == 1){
+					anggotas[i].idPembimbing.push(events[i].dosen[j].user_id)
+				}
+				else if(events[i].dosen[j].peran_pasangan == 2){
+					anggotas[i].idPenguji.push(events[i].dosen[j].user_id)
+				}
+			}
+
+			//mahasiswa
+			for(var j=0; j<events[i].mahasiswa.length; j++){
+				anggotas[i].idStudent.push(events[i].mahasiswa[j].user.id)
+			}
+		}
+
+		//insert new record
+		var task = []
+		let gloi = 0 //index for promise insert event
+
+		for(var i=0; i<objs.length; i++){
+			task.push(new Event.model(objs[i]).save().then(function(result){
+				var id = result.get('id')
+				//masukin mahasiswa
+				task.push(new Anggota.model({
+					"user_id": anggotas[gloi].idStudent,
+					"peran_pasangan": 0,
+					"pasangan_id": id
+				}).save())
+
+				//masukin pembimbing
+				for(var j=0; j<anggotas[gloi].idPembimbing.length; j++){
+					task.push(new Anggota.model({
+						"user_id": anggotas[gloi].idPembimbing[j],
+						"peran_pasangan": 1,
+						"pasangan_id": id
+					}).save())
+				}
+
+				//masukin penguji
+				for(var j=0; j<anggotas[gloi].idPenguji.length; j++){
+
+					task.push(new Anggota.model({
+						"user_id": anggotas[gloi].idPenguji[j],
+						"peran_pasangan": 2,
+						"pasangan_id": id
+					}).save())
+				}
+
+			}))
+		}
+	}catch(err){
+		console.log(err)
+	}
+
+	return Promise.each(task, function(){})
+}
 //===============================================================================
 var NotifyEvent = async function(event_type, shared_email, shared_token){
 	try{
@@ -452,7 +542,7 @@ var NewEvent = async function(objs, anggotas){
 			task.push(new Event.model(objs[i]).save().then(function(result){
 				var id = result.get('id')
 				//masukin mahasiswa
-				task.push(new Anggota.model({
+				task.push(new mahasiswa.model({
 					"user_id": anggotas[gloi].idStudent,
 					"peran_pasangan": 0,
 					"pasangan_id": id
@@ -631,6 +721,7 @@ var test = async function(){
     "room": 1,
     "start": "2017-08-28T09:22:28.000Z",
     "end": "2017-08-28T10:02:28.000Z",
+    tipe_event: 1,
     "anggota": [
       {
         "id": 41,
@@ -681,6 +772,7 @@ var test = async function(){
     "room": 2,
     "start": "2017-08-28T10:02:28.000Z",
     "end": "2017-08-28T10:42:28.000Z",
+    tipe_event: 2,
     "anggota": [
       {
         "id": 45,
@@ -731,6 +823,7 @@ var test = async function(){
     "room": 1,
     "start": "2017-08-28T14:02:28.000Z",
     "end": "2017-08-28T14:42:28.000Z",
+    tipe_event: 3,
     "anggota": [
       {
         "id": 43,
@@ -775,8 +868,9 @@ var test = async function(){
     ]
   }
 ]
-
-		await FinalizeEvent(testJSON, 1)
+		console.log("start")
+		await OverwriteEvent(testJSON)
+		console.log("done")
 		return
 
 
@@ -800,7 +894,7 @@ var test = async function(){
 }
 //===============================================================================
 //main program
-// test()
+//test()
 
 module.exports = {
   DeleteEvent, 
@@ -810,5 +904,6 @@ module.exports = {
   ScheduleEvent,
   FetchEvent,
   FetchEventMahasiswa,
-	FinalizeEvent
+  FinalizeEvent,
+  OverwriteEvent
 }

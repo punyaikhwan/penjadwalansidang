@@ -285,6 +285,15 @@ app.post('/node/finalize', function(request, response){
 	})
 })
 
+app.post('/node/overwrite', function(request, response){
+	Event.OverwriteEvent(request.body.events).then(function(result){
+		response.send("success")
+	}).catch(function(err){
+		console.log(err)
+		response.send(err)
+	})
+})
+
 //USER====================================================================
 app.get('/node/user', function(request, response){
 	user.FetchUser().then(function(result){
