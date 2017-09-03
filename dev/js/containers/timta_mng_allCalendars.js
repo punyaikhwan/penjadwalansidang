@@ -34,6 +34,7 @@ import TimePicker from 'material-ui/TimePicker';
 import Subheader from 'material-ui/Subheader';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import {schedule} from '../actions/event/schedule';
 import {fetchEvent} from '../actions/event/fetch-events';
 import {fetchTA} from '../actions/ta/fetch-ta';
 import {fetchRuangan} from '../actions/ruangan/fetch-ruangan';
@@ -229,6 +230,7 @@ class timta_mng_allCalendars extends Component {
     //Add function to change events in DB
   }
   render() {
+    console.log("this ",this)
     const actionsModalEvent = [
       <IconButton onClick = {()=>this.handleOpenEditEvent()}>
         <i className="material-icons" style={{color: 'blue'}}>edit</i>
@@ -323,6 +325,14 @@ class timta_mng_allCalendars extends Component {
             <Col md="1" xs="3">
               <RaisedButton
               label="Simpan"
+              backgroundColor="#0FC722"
+              labelColor= "#fff"
+              disabled = {this.state.disabled}
+              style={{marginBottom: 20}}
+              onTouchTap = {()=>this.handleSave()}
+              />
+              <RaisedButton
+              label="Jadwal Ulang"
               backgroundColor="#0FC722"
               labelColor= "#fff"
               disabled = {this.state.disabled}
@@ -624,6 +634,7 @@ function matchDispatchToProps(dispatch){
       fetchTA: fetchTA,
       move: moveEvent,
       fetchRuangan: fetchRuangan,
+      schedule: schedule,
     }, dispatch);
 }
 

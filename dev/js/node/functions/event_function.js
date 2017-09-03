@@ -900,5 +900,6 @@ module.exports = {
   ScheduleEvent,
   FetchEvent,
   FetchEventMahasiswa,
-  FinalizeEvent
+  FinalizeEvent,
+  OverwriteEvent
 }
