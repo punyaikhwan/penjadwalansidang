@@ -7,7 +7,7 @@ export const fetchEvent= (item) => {
             type: "FETCH EVENT",
             payload: []
         })
-        axios.get('http://localhost:3001/events').then(function (data) {
+        axios.get('http://localhost:3001/node/events').then(function (data) {
             console.log(data.data)
 
             dispatch({

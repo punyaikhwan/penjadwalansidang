@@ -41,11 +41,26 @@ class App extends Component {
       this.props.checkToken(tokenlagi)
 
       if(this.props.check){
-          return(
-              <div>
-                <Redirect to="/timta_mng_user"/>
-              </div>
-          )
+          if (this.props.user.peran == 2){
+              return(
+                  <div>
+                      <Redirect to="/timta_mng_user"/>
+                  </div>
+              )
+          } else if (this.props.user.peran == 1) {
+              return (
+                  <div>
+                      <Redirect to="/dosen_calendar"/>
+                  </div>
+              )
+          } else if (this.props.user.peran == 0) {
+              return (
+                  <div>
+                      <Redirect to="/mhs_jadwal"/>
+                  </div>
+              )
+          }
+
       }
       else{
           return(
@@ -98,7 +113,8 @@ class App extends Component {
 }
 function mapStateToProps(state) {
     return {
-        check: state.checkToken
+        check: state.checkToken,
+        user: state.activeUser
     };
 }
 

@@ -4,7 +4,7 @@ export const newEvent= (event) => {
         dispatch({
             type: "NEW EVENT"
         })
-        axios.post('http://localhost:3001/events/new', {
+        axios.post('http://localhost:3001/node/events/new', {
             event: event
         }).then(function (data) {
 
@@ -12,7 +12,7 @@ export const newEvent= (event) => {
                 type: "DONE NEW EVENT"
 
             })
-            axios.get('http://localhost:3001/events').then(function (data) {
+            axios.get('http://localhost:3001/node/events').then(function (data) {
                 console.log(data.data)
                 dispatch({
 	                type: "DONE FETCH EVENT",

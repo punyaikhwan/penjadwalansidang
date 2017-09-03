@@ -6,7 +6,7 @@ export const newUser= (nama, email, peran, nim) => {
         dispatch({
             type: "NEW USER"
         })
-        axios.post('http://localhost:3001/user/new', {
+        axios.post('http://localhost:3001/node/user/new', {
             "obj":{
                 "nama": nama,
                 "email": email,
@@ -19,7 +19,7 @@ export const newUser= (nama, email, peran, nim) => {
                 type: "DONE NEW USER"
 
             })
-            axios.get('http://localhost:3001/user').then(function (data) {
+            axios.get('http://localhost:3001/node/user').then(function (data) {
                 console.log(data.data)
 
                 dispatch({

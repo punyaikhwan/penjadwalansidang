@@ -6,7 +6,7 @@ export const deleteTA= (id) => {
         dispatch({
             type: "DELETE TA"
         })
-        axios.post('http://localhost:3001/ta/delete', {
+        axios.post('http://localhost:3001/node/ta/delete', {
             id: id
         }).then(function (data) {
 
@@ -14,7 +14,7 @@ export const deleteTA= (id) => {
                 type: "DONE DELETE TA"
 
             })
-            axios.get('http://localhost:3001/ta').then(function (data) {
+            axios.get('http://localhost:3001/node/ta').then(function (data) {
                 console.log(data.data)
 
                 dispatch({

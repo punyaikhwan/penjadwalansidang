@@ -7,7 +7,7 @@ export const fetchMhsEvent= (item) => {
             type: "FETCH MHS EVENT",
             payload: []
         })
-        axios.post('http://localhost:3001/eventmahasiswa/',{
+        axios.post('http://localhost:3001/node/eventmahasiswa/',{
             id: item
         }).then(function (data) {
             console.log(data.data)

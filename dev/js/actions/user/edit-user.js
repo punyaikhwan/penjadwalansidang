@@ -7,7 +7,7 @@ export const editUser= (id, nama, email, peran, nim) => {
             type: "EDIT USER"
         })
         console.log (id, nama, email, peran, nim)
-        axios.post('http://localhost:3001/user/edit', {
+        axios.post('http://localhost:3001/node/user/edit', {
 
             "ids" : [id],
             "objs":[{
@@ -25,7 +25,7 @@ export const editUser= (id, nama, email, peran, nim) => {
                 type: "DONE EDIT USER"
 
             })
-            axios.get('http://localhost:3001/user').then(function (data) {
+            axios.get('http://localhost:3001/node/user').then(function (data) {
                 console.log(data.data)
 
                 dispatch({

@@ -7,7 +7,7 @@ export const fetchRuangan= () => {
             type: "FETCH RUANGAN",
             payload: []
         })
-        axios.get('http://localhost:3001/ruangan').then(function (data) {
+        axios.get('http://localhost:3001/node/ruangan').then(function (data) {
             console.log(data.data)
 
             dispatch({

@@ -6,7 +6,7 @@ export const newTA= (id) => {
         dispatch({
             type: "NEW TA"
         })
-        axios.post('http://localhost:3001/ta/new', {
+        axios.post('http://localhost:3001/node/ta/new', {
             mahasiswa_id: id
         }).then(function (data) {
 
@@ -14,7 +14,7 @@ export const newTA= (id) => {
                 type: "DONE NEW TA"
 
             })
-            axios.get('http://localhost:3001/ta').then(function (data) {
+            axios.get('http://localhost:3001/node/ta').then(function (data) {
                 console.log(data.data)
 
                 dispatch({
