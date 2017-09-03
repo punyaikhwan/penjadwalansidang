@@ -60,6 +60,7 @@ class timta_mng_allCalendars extends Component {
       openSnackbar: false,
       modalTambahEvent: false,
       modalEditEvent: false,
+      modalConfirmDelete: false,
       disabled: true,
       eventWillAdded: null,
       tipeEvent: null,
@@ -107,7 +108,6 @@ class timta_mng_allCalendars extends Component {
   moveEvent({ event, start, end }) {
 
     let events = this.props.events;
-    console.log("event moved:", events);
     const idx = this.props.events.indexOf(event);
     let updatedEvent = event;
     updatedEvent.start = start;
@@ -126,14 +126,15 @@ class timta_mng_allCalendars extends Component {
   }
 
   handleCloseTambahEvent() {
-    this.setState({modalTambahEvent: false});
     this.setState({
-      eventWillAdded: null,
+      selectedEvent: null,
       startDate: null,
       endDate: null,
       room: null,
-      tipeEvent: null
+      tipeEvent: null,
+      selectedPasangan: null,
     });
+    this.setState({modalTambahEvent: false});
   }
 
   handleChangeTipeEvent(event, index, tipe_event) {
@@ -167,13 +168,13 @@ class timta_mng_allCalendars extends Component {
       dosen.push(this.state.selectedPasangan.akhir[i])
     }
     let title ="";
-    if (this.state.tipeEvent === 0) {
+    if (this.state.tipeEvent === seminarTA1) {
       title = "Seminar TA1";
     } else
-    if (this.state.tipeEvent === 1) {
+    if (this.state.tipeEvent === seminarTA2) {
       title = "Seminar TA2";
     } else
-    if (this.state.tipeEvent === 2) {
+    if (this.state.tipeEvent === sidangAkhir) {
       title = "Sidang Akhir";
     }
     console.log("DOSEN:", dosen);
@@ -219,9 +220,42 @@ class timta_mng_allCalendars extends Component {
       startDate: null,
       endDate: null,
       room: null,
-      tipeEvent: null
+      tipeEvent: null,
+      selectedPasangan: null
     });
     this.setState({modalEditEvent: false});
+  }
+
+  handleEditEvent() {
+    let events = this.props.events;
+    let idx = this.props.events.indexOf(this.state.selectedEvent);
+    let updatedEvent = this.state.selectedEvent;
+    updatedEvent.start = this.state.startDate;
+    updatedEvent.end = this.state.endDate;
+    updatedEvent.ruangan = this.state.room;
+    updatedEvent.tipe_event = this.state.tipeEvent;
+
+    events.splice(idx, 1, updatedEvent)
+    this.props.move(events);
+    this.setState({disabled: false});
+    this.handleCloseEditEvent();
+    // this.setState({events: nextEvents})
+  }
+
+  handleOpenConfirmDelete(){
+    this.handleCloseEditEvent();
+    this.setState({modalConfirmDelete:true})
+  };
+  handleCloseConfirmDelete(){this.setState({modalConfirmDelete:false})};
+
+  handleDeleteEvent() {
+    let events = this.props.events;
+    let idx = this.props.events.indexOf(this.state.selectedEvent);
+
+    events.splice(idx, 1);
+    this.props.move(events);
+    this.setState({disabled: false});
+    this.handleCloseConfirmDelete();
   }
 
   handleSave() {
@@ -233,7 +267,7 @@ class timta_mng_allCalendars extends Component {
       <IconButton onClick = {()=>this.handleOpenEditEvent()}>
         <i className="material-icons" style={{color: 'blue'}}>edit</i>
       </IconButton>,
-      <IconButton onClick = {()=>this.handleOpenDeleteEvent()}>
+      <IconButton onClick = {()=>this.handleOpenConfirmDelete()}>
         <i className="material-icons" style={{color: 'red'}}>delete</i>
       </IconButton>
     ];
@@ -261,6 +295,18 @@ class timta_mng_allCalendars extends Component {
         primary={true}
         keyboardFocused={true}
         onClick={()=>this.handleEditEvent()}
+      />,
+    ];
+    const actionsConfirmDelete = [
+      <FlatButton
+        label="Batal"
+        primary={true}
+        onClick={()=>this.handleCloseConfirmDelete()}
+      />,
+      <FlatButton
+        label="Hapus"
+        primary={true}
+        onClick={()=>this.handleDeleteEvent()}
       />,
     ];
 
@@ -602,6 +648,16 @@ class timta_mng_allCalendars extends Component {
           </Row>
         </Dialog>
         }
+        <Dialog
+          title="Konfirmasi Hapus"
+          actions= {actionsConfirmDelete}
+          modal={false}
+          contentStyle={{width: 400}}
+          open={this.state.modalConfirmDelete}
+          onRequestClose={()=>this.handleCloseConfirmDelete()}
+        >
+          Anda yakin ingin menghapus acara ini?
+        </Dialog>
       </div>
       </MuiThemeProvider>
     );
