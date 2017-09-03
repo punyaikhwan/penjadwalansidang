@@ -34,10 +34,12 @@ import TimePicker from 'material-ui/TimePicker';
 import Subheader from 'material-ui/Subheader';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import {schedule} from '../actions/event/schedule';
 import {fetchEvent} from '../actions/event/fetch-events';
 import {fetchTA} from '../actions/ta/fetch-ta';
 import {fetchRuangan} from '../actions/ruangan/fetch-ruangan';
 import {moveEvent} from '../actions/event/move-event';
+import {save} from '../actions/event/save';
 
 BigCalendar.setLocalizer(
   BigCalendar.momentLocalizer(moment)
@@ -152,7 +154,7 @@ class timta_mng_allCalendars extends Component {
     this.setState({room: room})
   }
 
-  handleChangeEventStartDate(event, date) {this.setState({startDate: date})};
+  handleChangeEventStartDate(event, date) {console.log(date); this.setState({startDate: date})};
   handleChangeEventEndDate(event, date) {this.setState({endDate: date})};
 
   handleTambahEvent() {
@@ -259,10 +261,13 @@ class timta_mng_allCalendars extends Component {
   }
 
   handleSave() {
+    console.log("SAVE:", JSON.stringify(this.props.events));
+    this.props.save(this.props.events);
     this.setState({disabled: true});
     //Add function to change events in DB
   }
   render() {
+    console.log("this ",this)
     const actionsModalEvent = [
       <IconButton onClick = {()=>this.handleOpenEditEvent()}>
         <i className="material-icons" style={{color: 'blue'}}>edit</i>
@@ -680,6 +685,8 @@ function matchDispatchToProps(dispatch){
       fetchTA: fetchTA,
       move: moveEvent,
       fetchRuangan: fetchRuangan,
+      schedule: schedule,
+      save: save,
     }, dispatch);
 }
 

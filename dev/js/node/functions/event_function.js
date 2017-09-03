@@ -7,6 +7,7 @@ let Anggota = require('../db/models/anggota_pasangan_event.js')
 let axios = require('axios')
 let Promise = require('bluebird')
 let knex = require('../db/models/db.js')
+let moment = require('moment')
 
 let shared_email = 'ruang.labtek5@gmail.com'
 let shared_token = '1/QPHqu2Xu2VSvUZVoQXc8F9BMC6F7eAqEzROWIyfphyQ'
@@ -387,10 +388,13 @@ var FinalizeEvent = async function(events, event_type){
 
 	return Promise.each(task, function(){})
 }
+
 //===============================================================================
 var OverwriteEvent = async function(events){
 	try{
 		await knex.emptyTable('event')
+		console.log("events", JSON.stringify(events))
+		console.log(moment(events[0].start).toString())
 		//format json
 		let objs = []
 		let anggotas = []
@@ -400,9 +404,9 @@ var OverwriteEvent = async function(events){
 				"tipe_event": events[i].tipe_event,
 				"topik": events[i].topik,
 				"title": events[i].title,
-				"room_id": events[i].room_id,
-				"start": events[i].start,
-				"end": events[i].end
+				"room_id": events[i].ruangan.id,
+				"start": moment(new Date(events[i].start)).format("YYYY-MM-DD HH:mm:ss"),
+				"end": moment(new Date(events[i].end)).format("YYYY-MM-DD HH:mm:ss")
 			})
 
 			anggotas.push({
@@ -422,8 +426,8 @@ var OverwriteEvent = async function(events){
 			}
 
 			//mahasiswa
-			for(var j=0; j<events[i].anggota.length; j++){
-				anggotas[i].idStudent.push(events[i].anggota[j].user_id)
+			for(var j=0; j<events[i].mahasiswa.length; j++){
+				anggotas[i].idStudent.push(events[i].mahasiswa[j].user.id)
 			}
 		}
 
@@ -538,7 +542,7 @@ var NewEvent = async function(objs, anggotas){
 			task.push(new Event.model(objs[i]).save().then(function(result){
 				var id = result.get('id')
 				//masukin mahasiswa
-				task.push(new Anggota.model({
+				task.push(new mahasiswa.model({
 					"user_id": anggotas[gloi].idStudent,
 					"peran_pasangan": 0,
 					"pasangan_id": id
@@ -900,5 +904,6 @@ module.exports = {
   ScheduleEvent,
   FetchEvent,
   FetchEventMahasiswa,
-  FinalizeEvent
+  FinalizeEvent,
+  OverwriteEvent
 }
