@@ -83,7 +83,7 @@ class dosen_calendar extends Component {
      console.log(event);
     var backgroundColor = '204FA7';
      for (var i=0; i< event.dosen.length; i++) {
-      if (event.dosen[i].user.nama === this.props.userInfo.nama) {
+      if (event.dosen[i].user.email === this.props.userInfo.email) {
         console.log("halooo");
         backgroundColor = '#247510';
       }
