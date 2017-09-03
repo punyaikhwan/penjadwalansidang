@@ -388,6 +388,87 @@ var FinalizeEvent = async function(events, event_type){
 	return Promise.each(task, function(){})
 }
 //===============================================================================
+var OverwriteEvent = async function(events){
+	try{
+		await knex.emptyTable('event')
+		//format json
+		let objs = []
+		let anggotas = []
+		for(var i=0; i<events.length; i++){
+			objs.push({
+				"event_id": i,
+				"tipe_event": events[i].tipe_event,
+				"topik": events[i].topik,
+				"title": events[i].title,
+				"room_id": events[i].room_id,
+				"start": events[i].start,
+				"end": events[i].end
+			})
+
+			anggotas.push({
+				idStudent: [],
+				idPembimbing: [],
+				idPenguji: []
+			})
+
+			//dosen
+			for(var j=0; j<events[i].dosen.length; j++){
+				if(events[i].dosen[j].peran_pasangan == 1){
+					anggotas[i].idPembimbing.push(events[i].dosen[j].user_id)
+				}
+				else if(events[i].dosen[j].peran_pasangan == 2){
+					anggotas[i].idPenguji.push(events[i].dosen[j].user_id)
+				}
+			}
+
+			//mahasiswa
+			for(var j=0; j<events[i].anggota.length; j++){
+				anggotas[i].idStudent.push(events[i].anggota[j].user_id)
+			}
+		}
+
+		//insert new record
+		var task = []
+		let gloi = 0 //index for promise insert event
+
+		for(var i=0; i<objs.length; i++){
+			task.push(new Event.model(objs[i]).save().then(function(result){
+				var id = result.get('id')
+				//masukin mahasiswa
+				task.push(new Anggota.model({
+					"user_id": anggotas[gloi].idStudent,
+					"peran_pasangan": 0,
+					"pasangan_id": id
+				}).save())
+
+				//masukin pembimbing
+				for(var j=0; j<anggotas[gloi].idPembimbing.length; j++){
+					task.push(new Anggota.model({
+						"user_id": anggotas[gloi].idPembimbing[j],
+						"peran_pasangan": 1,
+						"pasangan_id": id
+					}).save())
+				}
+
+				//masukin penguji
+				for(var j=0; j<anggotas[gloi].idPenguji.length; j++){
+
+					task.push(new Anggota.model({
+						"user_id": anggotas[gloi].idPenguji[j],
+						"peran_pasangan": 2,
+						"pasangan_id": id
+					}).save())
+				}
+
+			}))
+		}
+	}catch(err){
+		console.log(err)
+	}
+
+	return Promise.each(task, function(){})
+}
+//===============================================================================
 var NotifyEvent = async function(event_type, shared_email, shared_token){
 	try{
 		let events = await Event.model.where("tipe_event", 1 ).fetchAll({withRelated: ['mahasiswa.user', 'dosen.user']})
@@ -636,6 +717,7 @@ var test = async function(){
     "room": 1,
     "start": "2017-08-28T09:22:28.000Z",
     "end": "2017-08-28T10:02:28.000Z",
+    tipe_event: 1,
     "anggota": [
       {
         "id": 41,
@@ -686,6 +768,7 @@ var test = async function(){
     "room": 2,
     "start": "2017-08-28T10:02:28.000Z",
     "end": "2017-08-28T10:42:28.000Z",
+    tipe_event: 2,
     "anggota": [
       {
         "id": 45,
@@ -736,6 +819,7 @@ var test = async function(){
     "room": 1,
     "start": "2017-08-28T14:02:28.000Z",
     "end": "2017-08-28T14:42:28.000Z",
+    tipe_event: 3,
     "anggota": [
       {
         "id": 43,
@@ -780,8 +864,9 @@ var test = async function(){
     ]
   }
 ]
-
-		await FinalizeEvent(testJSON, 1)
+		console.log("start")
+		await OverwriteEvent(testJSON)
+		console.log("done")
 		return
 
 
@@ -805,7 +890,7 @@ var test = async function(){
 }
 //===============================================================================
 //main program
-// test()
+test()
 
 module.exports = {
   DeleteEvent, 

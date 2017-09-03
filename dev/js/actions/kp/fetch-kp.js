@@ -7,7 +7,7 @@ export const fetchKP= () => {
             type: "FETCH KP",
             payload: []
         })
-        axios.get('http://localhost:3001/kp').then(function (data) {
+        axios.get('http://localhost:3001/node/kp').then(function (data) {
             console.log(data.data)
 
             dispatch({

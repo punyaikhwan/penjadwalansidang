@@ -7,7 +7,7 @@ export const finalize= (event_type, events) => {
             type: "FINALIZE",
             payload: []
         })
-        axios.post('http://localhost:3001/finalize', {
+        axios.post('http://localhost:3001/node/finalize', {
             event_type: event_type,
             events: events
         }).then(function (data) {

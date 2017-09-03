@@ -32,79 +32,6 @@ class mhs_jadwal extends Component {
     super(props);
     this.state = {
       open: false,
-      // myDataSeminarKP: {
-      //   rincian: {
-      //     idKelompok: 1,
-      //     topik: "Implementasi X untuk Y",
-      //     nama: "Ikhwanul Muslimin",
-      //     nim: 13514020,
-      //     dosenPembimbing: [
-      //       'Rinaldi Munir',
-      //       'Mesayu'
-      //     ]
-      //   },
-      //   jadwal: {
-      //     dateTimeStart: "2010-06-09T15:20:00+07:00",
-      //     dateTimeEnd: "2010-06-09T16:20:00+07:00",
-      //     ruang: "7601"
-      //   }
-      // },
-      // myDataSeminarTA1: {
-      //   rincian: {
-      //     topik: "Implementasi X untuk Y",
-      //     nama: "Ikhwanul Muslimin",
-      //     nim: 13514020,
-      //     dosenPembimbing: [
-      //       'Rinaldi Munir',
-      //       'Mesayu'
-      //     ],
-      //     dosenPengujiTA1: [
-      //       'Inggriani Liem',
-      //       'Bayu Hendrajaya'
-      //     ]
-      //   },
-      //   jadwal: {
-      //     dateTimeStart: "2010-06-09T15:20:00+07:00",
-      //     dateTimeEnd: "2010-06-09T16:20:00+07:00",
-      //     ruang: "7602"
-      //   }
-      // },
-      // myDataSeminarTA2: {
-      //   rincian: {
-      //     topik: "Implementasi X untuk Y",
-      //     nama: "Ikhwanul Muslimin",
-      //     nim: 13514020,
-      //     dosenPembimbing: [
-      //       'Rinaldi Munir',
-      //       'Mesayu'
-      //     ],
-      //   },
-      //   jadwal: {
-      //     dateTimeStart: "2010-06-09T15:20:00+07:00",
-      //     dateTimeEnd: "2010-06-09T16:20:00+07:00",
-      //     ruang: "7602"
-      //   }
-      // },
-      // myDataSidangTA: {
-      //   rincian: {
-      //     topik: "Implementasi X untuk Y",
-      //     nama: "Ikhwanul Muslimin",
-      //     nim: 13514020,
-      //     dosenPembimbing: [
-      //       'Rinaldi Munir',
-      //       'Mesayu'
-      //     ],
-      //     dosenPengujiAkhir: [
-      //       'Inggriani Liem',
-      //       'Bayu Hendrajaya'
-      //     ]
-      //   },
-      //   jadwal: {
-      //     dateTimeStart: "2010-06-09T15:20:00+07:00",
-      //     dateTimeEnd: "2010-06-09T16:20:00+07:00",
-      //     ruang: "7602"
-      //   }
-      // }
     };
   }
 
@@ -115,6 +42,293 @@ class mhs_jadwal extends Component {
   handleToggle() {this.setState({open: !this.state.open})};
 
   handleClose() {this.setState({open: false})};
+
+  renderEvent(event){
+    if (event.tipe_event == 1){
+      return (
+          (<div>
+            <p className="tableTitle">Jadwal Seminar Kerja Praktik Anda</p>
+            <br/>
+            <Row className="infoSidang">
+              <Col md="6" xs="12">
+                <Card>
+                  <CardTitle title="Rincian Anda"/>
+                  <CardText>
+                    <Table selectable={false}>
+                      <TableBody displayRowCheckbox={false}>
+                        <TableRow>
+                          <TableRowColumn className="attributeTable">Kelompok</TableRowColumn>
+                          <TableRowColumn>{event.mahasiswa.id}</TableRowColumn>
+                        </TableRow>
+                        <TableRow>
+                          <TableRowColumn className="attributeTable">Topik</TableRowColumn>
+                          <TableRowColumn>{event.topik}</TableRowColumn>
+                        </TableRow>
+                          {event.mahasiswa.map((item, i)=>(
+                              <TableRow>
+                                <TableRowColumn className="attributeTable">Nama</TableRowColumn>
+                                <TableRowColumn>{item.user.nama}</TableRowColumn>
+                              </TableRow>
+                          ))}
+                          {event.mahasiswa.map((item, i)=>(
+                              <TableRow>
+                                <TableRowColumn className="attributeTable">NIM</TableRowColumn>
+                                <TableRowColumn>{item.user.NIM}</TableRowColumn>
+                              </TableRow>
+                          ))}
+                          {event.dosen.map((item, i)=>(
+                              <TableRow key={i}>
+                                <TableRowColumn className="attributeTable">{"Pembimbing "+(i+1)}</TableRowColumn>
+                                <TableRowColumn>{item.user.nama}</TableRowColumn>
+                              </TableRow>
+                          ))}
+                      </TableBody>
+                    </Table>
+                  </CardText>
+                </Card>
+                <br/>
+              </Col>
+              <Col md="6" xs="12">
+                <Card>
+                  <CardTitle title="Jadwal Anda"/>
+                  <CardText>
+                    <Table selectable={false}>
+                      <TableBody displayRowCheckbox={false}>
+                        <TableRow>
+                          <TableRowColumn className="attributeTable">Tanggal Sidang</TableRowColumn>
+                          <TableRowColumn>{dateFormat(event.start, "dddd, dd mmmm yyyy")}</TableRowColumn>
+                        </TableRow>
+                        <TableRow>
+                          <TableRowColumn className="attributeTable">Waktu</TableRowColumn>
+                          <TableRowColumn>{dateFormat(event.start, "HH.MM")+"-"+dateFormat(event.end, "HH.MM")}</TableRowColumn>
+                        </TableRow>
+                        <TableRow>
+                          <TableRowColumn className="attributeTable">Ruang</TableRowColumn>
+                          <TableRowColumn>7601</TableRowColumn>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </CardText>
+                </Card>
+              </Col>
+            </Row>
+            <br/>
+          </div>)
+      )
+    } else if (event.tipe_event == 2){
+        return (
+            (<div>
+              <p className="tableTitle">Jadwal Seminar TA1</p>
+              <br/>
+              <Row className="infoSidang">
+                <Col md="6" xs="12">
+                  <Card>
+                    <CardTitle title="Rincian Anda"/>
+                    <CardText>
+                      <Table selectable={false}>
+                        <TableBody displayRowCheckbox={false}>
+                          <TableRow>
+                            <TableRowColumn className="attributeTable">Topik</TableRowColumn>
+                            <TableRowColumn>{event.topik}</TableRowColumn>
+                          </TableRow>
+                            {event.mahasiswa.map((item, i)=>(
+                                <TableRow>
+                                  <TableRowColumn className="attributeTable">Nama</TableRowColumn>
+                                  <TableRowColumn>{item.user.nama}</TableRowColumn>
+                                </TableRow>
+                            ))}
+                            {event.mahasiswa.map((item, i)=>(
+                                <TableRow>
+                                  <TableRowColumn className="attributeTable">NIM</TableRowColumn>
+                                  <TableRowColumn>{item.user.NIM}</TableRowColumn>
+                                </TableRow>
+                            ))}
+                            {event.dosen.map((item, i)=>(
+                                <TableRow key={i}>
+                                  <TableRowColumn className="attributeTable">{"Pembimbing "+(i+1)}</TableRowColumn>
+                                  <TableRowColumn>{item.user.nama}</TableRowColumn>
+                                </TableRow>
+                            ))}
+                            {event.dosen.map((item, i)=>(
+                                <TableRow key={i}>
+                                  <TableRowColumn className="attributeTable">{"Penguji "+(i+1)}</TableRowColumn>
+                                  <TableRowColumn>{item.user.nama}</TableRowColumn>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                      </Table>
+                    </CardText>
+                  </Card>
+                  <br/>
+                </Col>
+                <Col md="6" xs="12">
+                  <Card>
+                    <CardTitle title="Jadwal Anda"/>
+                    <CardText>
+                      <Table selectable={false}>
+                        <TableBody displayRowCheckbox={false}>
+                          <TableRow>
+                            <TableRowColumn className="attributeTable">Tanggal Sidang</TableRowColumn>
+                            <TableRowColumn>{dateFormat(event.start, "dddd, dd mmmm yyyy")}</TableRowColumn>
+                          </TableRow>
+                          <TableRow>
+                            <TableRowColumn className="attributeTable">Waktu</TableRowColumn>
+                            <TableRowColumn>{dateFormat(event.start, "HH.MM")+"-"+dateFormat(event.end, "HH.MM")}</TableRowColumn>
+                          </TableRow>
+                          <TableRow>
+                            <TableRowColumn className="attributeTable">Ruang</TableRowColumn>
+                            <TableRowColumn>7601</TableRowColumn>
+                          </TableRow>
+                        </TableBody>
+                      </Table>
+                    </CardText>
+                  </Card>
+                </Col>
+              </Row>
+              <br/>
+            </div>)
+        )
+    } else if (event.tipe_event == 3){
+        return (
+            (<div>
+              <p className="tableTitle">Jadwal Seminar TA 2 Anda</p>
+              <br/>
+              <Row className="infoSidang">
+                <Col md="6" xs="12">
+                  <Card>
+                    <CardTitle title="Rincian Anda"/>
+                    <CardText>
+                      <Table selectable={false}>
+                        <TableBody displayRowCheckbox={false}>
+                          <TableRow>
+                            <TableRowColumn className="attributeTable">Topik</TableRowColumn>
+                            <TableRowColumn>{event.topik}</TableRowColumn>
+                          </TableRow>
+                            {event.mahasiswa.map((item, i)=>(
+                                <TableRow>
+                                  <TableRowColumn className="attributeTable">Nama</TableRowColumn>
+                                  <TableRowColumn>{item.user.nama}</TableRowColumn>
+                                </TableRow>
+                            ))}
+                            {event.mahasiswa.map((item, i)=>(
+                                <TableRow>
+                                  <TableRowColumn className="attributeTable">NIM</TableRowColumn>
+                                  <TableRowColumn>{item.user.NIM}</TableRowColumn>
+                                </TableRow>
+                            ))}
+                            {event.dosen.map((item, i)=>(
+                                <TableRow key={i}>
+                                  <TableRowColumn className="attributeTable">{"Pembimbing "+(i+1)}</TableRowColumn>
+                                  <TableRowColumn>{item.user.nama}</TableRowColumn>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                      </Table>
+                    </CardText>
+                  </Card>
+                  <br/>
+                </Col>
+                <Col md="6" xs="12">
+                  <Card>
+                    <CardTitle title="Jadwal Anda"/>
+                    <CardText>
+                      <Table selectable={false}>
+                        <TableBody displayRowCheckbox={false}>
+                          <TableRow>
+                            <TableRowColumn className="attributeTable">Tanggal Sidang</TableRowColumn>
+                            <TableRowColumn>{dateFormat(event.start, "dddd, dd mmmm yyyy")}</TableRowColumn>
+                          </TableRow>
+                          <TableRow>
+                            <TableRowColumn className="attributeTable">Waktu</TableRowColumn>
+                            <TableRowColumn>{dateFormat(event.start, "HH.MM")+"-"+dateFormat(event.end, "HH.MM")}</TableRowColumn>
+                          </TableRow>
+                          <TableRow>
+                            <TableRowColumn className="attributeTable">Ruang</TableRowColumn>
+                            <TableRowColumn>7601</TableRowColumn>
+                          </TableRow>
+                        </TableBody>
+                      </Table>
+                    </CardText>
+                  </Card>
+                </Col>
+              </Row>
+              <br/>
+            </div>)
+        )
+    } else if (event.tipe_event == 4){
+        return (
+            (<div>
+              <p className="tableTitle">Jadwal Sidang Akhir Anda</p>
+              <br/>
+              <Row className="infoSidang">
+                <Col md="6" xs="12">
+                  <Card>
+                    <CardTitle title="Rincian Anda"/>
+                    <CardText>
+                      <Table selectable={false}>
+                        <TableBody displayRowCheckbox={false}>
+                          <TableRow>
+                            <TableRowColumn className="attributeTable">Topik</TableRowColumn>
+                            <TableRowColumn>{event.topik}</TableRowColumn>
+                          </TableRow>
+                            {event.mahasiswa.map((item, i)=>(
+                                <TableRow>
+                                  <TableRowColumn className="attributeTable">Nama</TableRowColumn>
+                                  <TableRowColumn>{item.user.nama}</TableRowColumn>
+                                </TableRow>
+                            ))}
+                            {event.mahasiswa.map((item, i)=>(
+                                <TableRow>
+                                  <TableRowColumn className="attributeTable">NIM</TableRowColumn>
+                                  <TableRowColumn>{item.user.NIM}</TableRowColumn>
+                                </TableRow>
+                            ))}
+                            {event.dosen.map((item, i)=>(
+                                <TableRow key={i}>
+                                  <TableRowColumn className="attributeTable">{"Pembimbing "+(i+1)}</TableRowColumn>
+                                  <TableRowColumn>{item.user.nama}</TableRowColumn>
+                                </TableRow>
+                            ))}
+                            {event.dosen.map((item, i)=>(
+                                <TableRow key={i}>
+                                  <TableRowColumn className="attributeTable">{"Penguji "+(i+1)}</TableRowColumn>
+                                  <TableRowColumn>{item.user.nama}</TableRowColumn>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                      </Table>
+                    </CardText>
+                  </Card>
+                  <br/>
+                </Col>
+                <Col md="6" xs="12">
+                  <Card>
+                    <CardTitle title="Jadwal Anda"/>
+                    <CardText>
+                      <Table selectable={false}>
+                        <TableBody displayRowCheckbox={false}>
+                          <TableRow>
+                            <TableRowColumn className="attributeTable">Tanggal Sidang</TableRowColumn>
+                            <TableRowColumn>{dateFormat(event.start, "dddd, dd mmmm yyyy")}</TableRowColumn>
+                          </TableRow>
+                          <TableRow>
+                            <TableRowColumn className="attributeTable">Waktu</TableRowColumn>
+                            <TableRowColumn>{dateFormat(event.start, "HH.MM")+"-"+dateFormat(event.end, "HH.MM")}</TableRowColumn>
+                          </TableRow>
+                          <TableRow>
+                            <TableRowColumn className="attributeTable">Ruang</TableRowColumn>
+                            <TableRowColumn>7601</TableRowColumn>
+                          </TableRow>
+                        </TableBody>
+                      </Table>
+                    </CardText>
+                  </Card>
+                </Col>
+              </Row>
+            </div>)
+        )
+    }
+  }
 
   render() {
     if (this.props.eventMhs.length !== 0){
@@ -137,253 +351,12 @@ class mhs_jadwal extends Component {
                     }
                 />
 
-                <p className="tableTitle">Jadwal Seminar Kerja Praktik Anda</p>
-                <br/>
-                <Row className="infoSidang">
-                  <Col md="6" xs="12">
-                    <Card>
-                      <CardTitle title="Rincian Anda"/>
-                      <CardText>
-                        <Table selectable={false}>
-                          <TableBody displayRowCheckbox={false}>
-                            <TableRow>
-                              <TableRowColumn className="attributeTable">Kelompok</TableRowColumn>
-                              <TableRowColumn>{this.props.eventMhs.mahasiswa.id}</TableRowColumn>
-                            </TableRow>
-                            <TableRow>
-                              <TableRowColumn className="attributeTable">Topik</TableRowColumn>
-                              <TableRowColumn>{this.props.eventMhs.topik}</TableRowColumn>
-                            </TableRow>
-                            <TableRow>
-                              <TableRowColumn className="attributeTable">Nama</TableRowColumn>
-                              <TableRowColumn>{this.props.eventMhs.mahasiswa.user.nama}</TableRowColumn>
-                            </TableRow>
-                            <TableRow>
-                              <TableRowColumn className="attributeTable">NIM</TableRowColumn>
-                              <TableRowColumn>{this.props.eventMhs.mahasiswa.user.NIM}</TableRowColumn>
-                            </TableRow>
-                              {this.props.eventMhs.dosen.map((item, i)=>(
-                                  <TableRow key={i}>
-                                    <TableRowColumn className="attributeTable">{"Pembimbing "+(i+1)}</TableRowColumn>
-                                    <TableRowColumn>{item.user.nama}</TableRowColumn>
-                                  </TableRow>
-                              ))}
-                          </TableBody>
-                        </Table>
-                      </CardText>
-                    </Card>
-                    <br/>
-                  </Col>
-                  <Col md="6" xs="12">
-                    <Card>
-                      <CardTitle title="Jadwal Anda"/>
-                      <CardText>
-                        <Table selectable={false}>
-                          <TableBody displayRowCheckbox={false}>
-                            <TableRow>
-                              <TableRowColumn className="attributeTable">Tanggal Sidang</TableRowColumn>
-                              <TableRowColumn>{dateFormat(this.props.eventMhs.start, "dddd, dd mmmm yyyy")}</TableRowColumn>
-                            </TableRow>
-                            <TableRow>
-                              <TableRowColumn className="attributeTable">Waktu</TableRowColumn>
-                              <TableRowColumn>{dateFormat(this.props.eventMhs.start, "HH.MM")+"-"+dateFormat(this.state.myDataSeminarKP.jadwal.dateTimeEnd, "HH.MM")}</TableRowColumn>
-                            </TableRow>
-                            <TableRow>
-                              <TableRowColumn className="attributeTable">Ruang</TableRowColumn>
-                              <TableRowColumn>7601</TableRowColumn>
-                            </TableRow>
-                          </TableBody>
-                        </Table>
-                      </CardText>
-                    </Card>
-                  </Col>
-                </Row>
-                <br/>
-                <p className="tableTitle">Jadwal Seminar TA1</p>
-                <br/>
-                <Row className="infoSidang">
-                  <Col md="6" xs="12">
-                    <Card>
-                      <CardTitle title="Rincian Anda"/>
-                      <CardText>
-                        <Table selectable={false}>
-                          <TableBody displayRowCheckbox={false}>
-                            <TableRow>
-                              <TableRowColumn className="attributeTable">Topik</TableRowColumn>
-                              <TableRowColumn>{this.props.eventMhs.topik}</TableRowColumn>
-                            </TableRow>
-                            <TableRow>
-                              <TableRowColumn className="attributeTable">Nama</TableRowColumn>
-                              <TableRowColumn>{this.props.eventMhs.mahasiswa.user.nama}</TableRowColumn>
-                            </TableRow>
-                            <TableRow>
-                              <TableRowColumn className="attributeTable">NIM</TableRowColumn>
-                              <TableRowColumn>{this.props.eventMhs.mahasiswa.user.NIM}</TableRowColumn>
-                            </TableRow>
-                              {this.props.eventMhs.dosen.map((item, i)=>(
-                                  <TableRow key={i}>
-                                    <TableRowColumn className="attributeTable">{"Pembimbing "+(i+1)}</TableRowColumn>
-                                    <TableRowColumn>{item.user.nama}</TableRowColumn>
-                                  </TableRow>
-                              ))}
-                              {this.props.eventMhs.dosen.map((item, i)=>(
-                                  <TableRow key={i}>
-                                    <TableRowColumn className="attributeTable">{"Penguji "+(i+1)}</TableRowColumn>
-                                    <TableRowColumn>{item.user.nama}</TableRowColumn>
-                                  </TableRow>
-                              ))}
-                          </TableBody>
-                        </Table>
-                      </CardText>
-                    </Card>
-                    <br/>
-                  </Col>
-                  <Col md="6" xs="12">
-                    <Card>
-                      <CardTitle title="Jadwal Anda"/>
-                      <CardText>
-                        <Table selectable={false}>
-                          <TableBody displayRowCheckbox={false}>
-                            <TableRow>
-                              <TableRowColumn className="attributeTable">Tanggal Sidang</TableRowColumn>
-                              <TableRowColumn>{dateFormat(this.props.eventMhs.start, "dddd, dd mmmm yyyy")}</TableRowColumn>
-                            </TableRow>
-                            <TableRow>
-                              <TableRowColumn className="attributeTable">Waktu</TableRowColumn>
-                              <TableRowColumn>{dateFormat(this.props.eventMhs.start, "HH.MM")+"-"+dateFormat(this.props.eventMhs.jadwal.dateTimeEnd, "HH.MM")}</TableRowColumn>
-                            </TableRow>
-                            <TableRow>
-                              <TableRowColumn className="attributeTable">Ruang</TableRowColumn>
-                              <TableRowColumn>7601</TableRowColumn>
-                            </TableRow>
-                          </TableBody>
-                        </Table>
-                      </CardText>
-                    </Card>
-                  </Col>
-                </Row>
-                <br/>
-                <p className="tableTitle">Jadwal Seminar TA 2 Anda</p>
-                <br/>
-                <Row className="infoSidang">
-                  <Col md="6" xs="12">
-                    <Card>
-                      <CardTitle title="Rincian Anda"/>
-                      <CardText>
-                        <Table selectable={false}>
-                          <TableBody displayRowCheckbox={false}>
-                            <TableRow>
-                              <TableRowColumn className="attributeTable">Topik</TableRowColumn>
-                              <TableRowColumn>{this.props.eventMhs.topik}</TableRowColumn>
-                            </TableRow>
-                            <TableRow>
-                              <TableRowColumn className="attributeTable">Nama</TableRowColumn>
-                              <TableRowColumn>{this.props.eventMhs.mahasiswa.user.nama}</TableRowColumn>
-                            </TableRow>
-                            <TableRow>
-                              <TableRowColumn className="attributeTable">NIM</TableRowColumn>
-                              <TableRowColumn>{this.props.eventMhs.mahasiswa.user.NIM}</TableRowColumn>
-                            </TableRow>
-                              {this.props.eventMhs.dosen.map((item, i)=>(
-                                  <TableRow key={i}>
-                                    <TableRowColumn className="attributeTable">{"Pembimbing "+(i+1)}</TableRowColumn>
-                                    <TableRowColumn>{item.user.nama}</TableRowColumn>
-                                  </TableRow>
-                              ))}
-                          </TableBody>
-                        </Table>
-                      </CardText>
-                    </Card>
-                    <br/>
-                  </Col>
-                  <Col md="6" xs="12">
-                    <Card>
-                      <CardTitle title="Jadwal Anda"/>
-                      <CardText>
-                        <Table selectable={false}>
-                          <TableBody displayRowCheckbox={false}>
-                            <TableRow>
-                              <TableRowColumn className="attributeTable">Tanggal Sidang</TableRowColumn>
-                              <TableRowColumn>{dateFormat(this.props.eventMhs.start, "dddd, dd mmmm yyyy")}</TableRowColumn>
-                            </TableRow>
-                            <TableRow>
-                              <TableRowColumn className="attributeTable">Waktu</TableRowColumn>
-                              <TableRowColumn>{dateFormat(this.props.eventMhs.start, "HH.MM")+"-"+dateFormat(this.props.eventMhs.jadwal.dateTimeEnd, "HH.MM")}</TableRowColumn>
-                            </TableRow>
-                            <TableRow>
-                              <TableRowColumn className="attributeTable">Ruang</TableRowColumn>
-                              <TableRowColumn>7601</TableRowColumn>
-                            </TableRow>
-                          </TableBody>
-                        </Table>
-                      </CardText>
-                    </Card>
-                  </Col>
-                </Row>
-                <br/>
-                <p className="tableTitle">Jadwal Sidang Akhir Anda</p>
-                <br/>
-                <Row className="infoSidang">
-                  <Col md="6" xs="12">
-                    <Card>
-                      <CardTitle title="Rincian Anda"/>
-                      <CardText>
-                        <Table selectable={false}>
-                          <TableBody displayRowCheckbox={false}>
-                            <TableRow>
-                              <TableRowColumn className="attributeTable">Topik</TableRowColumn>
-                              <TableRowColumn>{this.props.eventMhs.topik}</TableRowColumn>
-                            </TableRow>
-                            <TableRow>
-                              <TableRowColumn className="attributeTable">Nama</TableRowColumn>
-                              <TableRowColumn>{this.props.eventMhs.mahasiswa.user.nama}</TableRowColumn>
-                            </TableRow>
-                            <TableRow>
-                              <TableRowColumn className="attributeTable">NIM</TableRowColumn>
-                              <TableRowColumn>{this.props.eventMhs.mahasiswa.user.NIM}</TableRowColumn>
-                            </TableRow>
-                              {this.props.eventMhs.dosen.map((item, i)=>(
-                                  <TableRow key={i}>
-                                    <TableRowColumn className="attributeTable">{"Pembimbing "+(i+1)}</TableRowColumn>
-                                    <TableRowColumn>{item.user.nama}</TableRowColumn>
-                                  </TableRow>
-                              ))}
-                              {this.props.eventMhs.dosen.map((item, i)=>(
-                                  <TableRow key={i}>
-                                    <TableRowColumn className="attributeTable">{"Penguji "+(i+1)}</TableRowColumn>
-                                    <TableRowColumn>{item.user.nama}</TableRowColumn>
-                                  </TableRow>
-                              ))}
-                          </TableBody>
-                        </Table>
-                      </CardText>
-                    </Card>
-                    <br/>
-                  </Col>
-                  <Col md="6" xs="12">
-                    <Card>
-                      <CardTitle title="Jadwal Anda"/>
-                      <CardText>
-                        <Table selectable={false}>
-                          <TableBody displayRowCheckbox={false}>
-                            <TableRow>
-                              <TableRowColumn className="attributeTable">Tanggal Sidang</TableRowColumn>
-                              <TableRowColumn>{dateFormat(this.props.eventMhs.start, "dddd, dd mmmm yyyy")}</TableRowColumn>
-                            </TableRow>
-                            <TableRow>
-                              <TableRowColumn className="attributeTable">Waktu</TableRowColumn>
-                              <TableRowColumn>{dateFormat(this.props.eventMhs.start, "HH.MM")+"-"+dateFormat(this.props.eventMhs.jadwal.dateTimeEnd, "HH.MM")}</TableRowColumn>
-                            </TableRow>
-                            <TableRow>
-                              <TableRowColumn className="attributeTable">Ruang</TableRowColumn>
-                              <TableRowColumn>7601</TableRowColumn>
-                            </TableRow>
-                          </TableBody>
-                        </Table>
-                      </CardText>
-                    </Card>
-                  </Col>
-                </Row>
+                  {this.props.eventMhs.map((event, idx) =>(
+                      this.renderEvent(event)
+                  ))}
+
+
+
                 <Drawer
                     docked={false}
                     width={400}

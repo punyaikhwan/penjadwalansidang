@@ -7,7 +7,7 @@ export const fetchUser= () => {
             type: "FETCH USER",
             payload: []
         })
-        axios.get('http://localhost:3001/user').then(function (data) {
+        axios.get('http://localhost:3001/node/user').then(function (data) {
             console.log(data.data)
 
             dispatch({

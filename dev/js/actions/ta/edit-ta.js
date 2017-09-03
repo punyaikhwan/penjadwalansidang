@@ -33,7 +33,7 @@ export const editTA= (item) => {
         dispatch({
             type: "EDIT TA"
         })
-        axios.post('http://localhost:3001/ta/edit', {
+        axios.post('http://localhost:3001/node/ta/edit', {
             ids : id,
             objs : obj
         }).then(function (data) {
@@ -42,7 +42,7 @@ export const editTA= (item) => {
                 type: "DONE EDIT TA"
 
             })
-            axios.get('http://localhost:3001/ta').then(function (data) {
+            axios.get('http://localhost:3001/node/ta').then(function (data) {
                 console.log(data.data)
 
                 dispatch({
