@@ -172,7 +172,7 @@ class mhs_profile extends Component {
                 <Row>
                   <Col className="nameProfile">{this.props.userInfo.nama}</Col>
                   <Col className="emailProfile">{this.props.userInfo.email}</Col>
-                  <Col className="emailProfile">{this.props.userInfo.peran}</Col>
+                  <Col className="emailProfile">{"Mahasiswa"}</Col>
                 </Row>
               </Col>
             </Row>

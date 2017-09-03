@@ -47,11 +47,6 @@ class dosen_calendar extends Component {
       selectedDate: null,
       modalEvent: false,
       openSnackbar: false,
-      dataUser: {
-        nama: "Dessi Puji Lestari",
-        email: "dessipuji@informatika.org",
-        peran: "Dosen"
-      }
     };
 
   }
@@ -88,7 +83,7 @@ class dosen_calendar extends Component {
      console.log(event);
     var backgroundColor = '204FA7';
      for (var i=0; i< event.dosen.length; i++) {
-      if (event.dosen[i].nama === this.state.dataUser.nama) {
+      if (event.dosen[i].user.nama === this.props.userInfo.nama) {
         console.log("halooo");
         backgroundColor = '#247510';
       }
@@ -144,7 +139,7 @@ class dosen_calendar extends Component {
                 <Row>
                   <Col className="nameProfile">{this.props.userInfo.nama}</Col>
                   <Col className="emailProfile">{this.props.userInfo.email}</Col>
-                  <Col className="emailProfile">{this.props.userInfo.peran}</Col>
+                  <Col className="emailProfile">{"Dosen"}</Col>
                 </Row>
               </Col>
             </Row>
@@ -192,9 +187,9 @@ class dosen_calendar extends Component {
                   <TableRowColumn>{dateFormat(this.state.selectedEvent.start, "HH.MM")}</TableRowColumn>
                 </TableRow>
                 <TableRow displayBorder={false}>
-                  <TableRowColumn className="attributeTable">Ruang</TableRowColumn>
-                  <TableRowColumn>{this.state.selectedEvent.ruangan.nama}</TableRowColumn>
-                </TableRow>
+                    <TableRowColumn className="attributeTable">Ruang</TableRowColumn>
+                    <TableRowColumn>{this.state.selectedEvent.ruangan.nama}</TableRowColumn>
+                  </TableRow>
                 <TableRow displayBorder={false}>
                   <TableRowColumn className="attributeTable">Topik</TableRowColumn>
                   <TableRowColumn>{this.state.selectedEvent.topik}</TableRowColumn>
