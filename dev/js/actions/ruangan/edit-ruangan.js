@@ -13,7 +13,7 @@ export const editRuangan= (item) => {
         dispatch({
             type: "EDIT RUANGAN"
         })
-        axios.post('http://localhost:3001/ruangan/edit', {
+        axios.post('http://localhost:3001/node/ruangan/edit', {
             ids : id,
             objs : obj
         }).then(function (data) {
@@ -22,7 +22,7 @@ export const editRuangan= (item) => {
                 type: "DONE EDIT RUANGAN"
 
             })
-            axios.get('http://localhost:3001/ruangan').then(function (data) {
+            axios.get('http://localhost:3001/node/ruangan').then(function (data) {
                 console.log(data.data)
 
                 dispatch({

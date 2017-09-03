@@ -6,7 +6,7 @@ export const newRuangan= (nama) => {
         dispatch({
             type: "NEW RUANGAN"
         })
-        axios.post('http://localhost:3001/ruangan/new', {
+        axios.post('http://localhost:3001/node/ruangan/new', {
             nama: nama
         }).then(function (data) {
 
@@ -14,7 +14,7 @@ export const newRuangan= (nama) => {
                 type: "DONE NEW RUANGAN"
 
             })
-            axios.get('http://localhost:3001/ruangan').then(function (data) {
+            axios.get('http://localhost:3001/node/ruangan').then(function (data) {
                 console.log(data.data)
 
                 dispatch({

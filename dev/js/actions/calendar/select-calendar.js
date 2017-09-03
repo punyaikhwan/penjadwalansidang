@@ -8,7 +8,7 @@ export const selectCalendar= (calendar, id) => {
             payload: []
         })
         console.log(JSON.stringify(id))
-        axios.post('http://localhost:3001/calendars', {
+        axios.post('http://localhost:3001/node/calendars', {
             calendarList: calendar,
             user_id: id
         }).then(function (data) {

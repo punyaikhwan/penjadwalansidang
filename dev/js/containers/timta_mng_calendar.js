@@ -89,18 +89,20 @@ class timta_mng_calendar extends Component {
     const nextEvents = events
     nextEvents.splice(idx, 1, updatedEvent)
     this.props.move(nextEvents);
-    // this.setState({events: nextEvents})
   }
 
   handleSelectedEvent(event) {
     console.log(this.props.events)
     this.setState({selectedEvent: event});
     this.setState({modalEvent: true});
+    console.log(this.props.events);
   }
 
   finalize(){
     this.props.finalize(this.props.tipe, this.props.events)
+    setTimeout(()=> {
       this.setState({statusJadwal: 1})
+    }, 1000);
   }
 
   render() {
