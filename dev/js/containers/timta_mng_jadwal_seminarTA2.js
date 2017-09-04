@@ -22,7 +22,6 @@ import {
   TableRowColumn,
 } from 'material-ui/Table';
 import DatePicker from 'material-ui/DatePicker';
-import {SubHeader} from 'material-ui';
 import CircularProgress from 'material-ui/CircularProgress';
 import Dialog from 'material-ui/Dialog';
 
@@ -236,7 +235,7 @@ class timta_mng_jadwal_seminarTA2 extends Component {
               <div style={{fontSize:20, fontWight:'bold'}}>Periode</div>
               <Row>
                 <Col md="5" xs="5">
-                  <SubHeader>Tanggal mulai</SubHeader>
+                  Tanggal mulai
                   <DatePicker
                     hintText="Pilih tanggal mulai"
                     mode="landscape"
@@ -250,7 +249,7 @@ class timta_mng_jadwal_seminarTA2 extends Component {
 
                 </Col>
                 <Col md="5" xs="5">
-                  <SubHeader>Tanggal akhir</SubHeader>
+                  Tanggal akhir
                   <DatePicker
                     hintText="Pilih tanggal akhir"
                     mode="landscape"

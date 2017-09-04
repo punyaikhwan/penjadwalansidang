@@ -11,7 +11,6 @@ import '../../scss/timTA.scss';
 import Row from 'muicss/lib/react/row';
 import Col from 'muicss/lib/react/col';
 import {List, ListItem} from 'material-ui/List';
-import Subheader from 'material-ui/Subheader';
 import ScrollArea from 'react-scrollbar';
 import SelectField from 'material-ui/SelectField';
 import Dialog from 'material-ui/Dialog';
@@ -262,7 +261,7 @@ class timta_mng_ruangan extends Component {
           <Row>
             <Col md="2" xs="12">
               <div>
-                <Subheader>Daftar Ruangan</Subheader>
+                Daftar Ruangan
                 <RaisedButton
                   label="Tambah"
                   labelPosition="after"
@@ -432,7 +431,7 @@ class timta_mng_ruangan extends Component {
             <Col md="5" xs="5">
               <Row>
                 <Col md="12" xs="12">
-                  <Subheader>Tanggal mulai</Subheader>
+                  Tanggal mulai
                   <DatePicker
                     hintText="Pilih tanggal mulai"
                     mode="landscape"
@@ -441,7 +440,7 @@ class timta_mng_ruangan extends Component {
                   />
                 </Col>
                 <Col md="12" xs="12">
-                  <Subheader>Jam Mulai</Subheader>
+                  Jam Mulai
                   <TimePicker
                     format="24hr"
                     hintText="Pilih waktu mulai"
@@ -457,7 +456,7 @@ class timta_mng_ruangan extends Component {
             <Col md="5" xs="5">
               <Row>
                 <Col md="12" xs="12">
-                  <Subheader>Tanggal akhir</Subheader>
+                  Tanggal akhir
                   <DatePicker
                     hintText="Pilih tanggal akhir"
                     mode="landscape"
@@ -466,7 +465,7 @@ class timta_mng_ruangan extends Component {
                   />
                 </Col>
                 <Col md="12" xs="12">
-                  <Subheader>Jam Akhir</Subheader>
+                  Jam Akhir
                   <TimePicker
                     format="24hr"
                     hintText="Pilih waktu akhir"
@@ -500,7 +499,7 @@ class timta_mng_ruangan extends Component {
             <Col md="5" xs="5">
               <Row>
                 <Col md="12" xs="12">
-                  <Subheader>Tanggal mulai</Subheader>
+                  Tanggal mulai
                   <DatePicker
                     hintText="Pilih tanggal mulai"
                     mode="landscape"
@@ -509,7 +508,7 @@ class timta_mng_ruangan extends Component {
                   />
                 </Col>
                 <Col md="12" xs="12">
-                  <Subheader>Jam Mulai</Subheader>
+                  Jam Mulai
                   <TimePicker
                     format="24hr"
                     hintText="Pilih waktu mulai"
@@ -525,7 +524,7 @@ class timta_mng_ruangan extends Component {
             <Col md="5" xs="5">
               <Row>
                 <Col md="12" xs="12">
-                  <Subheader>Tanggal akhir</Subheader>
+                  Tanggal akhir
                   <DatePicker
                     hintText="Pilih tanggal akhir"
                     mode="landscape"
@@ -534,7 +533,7 @@ class timta_mng_ruangan extends Component {
                   />
                 </Col>
                 <Col md="12" xs="12">
-                  <Subheader>Jam Akhir</Subheader>
+                  Jam Akhir
                   <TimePicker
                     format="24hr"
                     hintText="Pilih waktu akhir"
