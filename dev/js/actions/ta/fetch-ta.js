@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {nodeURL} from '../config.js'
 
 export const fetchTA= () => {
     return function(dispatch) {
@@ -7,7 +8,7 @@ export const fetchTA= () => {
             type: "FETCH TA",
             payload: []
         })
-        axios.get('http://localhost:3001/node/ta').then(function (data) {
+        axios.get(nodeURL+'/ta').then(function (data) {
             console.log(data.data)
 
             dispatch({

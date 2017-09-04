@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {nodeURL} from '../config.js'
 
 export const newTA= (id) => {
     return function(dispatch) {
@@ -6,7 +7,7 @@ export const newTA= (id) => {
         dispatch({
             type: "NEW TA"
         })
-        axios.post('http://localhost:3001/node/ta/new', {
+        axios.post(nodeURL+'/ta/new', {
             mahasiswa_id: id
         }).then(function (data) {
 
@@ -14,7 +15,7 @@ export const newTA= (id) => {
                 type: "DONE NEW TA"
 
             })
-            axios.get('http://localhost:3001/node/ta').then(function (data) {
+            axios.get(nodeURL+'/ta').then(function (data) {
                 console.log(data.data)
 
                 dispatch({

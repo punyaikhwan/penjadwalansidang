@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {nodeURL} from '../config.js'
 
 export const save= (events) => {
     return function(dispatch) {
@@ -7,7 +8,7 @@ export const save= (events) => {
             type: "SAVE",
             payload: []
         })
-        axios.post('http://localhost:3001/node/overwrite', {
+        axios.post(nodeURL+'/overwrite', {
             events: events
         }).then(function (data) {
             console.log(data.data)

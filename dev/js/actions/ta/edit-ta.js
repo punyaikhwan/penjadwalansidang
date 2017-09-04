@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {nodeURL} from '../config.js'
 
 export const editTA= (item) => {
     return function(dispatch) {
@@ -33,7 +34,7 @@ export const editTA= (item) => {
         dispatch({
             type: "EDIT TA"
         })
-        axios.post('http://localhost:3001/node/ta/edit', {
+        axios.post(nodeURL+'/ta/edit', {
             ids : id,
             objs : obj
         }).then(function (data) {
@@ -42,7 +43,7 @@ export const editTA= (item) => {
                 type: "DONE EDIT TA"
 
             })
-            axios.get('http://localhost:3001/node/ta').then(function (data) {
+            axios.get(nodeURL+'/ta').then(function (data) {
                 console.log(data.data)
 
                 dispatch({

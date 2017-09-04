@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {nodeURL} from '../config.js'
 
 export const fetchEvent= (item) => {
     return function(dispatch) {
@@ -7,7 +8,7 @@ export const fetchEvent= (item) => {
             type: "FETCH EVENT",
             payload: []
         })
-        axios.get('http://localhost:3001/node/events').then(function (data) {
+        axios.get(nodeURL+'/events').then(function (data) {
             console.log(data.data)
 
             dispatch({
