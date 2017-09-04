@@ -331,8 +331,7 @@ class mhs_jadwal extends Component {
   }
 
   render() {
-    if (this.props.eventMhs.length !== 0){
-        return (
+    return (
             <MuiThemeProvider>
               <div>
                 <AppBar
@@ -351,11 +350,39 @@ class mhs_jadwal extends Component {
                     }
                 />
 
+                  {this.props.eventMhs !== 0 &&
+                  <div>
                   {this.props.eventMhs.map((event, idx) =>(
                       this.renderEvent(event)
                   ))}
+                  </div>
+                  }
 
-
+                  {this.props.eventMhs.length === 0 &&
+                  <div style={{marginTop: 50}}>
+                  <Row>
+                    <Col md = "2" xs="2">
+                    </Col>
+                    <Col md = "8" xs="8">
+                      <Card>  
+                        <Row>
+                          <Col md="2" xs="2">
+                            <i className="material-icons" style={{color: 'orange', marginTop: 20, marginLeft: 20, fontSize: 70}}>warning</i>
+                          </Col>
+                          <Col md="10" xs="10">
+                            <CardTitle title="Jadwal Anda"/>
+                            <CardText>
+                              Belum ada jadwal.
+                            </CardText>
+                          </Col>
+                        </Row>
+                      </Card>
+                    </Col>                  
+                    <Col md = "2" xs="2">
+                    </Col>
+                  </Row>
+                  </div>
+                  }
 
                 <Drawer
                     docked={false}
@@ -386,61 +413,6 @@ class mhs_jadwal extends Component {
               </div>
             </MuiThemeProvider>
         );
-    } else {
-      return (
-      <MuiThemeProvider>
-        <div>
-          <AppBar
-              title="Halaman Mahasiswa - Jadwal"
-              iconElementLeft={
-                <IconButton onClick = {()=>this.handleToggle()}>
-                  <i className="material-icons" style={{color: 'white'}}>menu</i>
-                </IconButton>
-              }
-              iconElementRight={
-                <RaisedButton
-                    label="Logout"
-                    backgroundColor="#F44336"
-                    labelColor= "#fff"
-                />
-              }
-          />
-
-          <p> Belum ada jadwal </p>
-
-          <Drawer
-              docked={false}
-              width={400}
-              open={this.state.open}
-              onRequestChange={(open) => this.setState({open})}
-          >
-            <div className="userProfile">
-              <Row>
-                <Col md="3" xs="2">
-                  <img src={imgProfile} className="imgProfile"/>
-                </Col>
-                <Col md="9" xs="10" className="textProfile">
-                  <Row>
-                    <Col className="nameProfile">{this.props.userInfo.nama}</Col>
-                    <Col className="emailProfile">{this.props.userInfo.email}</Col>
-                    <Col className="emailProfile">{this.props.userInfo.peran}</Col>
-                  </Row>
-                </Col>
-              </Row>
-            </div>
-            <hr/>
-            <MenuItem insetChildren={true} href="/mhs_jadwal" style={{backgroundColor:'#b0bec5'}}>Jadwal</MenuItem>
-            <MenuItem insetChildren={true} href="/mhs_profile">Profil</MenuItem>
-
-            <br/>
-          </Drawer>
-        </div>
-      </MuiThemeProvider>
-
-      )
-    }
-
-
   }
 }
 
