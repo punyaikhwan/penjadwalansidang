@@ -102,7 +102,7 @@ class timta_mng_calendar extends Component {
     this.props.finalize(this.props.tipe, this.props.events)
     setTimeout(()=> {
       this.setState({statusJadwal: 1})
-    }, 2000);
+    }, 1000);
   }
 
   render() {
