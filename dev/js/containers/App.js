@@ -68,7 +68,7 @@ class App extends Component {
       }
       else{
           return(
-              <div></div>
+              <div><Redirect to="/"/></div>
           )
 
       }
