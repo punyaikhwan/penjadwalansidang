@@ -143,319 +143,346 @@ class timta_mng_pasangan_KP extends Component {
         window.location.href = "/";
     }
 
-  render() {
-    const actionsTambahMahasiswa = [
-      <FlatButton
-        label="Cancel"
-        primary={true}
-        onClick={()=>this.handleCloseTambahMahasiswa()}
-      />,
-      <FlatButton
-        label="Submit"
-        primary={true}
-        keyboardFocused={true}
-        onClick={()=>this.handleTambahMahasiswa()}
-      />,
-    ];
-
-    const actionsEditTopic = [
-      <FlatButton
-        label="Cancel"
-        primary={true}
-        onClick={()=>this.handleCloseEditTopic()}
-      />,
-      <FlatButton
-        label="Submit"
-        primary={true}
-        keyboardFocused={true}
-        onClick={()=>this.handleEditTopic()}
-      />,
-    ];
-
-    const actionsTambahDosen = [
-      <FlatButton
-        label="Cancel"
-        primary={true}
-        onClick={()=>this.handleCloseTambahDosen()}
-      />,
-      <FlatButton
-        label="Submit"
-        primary={true}
-        keyboardFocused={true}
-        onClick={()=>this.handleTambahDosen()}
-      />,
-    ];
-    return (
-      <MuiThemeProvider>
-      <div>
-        <RaisedButton
-          style={{
-            position: 'fixed',
-            marginTop: this.props.height-50,
-            marginLeft: this.props.width-200,
-            alignItems: 'center'
-          }}
-          backgroundColor="#F1D600"
-          label="SAVE"
-          labelPosition="after"
-          icon={<i className="material-icons" style={{color:'black'}}>save</i>}
-          onTouchTap={()=>this.handleSave()}
-        />
-        <AppBar
-          title="Dashboard Tim TA - Daftar Pasangan Kerja Praktik"
-          iconElementLeft={
-            <IconButton onClick = {()=>this.handleToggle()}>
-              <i className="material-icons" style={{color: 'white'}}>menu</i>
-            </IconButton>
-          }
-          iconElementRight={
-            <RaisedButton
-              label="Logout"
-              backgroundColor="#F44336"
-              labelColor= "#fff"
-              onTouchTap = {()=>this.handleLogout()}
-            />
-          }
-        />
-
-        <div className="containerBodyWide" style={{marginTop: 20}}>
-          <Row>
-            <Col md="4" xs="12">
-              <div>
-                Daftar Kelompok
-                <RaisedButton
-                  label="Tambah kelompok"
-                  labelPosition="after"
-                  backgroundColor="rgb(166, 233, 255)"
-                  icon={<i className="material-icons" style={{color:'black'}}>add</i>}
-                  onTouchTap={()=>this.handleTambahKelompok()}
-                />
-                {this.props.kelompok.length !== 0 &&
-                <ScrollArea
-                  horizontal={false}
-                  style={{height: 500, borderLeftWidth: 2}}
-                  speed={0.8}
-                >
-                  <List>
-                    {this.props.kelompok.map((item, i) => (
-                      <Row>
-                        <Col md="8" xs="8">
-                          <ListItem key={i} onTouchTap={()=>this.handleSelect(i, item)}>
-                            {"Kelompok "+ item.id}
-                          </ListItem>
-                        </Col>
-                        <Col md="4" xs ="4" style={{marginTop:7}}>
-                          <FlatButton
-                            labelPosition="after"
-                            icon={<i className="material-icons" style={{color:'black'}}>close</i>}
-                            onClick={()=>this.handleDeleteKelompok(item.id)}
-                          />
-                        </Col>
-                      </Row>
-                    ))
-                    }
-                  </List>
-                </ScrollArea>
-                }
-                {this.props.kelompok.length === 0 &&
-                  <p><i>Tidak ada kelompok</i></p>
-                }
-              </div>
-            </Col>
-            <Col md="8" xs="12">
-              {this.props.kelompok.length !== 0 &&
-              <div>
-                <p style={{fontSize:20, fontWight:'bold', textAlign: 'center'}}>{"Kelompok "+(this.props.kelompok[this.state.selectedKelompok].id)}</p>
-                <br/>
-                <p style={{fontSize:16}}>Daftar Mahasiswa</p>
+    renderContent(){
+        if(this.props.userInfo.peran == 0){
+          <div>
+            <Redirect to="/mhs_jadwal"/>
+          </div>
+        } else if(this.props.userInfo.peran == 1){
+            return(
                 <div>
-                  <ScrollArea
-                    horizontal={false}
-                    style={{height: 250}}
-                    speed={0.8}
-                  >
+                  <Redirect to="/dosen_calendar"/>
+                </div>
+            )
+        }
+        else if(this.props.userInfo.peran == 2){
+            const actionsTambahMahasiswa = [
+                <FlatButton
+                    label="Cancel"
+                    primary={true}
+                    onClick={()=>this.handleCloseTambahMahasiswa()}
+                />,
+                <FlatButton
+                    label="Submit"
+                    primary={true}
+                    keyboardFocused={true}
+                    onClick={()=>this.handleTambahMahasiswa()}
+                />,
+            ];
+
+            const actionsEditTopic = [
+                <FlatButton
+                    label="Cancel"
+                    primary={true}
+                    onClick={()=>this.handleCloseEditTopic()}
+                />,
+                <FlatButton
+                    label="Submit"
+                    primary={true}
+                    keyboardFocused={true}
+                    onClick={()=>this.handleEditTopic()}
+                />,
+            ];
+
+            const actionsTambahDosen = [
+                <FlatButton
+                    label="Cancel"
+                    primary={true}
+                    onClick={()=>this.handleCloseTambahDosen()}
+                />,
+                <FlatButton
+                    label="Submit"
+                    primary={true}
+                    keyboardFocused={true}
+                    onClick={()=>this.handleTambahDosen()}
+                />,
+            ];
+
+            return (
+                <MuiThemeProvider>
+                  <div>
                     <RaisedButton
-                      label="Tambah mahasiswa"
-                      labelPosition="after"
-                      backgroundColor="rgb(166, 233, 255)"
-                      icon={<i className="material-icons" style={{color:'black'}}>add</i>}
-                      onClick={()=>this.handleOpenTambahMahasiswa()}
+                        style={{
+                            position: 'fixed',
+                            marginTop: this.props.height-50,
+                            marginLeft: this.props.width-200,
+                            alignItems: 'center'
+                        }}
+                        backgroundColor="#F1D600"
+                        label="SAVE"
+                        labelPosition="after"
+                        icon={<i className="material-icons" style={{color:'black'}}>save</i>}
+                        onTouchTap={()=>this.handleSave()}
+                    />
+                    <AppBar
+                        title="Dashboard Tim TA - Daftar Pasangan Kerja Praktik"
+                        iconElementLeft={
+                          <IconButton onClick = {()=>this.handleToggle()}>
+                            <i className="material-icons" style={{color: 'white'}}>menu</i>
+                          </IconButton>
+                        }
+                        iconElementRight={
+                          <RaisedButton
+                              label="Logout"
+                              backgroundColor="#F44336"
+                              labelColor= "#fff"
+                              onTouchTap = {()=>this.handleLogout()}
+                          />
+                        }
                     />
 
-                    <List>
-                    {this.props.kelompok[this.state.selectedKelompok].mahasiswa.map((item, i)=> (
-                        <Row>
-                          <Col md="8" xs="8">
-                            <ListItem key={i}>
-                              {item.user.nama}
-                            </ListItem>
-                          </Col>
-                          <Col md="4" xs ="4" style={{marginTop:7}}>
-                            <FlatButton
-                              labelPosition="after"
-                              icon={<i className="material-icons" style={{color:'black', fontSize: '14px'}}>close</i>}
-                              onClick={()=>this.handleDeleteMahasiswa(i)}
+                    <div className="containerBodyWide" style={{marginTop: 20}}>
+                      <Row>
+                        <Col md="4" xs="12">
+                          <div>
+                            Daftar Kelompok
+                            <RaisedButton
+                                label="Tambah kelompok"
+                                labelPosition="after"
+                                backgroundColor="rgb(166, 233, 255)"
+                                icon={<i className="material-icons" style={{color:'black'}}>add</i>}
+                                onTouchTap={()=>this.handleTambahKelompok()}
                             />
+                              {this.props.kelompok.length !== 0 &&
+                              <ScrollArea
+                                  horizontal={false}
+                                  style={{height: 500, borderLeftWidth: 2}}
+                                  speed={0.8}
+                              >
+                                <List>
+                                    {this.props.kelompok.map((item, i) => (
+                                        <Row>
+                                          <Col md="8" xs="8">
+                                            <ListItem key={i} onTouchTap={()=>this.handleSelect(i, item)}>
+                                                {"Kelompok "+ item.id}
+                                            </ListItem>
+                                          </Col>
+                                          <Col md="4" xs ="4" style={{marginTop:7}}>
+                                            <FlatButton
+                                                labelPosition="after"
+                                                icon={<i className="material-icons" style={{color:'black'}}>close</i>}
+                                                onClick={()=>this.handleDeleteKelompok(item.id)}
+                                            />
+                                          </Col>
+                                        </Row>
+                                    ))
+                                    }
+                                </List>
+                              </ScrollArea>
+                              }
+                              {this.props.kelompok.length === 0 &&
+                              <p><i>Tidak ada kelompok</i></p>
+                              }
+                          </div>
+                        </Col>
+                        <Col md="8" xs="12">
+                            {this.props.kelompok.length !== 0 &&
+                            <div>
+                              <p style={{fontSize:20, fontWight:'bold', textAlign: 'center'}}>{"Kelompok "+(this.props.kelompok[this.state.selectedKelompok].id)}</p>
+                              <br/>
+                              <p style={{fontSize:16}}>Daftar Mahasiswa</p>
+                              <div>
+                                <ScrollArea
+                                    horizontal={false}
+                                    style={{height: 250}}
+                                    speed={0.8}
+                                >
+                                  <RaisedButton
+                                      label="Tambah mahasiswa"
+                                      labelPosition="after"
+                                      backgroundColor="rgb(166, 233, 255)"
+                                      icon={<i className="material-icons" style={{color:'black'}}>add</i>}
+                                      onClick={()=>this.handleOpenTambahMahasiswa()}
+                                  />
+
+                                  <List>
+                                      {this.props.kelompok[this.state.selectedKelompok].mahasiswa.map((item, i)=> (
+                                          <Row>
+                                            <Col md="8" xs="8">
+                                              <ListItem key={i}>
+                                                  {item.user.nama}
+                                              </ListItem>
+                                            </Col>
+                                            <Col md="4" xs ="4" style={{marginTop:7}}>
+                                              <FlatButton
+                                                  labelPosition="after"
+                                                  icon={<i className="material-icons" style={{color:'black', fontSize: '14px'}}>close</i>}
+                                                  onClick={()=>this.handleDeleteMahasiswa(i)}
+                                              />
+                                            </Col>
+                                          </Row>
+                                      ))}
+                                  </List>
+                                </ScrollArea>
+                              </div>
+                              <br/>
+                              <br/>
+                              <p style={{fontSize:16}}>Topik Kerja Praktik</p>
+                              <Row>
+                                <Col md="10" xs="10">
+                                  <p style={{fontSize: 20}}>{this.props.kelompok[this.state.selectedKelompok].topik}</p>
+                                </Col>
+                                <Col md="2" xs ="2">
+                                  <FlatButton
+                                      icon={<i className="material-icons" style={{color:'black'}}>edit</i>}
+                                      onClick={() => this.handleOpenEditTopic()}
+                                  />
+                                </Col>
+                              </Row>
+                              <br/>
+                              <br/>
+                              <p style={{fontSize:16}}>Dosen Pembimbing</p>
+                                {this.props.kelompok[this.state.selectedKelompok].pembimbing.length < 2 &&
+                                <RaisedButton
+                                    label="Tambah Dosen"
+                                    labelPosition="after"
+                                    backgroundColor="rgb(166, 233, 255)"
+                                    icon={<i className="material-icons" style={{color:'black'}}>add</i>}
+                                    onClick={()=>this.handleOpenTambahDosen()}
+                                />
+                                }
+                                {this.props.kelompok[this.state.selectedKelompok].pembimbing.length > 0 &&
+                                <List>
+                                    {this.props.kelompok[this.state.selectedKelompok].pembimbing.map((item, i) =>(
+                                        <Row>
+                                          <Col md="8" xs="8">
+                                            <ListItem key={i}>
+                                                {item.user.nama}
+                                            </ListItem>
+                                          </Col>
+                                          <Col md="4" xs ="4" style={{marginTop:7}}>
+                                            <FlatButton
+                                                icon={<i className="material-icons" style={{color:'black', fontSize:'14px'}}>close</i>}
+                                                onClick={()=>this.handleDeleteDosen(i)}
+                                            />
+                                          </Col>
+                                        </Row>
+                                    ))}
+                                </List>
+                                }
+                                {this.props.kelompok[this.state.selectedKelompok].pembimbing.length == 0 &&
+                                <p style={{fontSize:14}}><i>Belum ada dosen.</i></p>
+                                }
+                            </div>
+                            }
+                        </Col>
+                      </Row>
+                    </div>
+                    <Drawer
+                        docked={false}
+                        width={400}
+                        open={this.state.open}
+                        onRequestChange={(open) => this.setState({open})}
+                    >
+                      <div className="userProfile">
+                        <Row>
+                          <Col md="3" xs="2">
+                            <img src={imgProfile} className="imgProfile"/>
+                          </Col>
+                          <Col md="9" xs="10" className="textProfile">
+                            <Row>
+                              <Col className="nameProfile">{this.props.userInfo.nama}</Col>
+                              <Col className="emailProfile">{this.props.userInfo.email}</Col>
+                              <Col className="emailProfile">{"Tim TA"}</Col>
+                            </Row>
                           </Col>
                         </Row>
-                      ))}
-                      </List>
-                  </ScrollArea>
+                      </div>
+                      <hr/>
+                      <p className="menuTitle">Manajemen Pengguna</p>
+                      <MenuItem insetChildren={true} href="/timta_mng_user">Daftar Pengguna</MenuItem>
+                      <MenuItem insetChildren={true} href="/timta_mng_pasangan_TA">Daftar Pasangan TA</MenuItem>
+                      <br/>
+                      <p className="menuTitle">Manajemen Jadwal</p>
+                      <MenuItem insetChildren={true} href="/timta_mng_jadwal_seminarTA1">Seminar TA 1</MenuItem>
+                      <MenuItem insetChildren={true} href="/timta_mng_jadwal_seminarTA2">Seminar TA 2</MenuItem>
+                      <MenuItem insetChildren={true} href="/timta_mng_jadwal_sidangTA">Sidang Akhir</MenuItem>
+                      <hr/>
+                      <MenuItem insetChildren={true} href="/timta_allcalendars">Manajemen Kalender</MenuItem>
+                      <MenuItem insetChildren={true} href="/timta_mng_ruangan">Manajemen Ruangan</MenuItem>
+                    </Drawer>
+
+                    <Dialog
+                        title="Tambah Mahasiswa Baru"
+                        actions= {actionsTambahMahasiswa}
+                        modal={false}
+                        open={this.state.modalTambahMahasiswa}
+                        onRequestClose={()=>this.handleCloseTambahMahasiswa()}
+                    >
+                      <SelectField
+                          multiple={false}
+                          hintText="Select a name"
+                          value={this.state.values}
+                          onChange={(event, index, values)=>this.handleChangeMahasiswa(event, index, values)}
+                      >
+                          {this.props.mahasiswa.map((item) => (
+                              <MenuItem
+                                  key={item.id}
+                                  insetChildren={true}
+                                  value={item}
+                                  primaryText={item.nama}
+                              />
+                          ))
+                          }
+                      </SelectField>
+                    </Dialog>
+
+                    <Dialog
+                        title="Edit Topic"
+                        actions= {actionsEditTopic}
+                        modal={false}
+                        open={this.state.modalEditTopic}
+                        onRequestClose={()=>this.handleCloseEditTopic()}
+                    >
+                      <TextField
+                          hintText="Tulis topik di sini..."
+                          defaultValue = {this.props.kelompok[this.state.selectedKelompok] ? this.props.kelompok[this.state.selectedKelompok].topik : ""}
+                          style={{width:500}}
+                          onChange={(event)=>this.handleChangeTopic(event)}
+                      />
+                    </Dialog>
+
+                    <Dialog
+                        title="Tambah Dosen Pembimbing"
+                        actions= {actionsTambahDosen}
+                        modal={false}
+                        open={this.state.modalTambahDosen}
+                        onRequestClose={()=>this.handleCloseTambahDosen()}
+                    >
+                      <SelectField
+                          multiple={false}
+                          hintText="Select a name"
+                          value = {this.state.dosen}
+                          onChange={(event, index, dosen)=>this.handleChangeDosen(event, index, dosen)}
+                      >
+                          {this.props.dosen.map((item) => (
+                              <MenuItem
+                                  key={item.id}
+                                  insetChildren={true}
+                                  value={item}
+                                  primaryText={item.nama}
+                              />
+                          ))
+                          }
+                      </SelectField>
+                    </Dialog>
+                  </div>
+                </MuiThemeProvider>
+            );
+        }
+        else{
+            return(
+                <div>
+                  <Redirect to="/"/>
                 </div>
-                <br/>
-                <br/>
-                <p style={{fontSize:16}}>Topik Kerja Praktik</p>
-                <Row>
-                  <Col md="10" xs="10">
-                    <p style={{fontSize: 20}}>{this.props.kelompok[this.state.selectedKelompok].topik}</p>
-                  </Col>
-                  <Col md="2" xs ="2">
-                    <FlatButton
-                      icon={<i className="material-icons" style={{color:'black'}}>edit</i>}
-                      onClick={() => this.handleOpenEditTopic()}
-                    />
-                  </Col>
-                </Row>
-                <br/>
-                <br/>
-                <p style={{fontSize:16}}>Dosen Pembimbing</p>
-                {this.props.kelompok[this.state.selectedKelompok].pembimbing.length < 2 &&
-                  <RaisedButton
-                    label="Tambah Dosen"
-                    labelPosition="after"
-                    backgroundColor="rgb(166, 233, 255)"
-                    icon={<i className="material-icons" style={{color:'black'}}>add</i>}
-                    onClick={()=>this.handleOpenTambahDosen()}
-                  />
-                }
-                {this.props.kelompok[this.state.selectedKelompok].pembimbing.length > 0 &&
-                  <List>
-                    {this.props.kelompok[this.state.selectedKelompok].pembimbing.map((item, i) =>(
-                      <Row>
-                        <Col md="8" xs="8">
-                          <ListItem key={i}>
-                            {item.user.nama}
-                          </ListItem>
-                        </Col>
-                        <Col md="4" xs ="4" style={{marginTop:7}}>
-                          <FlatButton
-                            icon={<i className="material-icons" style={{color:'black', fontSize:'14px'}}>close</i>}
-                            onClick={()=>this.handleDeleteDosen(i)}
-                          />
-                        </Col>
-                      </Row>
-                    ))}
-                  </List>
-                }
-                {this.props.kelompok[this.state.selectedKelompok].pembimbing.length == 0 &&
-                    <p style={{fontSize:14}}><i>Belum ada dosen.</i></p>
-                }
-              </div>
-            }
-            </Col>
-          </Row>
-        </div>
-        <Drawer
-          docked={false}
-          width={400}
-          open={this.state.open}
-          onRequestChange={(open) => this.setState({open})}
-        >
-          <div className="userProfile">
-            <Row>
-              <Col md="3" xs="2">
-                <img src={imgProfile} className="imgProfile"/>
-              </Col>
-              <Col md="9" xs="10" className="textProfile">
-                <Row>
-                  <Col className="nameProfile">{this.props.userInfo.nama}</Col>
-                  <Col className="emailProfile">{this.props.userInfo.email}</Col>
-                  <Col className="emailProfile">{"Tim TA"}</Col>
-                </Row>
-              </Col>
-            </Row>
-          </div>
-          <hr/>
-          <p className="menuTitle">Manajemen Pengguna</p>
-          <MenuItem insetChildren={true} href="/timta_mng_user">Daftar Pengguna</MenuItem>
-          <MenuItem insetChildren={true} href="/timta_mng_pasangan_TA">Daftar Pasangan TA</MenuItem>
-          <br/>
-          <p className="menuTitle">Manajemen Jadwal</p>
-          <MenuItem insetChildren={true} href="/timta_mng_jadwal_seminarTA1">Seminar TA 1</MenuItem>
-          <MenuItem insetChildren={true} href="/timta_mng_jadwal_seminarTA2">Seminar TA 2</MenuItem>
-          <MenuItem insetChildren={true} href="/timta_mng_jadwal_sidangTA">Sidang Akhir</MenuItem>
-          <hr/>
-          <MenuItem insetChildren={true} href="/timta_allcalendars">Manajemen Kalender</MenuItem>
-          <MenuItem insetChildren={true} href="/timta_mng_ruangan">Manajemen Ruangan</MenuItem>
-        </Drawer>
+            )
 
-        <Dialog
-          title="Tambah Mahasiswa Baru"
-          actions= {actionsTambahMahasiswa}
-          modal={false}
-          open={this.state.modalTambahMahasiswa}
-          onRequestClose={()=>this.handleCloseTambahMahasiswa()}
-        >
-          <SelectField
-            multiple={false}
-            hintText="Select a name"
-            value={this.state.values}
-            onChange={(event, index, values)=>this.handleChangeMahasiswa(event, index, values)}
-          >
-          {this.props.mahasiswa.map((item) => (
-            <MenuItem
-              key={item.id}
-              insetChildren={true}
-              value={item}
-              primaryText={item.nama}
-            />
-          ))
-          }
-          </SelectField>
-        </Dialog>
+        }
+    }
 
-        <Dialog
-          title="Edit Topic"
-          actions= {actionsEditTopic}
-          modal={false}
-          open={this.state.modalEditTopic}
-          onRequestClose={()=>this.handleCloseEditTopic()}
-        >
-        <TextField
-          hintText="Tulis topik di sini..."
-          defaultValue = {this.props.kelompok[this.state.selectedKelompok] ? this.props.kelompok[this.state.selectedKelompok].topik : ""}
-          style={{width:500}}
-          onChange={(event)=>this.handleChangeTopic(event)}
-        />
-        </Dialog>
+  render() {
 
-        <Dialog
-          title="Tambah Dosen Pembimbing"
-          actions= {actionsTambahDosen}
-          modal={false}
-          open={this.state.modalTambahDosen}
-          onRequestClose={()=>this.handleCloseTambahDosen()}
-        >
-          <SelectField
-            multiple={false}
-            hintText="Select a name"
-            value = {this.state.dosen}
-            onChange={(event, index, dosen)=>this.handleChangeDosen(event, index, dosen)}
-          >
-          {this.props.dosen.map((item) => (
-            <MenuItem
-              key={item.id}
-              insetChildren={true}
-              value={item}
-              primaryText={item.nama}
-            />
-          ))
-          }
-          </SelectField>
-        </Dialog>
-      </div>
-      </MuiThemeProvider>
-    );
+    return this.renderContent();
   }
 }
 

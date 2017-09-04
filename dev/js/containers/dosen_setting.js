@@ -78,89 +78,114 @@ class dosen_setting extends Component {
         window.location.href = "/";
     }
 
-    render() {
-    return (
-      <MuiThemeProvider>
-      <div>
-        <AppBar
-          title="Halaman Dosen - Profil dan Pengaturan"
-          iconElementLeft={
-            <IconButton onClick = {()=>this.handleToggle()}>
-              <i className="material-icons" style={{color: 'white'}}>menu</i>
-            </IconButton>
-          }
-          iconElementRight={
-            <RaisedButton
-              label="Logout"
-              backgroundColor="#F44336"
-              labelColor= "#fff"
-              onTouchTap = {()=>this.handleLogout()}
-            />
-          }
-        />
-        
-        <Row style={{marginTop: 70}}>
-          <Col md="6" xs ="12">
-            <Row>
-              <Col md="3" xs="12" style={{alignItems: 'center', textAlign: 'center'}}>
-                <img src={imgProfile} className="imgProfileBig"/>
-              </Col>
-              <Col md="9" xs="12">
-                <Card className="infoProfile">
-                  <CardTitle title={this.props.userInfo.nama}/>
-                  <CardText>
-                    Email: {this.props.userInfo.email}                        
-                  </CardText>
-                </Card>
-                <br/>
-              </Col>
-            </Row>
-          </Col>
-          <Col md="6" xs ="12">
-            <p style={{fontSize: 20}}>Shared Calendar</p>
-              <List>
-                {this.props.calendarList.map((item, i) => (
-                  <ListItem key={i} primaryText={item.calendar_name} leftCheckbox={<Checkbox checked={this.props.calendarList[i].status} onCheck={()=>this.handleSelect(i)}/>}/>
-                ))}
-              </List>
-              <RaisedButton
-                backgroundColor="#F1D600"
-                label="SAVE"
-                labelPosition="after"
-                icon={<i className="material-icons" style={{color:'black'}}>save</i>}
-                onTouchTap={()=>this.handleSave()}
-              />
-          </Col>
-        </Row>
-
-        <Drawer
-          docked={false}
-          width={400}
-          open={this.state.open}
-          onRequestChange={(open) => this.setState({open})}
-        >
-          <div className="userProfile">
-            <Row>
-              <Col md="3" xs="2">
-                <img src={imgProfile} className="imgProfile"/>
-              </Col>
-              <Col md="9" xs="10" className="textProfile">
-                <Row>
-                  <Col className="nameProfile">{this.props.userInfo.nama}</Col>
-                  <Col className="emailProfile">{this.props.userInfo.email}</Col>
-                  <Col className="emailProfile">{"Dosen"}</Col>
-                </Row>
-              </Col>
-            </Row>
+    renderContent(){
+        if(this.props.userInfo.peran == 0){
+          <div>
+            <Redirect to="/mhs_jadwal"/>
           </div>
-          <hr/>
-          <MenuItem insetChildren={true} href="/dosen_calendar">Kalender</MenuItem>
-          <MenuItem insetChildren={true}style={{backgroundColor:'#b0bec5'}} href="/dosen_setting">Profil dan Pengaturan</MenuItem>
-          <br/>
-        </Drawer>
-      </div>
-      </MuiThemeProvider>
-    );
+        } else if(this.props.userInfo.peran == 1){
+            return (
+                <MuiThemeProvider>
+                  <div>
+                    <AppBar
+                        title="Halaman Dosen - Profil dan Pengaturan"
+                        iconElementLeft={
+                          <IconButton onClick = {()=>this.handleToggle()}>
+                            <i className="material-icons" style={{color: 'white'}}>menu</i>
+                          </IconButton>
+                        }
+                        iconElementRight={
+                          <RaisedButton
+                              label="Logout"
+                              backgroundColor="#F44336"
+                              labelColor= "#fff"
+                              onTouchTap = {()=>this.handleLogout()}
+                          />
+                        }
+                    />
+
+                    <Row style={{marginTop: 70}}>
+                      <Col md="6" xs ="12">
+                        <Row>
+                          <Col md="3" xs="12" style={{alignItems: 'center', textAlign: 'center'}}>
+                            <img src={imgProfile} className="imgProfileBig"/>
+                          </Col>
+                          <Col md="9" xs="12">
+                            <Card className="infoProfile">
+                              <CardTitle title={this.props.userInfo.nama}/>
+                              <CardText>
+                                Email: {this.props.userInfo.email}
+                              </CardText>
+                            </Card>
+                            <br/>
+                          </Col>
+                        </Row>
+                      </Col>
+                      <Col md="6" xs ="12">
+                        <p style={{fontSize: 20}}>Shared Calendar</p>
+                        <List>
+                            {this.props.calendarList.map((item, i) => (
+                                <ListItem key={i} primaryText={item.calendar_name} leftCheckbox={<Checkbox checked={this.props.calendarList[i].status} onCheck={()=>this.handleSelect(i)}/>}/>
+                            ))}
+                        </List>
+                        <RaisedButton
+                            backgroundColor="#F1D600"
+                            label="SAVE"
+                            labelPosition="after"
+                            icon={<i className="material-icons" style={{color:'black'}}>save</i>}
+                            onTouchTap={()=>this.handleSave()}
+                        />
+                      </Col>
+                    </Row>
+
+                    <Drawer
+                        docked={false}
+                        width={400}
+                        open={this.state.open}
+                        onRequestChange={(open) => this.setState({open})}
+                    >
+                      <div className="userProfile">
+                        <Row>
+                          <Col md="3" xs="2">
+                            <img src={imgProfile} className="imgProfile"/>
+                          </Col>
+                          <Col md="9" xs="10" className="textProfile">
+                            <Row>
+                              <Col className="nameProfile">{this.props.userInfo.nama}</Col>
+                              <Col className="emailProfile">{this.props.userInfo.email}</Col>
+                              <Col className="emailProfile">{"Dosen"}</Col>
+                            </Row>
+                          </Col>
+                        </Row>
+                      </div>
+                      <hr/>
+                      <MenuItem insetChildren={true} href="/dosen_calendar">Kalender</MenuItem>
+                      <MenuItem insetChildren={true}style={{backgroundColor:'#b0bec5'}} href="/dosen_setting">Profil dan Pengaturan</MenuItem>
+                      <br/>
+                    </Drawer>
+                  </div>
+                </MuiThemeProvider>
+            );
+        }
+        else if(this.props.userInfo.peran == 2){
+            return(
+                <div>
+                  <Redirect to="/timta_mng_user"/>
+                </div>
+            )
+        }
+        else{
+            return(
+                <div>
+                  <Redirect to="/"/>
+                </div>
+            )
+
+        }
+    }
+
+    render() {
+      return this.renderContent();
   }
 }
 

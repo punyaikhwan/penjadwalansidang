@@ -103,124 +103,150 @@ class dosen_calendar extends Component {
         window.location.href = "/";
     }
 
-    render() {
-    const actionsModalEvent = [
-      <FlatButton
-        label="OK"
-        primary={true}
-        onClick={()=>this.setState({modalEvent: false})}
-      />
-    ];
-
-    return (
-      <MuiThemeProvider>
-      <div>
-        <AppBar
-          title="Halaman Dosen - Kalender"
-          iconElementLeft={
-            <IconButton onClick = {()=>this.handleToggle()}>
-              <i className="material-icons" style={{color: 'white'}}>menu</i>
-            </IconButton>
-          }
-          iconElementRight={
-            <RaisedButton
-              label="Logout"
-              backgroundColor="#F44336"
-              labelColor= "#fff"
-              onTouchTap= {()=>this.handleLogout()}
-            />
-          }
-        />
-
-        <Drawer
-          docked={false}
-          width={400}
-          open={this.state.open}
-          onRequestChange={(open) => this.setState({open})}
-        >
-          <div className="userProfile">
-            <Row>
-              <Col md="3" xs="2">
-                <img src={imgProfile} className="imgProfile"/>
-              </Col>
-              <Col md="9" xs="10" className="textProfile">
-                <Row>
-                  <Col className="nameProfile">{this.props.userInfo.nama}</Col>
-                  <Col className="emailProfile">{this.props.userInfo.email}</Col>
-                  <Col className="emailProfile">{"Dosen"}</Col>
-                </Row>
-              </Col>
-            </Row>
+    renderContent(){
+        if(this.props.userInfo.peran == 0){
+          <div>
+            <Redirect to="/mhs_jadwal"/>
           </div>
-          <hr/>
-          <MenuItem insetChildren={true} style={{backgroundColor:'#b0bec5'}} href="/dosen_calendar">Kalender</MenuItem>
-          <MenuItem insetChildren={true} href="/dosen_setting">Profil dan Pengaturan</MenuItem>
-          <br/>
-        </Drawer>
+        } else if(this.props.userInfo.peran == 1){
+            const actionsModalEvent = [
+                <FlatButton
+                    label="OK"
+                    primary={true}
+                    onClick={()=>this.setState({modalEvent: false})}
+                />
+            ];
+            return (
+                <MuiThemeProvider>
+                  <div>
+                    <AppBar
+                        title="Halaman Dosen - Kalender"
+                        iconElementLeft={
+                          <IconButton onClick = {()=>this.handleToggle()}>
+                            <i className="material-icons" style={{color: 'white'}}>menu</i>
+                          </IconButton>
+                        }
+                        iconElementRight={
+                          <RaisedButton
+                              label="Logout"
+                              backgroundColor="#F44336"
+                              labelColor= "#fff"
+                              onTouchTap= {()=>this.handleLogout()}
+                          />
+                        }
+                    />
 
-        <div className="containerCalendar">
-          <p style={{fontSize: 20}}><i className="material-icons" style={{color: 'black'}}>info</i> Jadwal Anda yang berwarna hijau.</p><br/>
-          <BigCalendar
-            selectable
-            events={this.props.events}
-            defaultView='month'
-            onSelectEvent= {event => this.handleSelectedEvent(event)}
-            onSelectSlot={(slotInfo) => {
-              this.setState({selectedDate: slotInfo.start});
-              console.log(this.state.selectedDate);
-            }}
+                    <Drawer
+                        docked={false}
+                        width={400}
+                        open={this.state.open}
+                        onRequestChange={(open) => this.setState({open})}
+                    >
+                      <div className="userProfile">
+                        <Row>
+                          <Col md="3" xs="2">
+                            <img src={imgProfile} className="imgProfile"/>
+                          </Col>
+                          <Col md="9" xs="10" className="textProfile">
+                            <Row>
+                              <Col className="nameProfile">{this.props.userInfo.nama}</Col>
+                              <Col className="emailProfile">{this.props.userInfo.email}</Col>
+                              <Col className="emailProfile">{"Dosen"}</Col>
+                            </Row>
+                          </Col>
+                        </Row>
+                      </div>
+                      <hr/>
+                      <MenuItem insetChildren={true} style={{backgroundColor:'#b0bec5'}} href="/dosen_calendar">Kalender</MenuItem>
+                      <MenuItem insetChildren={true} href="/dosen_setting">Profil dan Pengaturan</MenuItem>
+                      <br/>
+                    </Drawer>
 
-            eventPropGetter={(this.eventStyleGetter.bind(this))}
-          />
-        </div>
+                    <div className="containerCalendar">
+                      <p style={{fontSize: 20}}><i className="material-icons" style={{color: 'black'}}>info</i> Jadwal Anda yang berwarna hijau.</p><br/>
+                      <BigCalendar
+                          selectable
+                          events={this.props.events}
+                          defaultView='month'
+                          onSelectEvent= {event => this.handleSelectedEvent(event)}
+                          onSelectSlot={(slotInfo) => {
+                              this.setState({selectedDate: slotInfo.start});
+                              console.log(this.state.selectedDate);
+                          }}
 
-        {this.state.selectedEvent !== null &&
-          <Dialog
-            title={this.state.selectedEvent.title}
-            actions= {actionsModalEvent}
-            modal={false}
-            contentStyle={{width: 600}}
-            open={this.state.modalEvent}
-            onRequestClose={()=>this.setState({modalEvent: false})}
-            autoScrollBodyContent={true}
-          >
-            <Table selectable={false}>
-              <TableBody displayRowCheckbox={false}>
-                <TableRow displayBorder={false}>
-                  <TableRowColumn className="attributeTable">Hari</TableRowColumn>
-                  <TableRowColumn>{dateFormat(this.state.selectedEvent.start, "dddd, dd mmmm yyyy")}</TableRowColumn>
-                </TableRow>
-                <TableRow displayBorder={false}>
-                  <TableRowColumn className="attributeTable">Waktu</TableRowColumn>
-                  <TableRowColumn>{dateFormat(this.state.selectedEvent.start, "HH.MM")}</TableRowColumn>
-                </TableRow>
-                <TableRow displayBorder={false}>
-                    <TableRowColumn className="attributeTable">Ruang</TableRowColumn>
-                    <TableRowColumn>{this.state.selectedEvent.ruangan.nama}</TableRowColumn>
-                  </TableRow>
-                <TableRow displayBorder={false}>
-                  <TableRowColumn className="attributeTable">Topik</TableRowColumn>
-                  <TableRowColumn>{this.state.selectedEvent.topik}</TableRowColumn>
-                </TableRow>
-                {this.state.selectedEvent.mahasiswa.map((item, i) => (
-                  <TableRow key={i} displayBorder={false}>
-                    <TableRowColumn className="attributeTable">{i===0 ? "Mahasiswa":""}</TableRowColumn>
-                    <TableRowColumn>{item.user.NIM+" "+item.user.nama}</TableRowColumn>
-                  </TableRow>
-                ))}
-                {this.state.selectedEvent.dosen.map((item, i) => (
-                <TableRow key={i} displayBorder={false}>
-                  <TableRowColumn className="attributeTable">{i === 0 ? "Dosen": ""}</TableRowColumn>
-                  <TableRowColumn>{item.user.nama}</TableRowColumn>
-                </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </Dialog>
+                          eventPropGetter={(this.eventStyleGetter.bind(this))}
+                      />
+                    </div>
+
+                      {this.state.selectedEvent !== null &&
+                      <Dialog
+                          title={this.state.selectedEvent.title}
+                          actions= {actionsModalEvent}
+                          modal={false}
+                          contentStyle={{width: 600}}
+                          open={this.state.modalEvent}
+                          onRequestClose={()=>this.setState({modalEvent: false})}
+                          autoScrollBodyContent={true}
+                      >
+                        <Table selectable={false}>
+                          <TableBody displayRowCheckbox={false}>
+                            <TableRow displayBorder={false}>
+                              <TableRowColumn className="attributeTable">Hari</TableRowColumn>
+                              <TableRowColumn>{dateFormat(this.state.selectedEvent.start, "dddd, dd mmmm yyyy")}</TableRowColumn>
+                            </TableRow>
+                            <TableRow displayBorder={false}>
+                              <TableRowColumn className="attributeTable">Waktu</TableRowColumn>
+                              <TableRowColumn>{dateFormat(this.state.selectedEvent.start, "HH.MM")}</TableRowColumn>
+                            </TableRow>
+                            <TableRow displayBorder={false}>
+                              <TableRowColumn className="attributeTable">Ruang</TableRowColumn>
+                              <TableRowColumn>{this.state.selectedEvent.ruangan.nama}</TableRowColumn>
+                            </TableRow>
+                            <TableRow displayBorder={false}>
+                              <TableRowColumn className="attributeTable">Topik</TableRowColumn>
+                              <TableRowColumn>{this.state.selectedEvent.topik}</TableRowColumn>
+                            </TableRow>
+                              {this.state.selectedEvent.mahasiswa.map((item, i) => (
+                                  <TableRow key={i} displayBorder={false}>
+                                    <TableRowColumn className="attributeTable">{i===0 ? "Mahasiswa":""}</TableRowColumn>
+                                    <TableRowColumn>{item.user.NIM+" "+item.user.nama}</TableRowColumn>
+                                  </TableRow>
+                              ))}
+                              {this.state.selectedEvent.dosen.map((item, i) => (
+                                  <TableRow key={i} displayBorder={false}>
+                                    <TableRowColumn className="attributeTable">{i === 0 ? "Dosen": ""}</TableRowColumn>
+                                    <TableRowColumn>{item.user.nama}</TableRowColumn>
+                                  </TableRow>
+                              ))}
+                          </TableBody>
+                        </Table>
+                      </Dialog>
+                      }
+                  </div>
+                </MuiThemeProvider>
+            );
         }
-      </div>
-      </MuiThemeProvider>
-    );
+        else if(this.props.userInfo.peran == 2){
+            return(
+                <div>
+                  <Redirect to="/timta_mng_user"/>
+                </div>
+            )
+        }
+        else{
+            return(
+                <div>
+                  <Redirect to="/"/>
+                </div>
+            )
+
+        }
+    }
+
+    render() {
+
+
+    return this.renderContent();
   }
 }
 
