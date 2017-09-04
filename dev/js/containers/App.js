@@ -63,12 +63,18 @@ class App extends Component {
                       <Redirect to="/mhs_jadwal"/>
                   </div>
               )
+          } else {
+            return(
+              <div>
+                 <Redirect to="/"/>
+              </div>
+            )
           }
 
       }
       else{
           return(
-              <div><Redirect to="/"/></div>
+              <div></div>
           )
 
       }
