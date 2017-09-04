@@ -40,7 +40,7 @@ class dosen_setting extends Component {
   }
 
   componentDidMount(){
-    this.props.fetchCalendar(this.props.dataUser.id)
+    this.props.fetchCalendar(this.props.userInfo.id)
   }
   
   handleSelect(i){
@@ -63,7 +63,7 @@ class dosen_setting extends Component {
 
     })
       console.log("arr", arr)
-    this.props.selectCalendar(arr, this.props.dataUser.id)
+    this.props.selectCalendar(arr, this.props.userInfo.id)
     //kirim data calendarlist ke BE
   }
   
@@ -98,9 +98,9 @@ class dosen_setting extends Component {
               </Col>
               <Col md="9" xs="12">
                 <Card className="infoProfile">
-                  <CardTitle title={this.props.dataUser.nama}/>
+                  <CardTitle title={this.props.userInfo.nama}/>
                   <CardText>
-                    Email: {this.props.dataUser.email}                        
+                    Email: {this.props.userInfo.email}                        
                   </CardText>
                 </Card>
                 <br/>
@@ -157,7 +157,7 @@ class dosen_setting extends Component {
 
 function mapStateToProps(state) {
     return {
-      dataUser: state.activeUser,
+      userInfo: state.activeUser,
         calendarList: state.calendar
     };
 }
