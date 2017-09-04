@@ -331,7 +331,6 @@ class mhs_jadwal extends Component {
   }
 
   render() {
-    if (this.props.eventMhs.length !== 0){
         return (
             <MuiThemeProvider>
               <div>
@@ -351,11 +350,32 @@ class mhs_jadwal extends Component {
                     }
                 />
 
+                  {this.props.eventMhs !== 0 &&
+                  <div>
                   {this.props.eventMhs.map((event, idx) =>(
                       this.renderEvent(event)
                   ))}
+                  </div>
+                  }
 
-
+                  {this.props.eventMhs.length === 0 &&
+                  <div style={{marginTop: 50}}>
+                  <Row>
+                    <Col md = "2" xs="2">
+                    </Col>
+                    <Col md = "8" xs="8">
+                      <Card>  
+                        <CardTitle title="Jadwal Anda"/>
+                        <CardText>
+                          Belum ada jadwal.
+                        </CardText>
+                      </Card>
+                    </Col>                  
+                    <Col md = "2" xs="2">
+                    </Col>
+                  </Row>
+                  </div>
+                  }
 
                 <Drawer
                     docked={false}
@@ -386,13 +406,6 @@ class mhs_jadwal extends Component {
               </div>
             </MuiThemeProvider>
         );
-    } else {
-      return (
-          <div> tak ada jadwal </div>
-      )
-    }
-
-
   }
 }
 
