@@ -261,7 +261,7 @@ class timta_mng_ruangan extends Component {
           <Row>
             <Col md="2" xs="12">
               <div>
-                <Subheader>Daftar Ruangan</Subheader>
+                Daftar Ruangan
                 <RaisedButton
                   label="Tambah"
                   labelPosition="after"
