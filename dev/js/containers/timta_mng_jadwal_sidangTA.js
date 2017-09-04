@@ -202,7 +202,7 @@ class timta_mng_jadwal_sidangTA extends Component {
             <p style={{fontSize:20, fontWight:'bold'}}>Daftar Dosen</p>
             <ScrollArea
               horizontal={false}
-              style={{height: 500, borderLeftWidth: 2}}
+              style={{height: 300, borderLeftWidth: 2}}
               speed={0.8}
             >
             <Table fixedHeader={false}>
