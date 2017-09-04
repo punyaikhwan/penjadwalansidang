@@ -29,7 +29,7 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
-import imgProfile from '../../scss/public/images/imgprofile.jpg';
+import imgProfile from '../../scss/public/images/admin.png';
 import {fetchRuangan} from '../actions/ruangan/fetch-ruangan'
 import {deleteRuangan} from '../actions/ruangan/delete-ruangan'
 import {newRuangan} from '../actions/ruangan/new-ruangan'

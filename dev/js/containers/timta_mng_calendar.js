@@ -26,7 +26,7 @@ import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.less';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
-import imgProfile from '../../scss/public/images/imgprofile.jpg';
+import imgProfile from '../../scss/public/images/admin.png';
 import '../../scss/timTA.scss';
 import events from '../reducers/events';
 import moment from 'moment';

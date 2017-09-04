@@ -24,7 +24,7 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
-import imgProfile from '../../scss/public/images/imgprofile.jpg';
+import imgProfile from '../../scss/public/images/admin.png';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {fetchTA} from '../actions/ta/fetch-ta'

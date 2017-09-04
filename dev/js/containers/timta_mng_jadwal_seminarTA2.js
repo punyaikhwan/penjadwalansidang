@@ -25,7 +25,7 @@ import DatePicker from 'material-ui/DatePicker';
 import CircularProgress from 'material-ui/CircularProgress';
 import Dialog from 'material-ui/Dialog';
 
-import imgProfile from '../../scss/public/images/imgprofile.jpg';
+import imgProfile from '../../scss/public/images/admin.png';
 
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
