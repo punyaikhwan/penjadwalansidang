@@ -331,7 +331,7 @@ class timta_mng_pasangan_TA extends Component {
                   </Row>
                   <Row>
                     <Col md="6" xs="12">
-                      Dosen Pembimbing
+                      <p>Dosen Pembimbing</p>
                       {this.props.dataTA[this.state.selectedMhs].pembimbing.length < 2 &&
                         <RaisedButton
                           label="Tambah Dosen"
@@ -373,7 +373,7 @@ class timta_mng_pasangan_TA extends Component {
                 <div>
                   <Row>
                     <Col md="6" xs="12">
-                      Daftar Dosen Penguji TA 1
+                      <p>Daftar Dosen Penguji TA 1</p>
                       {this.props.dataTA[this.state.selectedMhs].penguji.length < 2 &&
                         <RaisedButton
                           label="Tambah Dosen Penguji TA 1"
@@ -409,7 +409,7 @@ class timta_mng_pasangan_TA extends Component {
                       }
                     </Col>
                     <Col md="6" xs="12">
-                      Daftar Dosen Penguji Sidang Akhir
+                      <p>Daftar Dosen Penguji Sidang Akhir</p>
                       {this.props.dataTA[this.state.selectedMhs].akhir.length < 2 &&
                         <RaisedButton
                           label="Tambah Dosen Penguji Sidang Akhir"

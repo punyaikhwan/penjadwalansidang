@@ -234,7 +234,6 @@ var ScheduleEvent = async function(event_type, start, end, pasangans){
 
 		//request scheduling
 		console.log("scheduling===================")
-		console.log("events");
 		events = await RequestScheduling(events)
 
 		//delete events
@@ -242,6 +241,7 @@ var ScheduleEvent = async function(event_type, start, end, pasangans){
 
 		//save events
 		console.log("saving schedule===================")
+		console.log("Event log:", events.data.log);
 		var temp = FormatForSave(events.data.result, event_type, pasangan)
 		await NewEvent(temp, events.data.result)
 		//await NewAnggotaEvent(events.data.result)
@@ -285,7 +285,6 @@ var ScheduleEvent = async function(event_type, start, end, pasangans){
 }
 //===============================================================================
 var FinalizeEvent = async function(events, event_type){
-	console.log(events);
 	try{
 		//bikin record kosong
 		await Event.model.where('tipe_event', 99).destroy()
@@ -300,8 +299,8 @@ var FinalizeEvent = async function(events, event_type){
 				"topik": events[i].topik,
 				"title": events[i].title,
 				"room_id": events[i].room_id,
-				"start": events[i].start,
-				"end": events[i].end
+				"start": new Date(events[i].start),
+				"end": new Date(events[i].end)
 			})
 
 			anggotas.push({
@@ -380,7 +379,7 @@ var FinalizeEvent = async function(events, event_type){
 			
 		}
 
-		NotifyEvent(1, shared_email, shared_token)
+		NotifyEvent(event_type, shared_email, shared_token)
 		
 		
 		
@@ -478,9 +477,9 @@ var OverwriteEvent = async function(events){
 //===============================================================================
 var NotifyEvent = async function(event_type, shared_email, shared_token){
 	try{
-		let events = await Event.model.where("tipe_event", 1 ).fetchAll({withRelated: ['mahasiswa.user', 'dosen.user']})
+		let events = await Event.model.where("tipe_event", event_type ).fetchAll({withRelated: ['mahasiswa.user', 'dosen.user']})
+		console.log("Event to notify ", events);
 		events = events.toJSON()
-
 		let notifRequest = {
 			data: []
 		}

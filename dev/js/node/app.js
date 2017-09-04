@@ -18,9 +18,13 @@ var plus = google.plus('v1');
 
 // const ClientId = "806339176753-cmb1mv9g8itmir0p4ucqh0ibuhbl6s0k.apps.googleusercontent.com";
 // const ClientSecret = "PF6m7fxfIzu8g3AhyMI3VoAz";
-const ClientId = "1031302495796-7vb2i3hqj2q5o632ggreuca6cvsuvjn9.apps.googleusercontent.com";
-const ClientSecret = "6nN7tlnCMHfqtlmrgn8PP7Cx";
-const RedirectionUrl = "http://localhost:3000/"
+
+// const ClientId = "1031302495796-7vb2i3hqj2q5o632ggreuca6cvsuvjn9.apps.googleusercontent.com";
+// const ClientSecret = "6nN7tlnCMHfqtlmrgn8PP7Cx";
+
+const ClientId = "1031302495796-qndkfqd9b7lngq820um04pdorudtvj9t.apps.googleusercontent.com";
+const ClientSecret = "tUnSne0yNqmDaAZUx1_unu4z";
+const RedirectionUrl = "http://pplk2e.if.itb.ac.id/"
 
 // Starting the express app
 var app = express()

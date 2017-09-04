@@ -228,14 +228,7 @@ class timta_mng_jadwal_seminarTA1 extends Component {
             </Row>
             <Row className="containerBody">
               <Col md="6" xs="12">
-                <p style={{fontSize:20, fontWight:'bold'}}>Tambah kalender</p>
-                <TextField
-                    hintText="Tempel URL google kalender dengan izin akses Publik."
-                    style={{width:400}}
-                    defaultValue = {this.state.additionalCalender}
-                    onChange={(event)=>this.handleAdditionalCalendar(event)}
-                />
-                <br/>
+                
               </Col>
               <Col md="6" xs="12">
                 <div style={{fontSize:20, fontWight:'bold'}}>Periode</div>

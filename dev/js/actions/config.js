@@ -1,4 +1,4 @@
-let nodeURL = 'http://167.205.35.112/node'
+let nodeURL = 'http://pplk2e.if.itb.ac.id/node'
 
 export {
     nodeURL
