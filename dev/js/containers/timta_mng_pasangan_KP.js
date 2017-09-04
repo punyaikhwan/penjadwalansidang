@@ -11,7 +11,6 @@ import '../../scss/timTA.scss';
 import Row from 'muicss/lib/react/row';
 import Col from 'muicss/lib/react/col';
 import {List, ListItem} from 'material-ui/List';
-import Subheader from 'material-ui/Subheader';
 import ScrollArea from 'react-scrollbar';
 import SelectField from 'material-ui/SelectField';
 import Dialog from 'material-ui/Dialog';
@@ -215,7 +214,7 @@ class timta_mng_pasangan_KP extends Component {
           <Row>
             <Col md="4" xs="12">
               <div>
-                <Subheader>Daftar Kelompok</Subheader>
+                Daftar Kelompok
                 <RaisedButton
                   label="Tambah kelompok"
                   labelPosition="after"
@@ -363,7 +362,7 @@ class timta_mng_pasangan_KP extends Component {
                 <Row>
                   <Col className="nameProfile">{this.props.userInfo.nama}</Col>
                   <Col className="emailProfile">{this.props.userInfo.email}</Col>
-                  <Col className="emailProfile">{this.props.userInfo.peran}</Col>
+                  <Col className="emailProfile">{"Tim TA"}</Col>
                 </Row>
               </Col>
             </Row>

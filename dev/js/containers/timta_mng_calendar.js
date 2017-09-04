@@ -149,7 +149,7 @@ class timta_mng_calendar extends Component {
                   <Row>
                     <Col className="nameProfile">{this.props.userInfo.nama}</Col>
                     <Col className="emailProfile">{this.props.userInfo.email}</Col>
-                    <Col className="emailProfile">{this.props.userInfo.peran}</Col>
+                    <Col className="emailProfile">{"Tim TA"}</Col>
                   </Row>
                 </Col>
               </Row>

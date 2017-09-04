@@ -22,7 +22,6 @@ import {
   TableRowColumn,
 } from 'material-ui/Table';
 import DatePicker from 'material-ui/DatePicker';
-import SubHeader from 'material-ui/SubHeader';
 import CircularProgress from 'material-ui/CircularProgress';
 import Dialog from 'material-ui/Dialog';
 
@@ -158,9 +157,10 @@ class timta_mng_jadwal_seminarKP extends Component {
   }
 
   render() {
-      if (this.props.calonEvent.length === 0){
     return (
       <MuiThemeProvider>
+      <div>
+        {this.props.calonEvent.length === 0 &&
       <div>
         <AppBar
           title="Dashboard Tim TA - Manajemen Jadwal Seminar KP"
@@ -238,7 +238,7 @@ class timta_mng_jadwal_seminarKP extends Component {
             <div style={{fontSize:20, fontWight:'bold'}}>Periode</div>
             <Row>
               <Col md="5" xs="5">
-                <SubHeader>Tanggal mulai</SubHeader>
+                Tanggal mulai
                 <DatePicker
                   hintText="Pilih tanggal mulai"
                   mode="landscape"
@@ -252,7 +252,7 @@ class timta_mng_jadwal_seminarKP extends Component {
 
               </Col>
               <Col md="5" xs="5">
-                <SubHeader>Tanggal akhir</SubHeader>
+                Tanggal akhir
                 <DatePicker
                   hintText="Pilih tanggal akhir"
                   mode="landscape"
@@ -291,7 +291,7 @@ class timta_mng_jadwal_seminarKP extends Component {
                 <Row>
                   <Col className="nameProfile">{this.props.userInfo.nama}</Col>
                   <Col className="emailProfile">{this.props.userInfo.email}</Col>
-                  <Col className="emailProfile">{this.props.userInfo.peran}</Col>
+                  <Col className="emailProfile">{"Tim TA"}</Col>
                 </Row>
               </Col>
             </Row>
@@ -320,16 +320,15 @@ class timta_mng_jadwal_seminarKP extends Component {
 
         </Dialog>
       </div>
+      }
+      {this.props.calonEvent.length !== 0 &&
+      <div>
+      <Redirect to="/timta_calendar" />
+      </div>
+      }
+      </div>
       </MuiThemeProvider>
     );
-  } else {
-    return(
-<div>
-{console.log(JSON.stringify(this.props.calonEvent))}
-<Redirect to="/timta_calendar" />
-</div>
-)
-}
   }
 }
 function mapStateToProps(state) {
