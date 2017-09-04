@@ -365,10 +365,17 @@ class mhs_jadwal extends Component {
                     </Col>
                     <Col md = "8" xs="8">
                       <Card>  
-                        <CardTitle title="Jadwal Anda"/>
-                        <CardText>
-                          Belum ada jadwal.
-                        </CardText>
+                        <Row>
+                          <Col md="2" xs="2">
+                            <i className="material-icons" style={{color: 'orange', marginTop: 20, marginLeft: 20, fontSize: 70}}>warning</i>
+                          </Col>
+                          <Col md="10" xs="10">
+                            <CardTitle title="Jadwal Anda"/>
+                            <CardText>
+                              Belum ada jadwal.
+                            </CardText>
+                          </Col>
+                        </Row>
                       </Card>
                     </Col>                  
                     <Col md = "2" xs="2">
