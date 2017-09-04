@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {nodeURL} from '../config.js'
 
 export const deleteKP= (id) => {
     return function(dispatch) {
@@ -6,7 +7,7 @@ export const deleteKP= (id) => {
         dispatch({
             type: "DELETE KP"
         })
-        axios.post('http://localhost:3001/node/kp/delete', {
+        axios.post(nodeURL+'/kp/delete', {
             id: id
         }).then(function (data) {
 
@@ -14,7 +15,7 @@ export const deleteKP= (id) => {
                 type: "DONE DELETE KP"
 
             })
-            axios.get('http://localhost:3001/node/kp').then(function (data) {
+            axios.get(nodeURL+'/kp').then(function (data) {
                 console.log(data.data)
 
                 dispatch({

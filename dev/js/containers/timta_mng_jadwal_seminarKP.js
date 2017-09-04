@@ -160,6 +160,7 @@ class timta_mng_jadwal_seminarKP extends Component {
     return (
       <MuiThemeProvider>
       <div>
+       
         {this.props.calonEvent.length === 0 &&
       <div>
         <AppBar
