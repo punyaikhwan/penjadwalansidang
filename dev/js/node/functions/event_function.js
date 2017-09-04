@@ -234,6 +234,7 @@ var ScheduleEvent = async function(event_type, start, end, pasangans){
 
 		//request scheduling
 		console.log("scheduling===================")
+		console.log("request body schedule", JSON.stringify(events));
 		events = await RequestScheduling(events)
 
 		//delete events
@@ -241,6 +242,7 @@ var ScheduleEvent = async function(event_type, start, end, pasangans){
 
 		//save events
 		console.log("saving schedule===================")
+		console.log("Event log:", events.data.log);
 		var temp = FormatForSave(events.data.result, event_type, pasangan)
 		await NewEvent(temp, events.data.result)
 		//await NewAnggotaEvent(events.data.result)
@@ -284,6 +286,7 @@ var ScheduleEvent = async function(event_type, start, end, pasangans){
 }
 //===============================================================================
 var FinalizeEvent = async function(events, event_type){
+console.log("Events finalizing", events);
 	try{
 		//bikin record kosong
 		await Event.model.where('tipe_event', 99).destroy()
@@ -298,8 +301,8 @@ var FinalizeEvent = async function(events, event_type){
 				"topik": events[i].topik,
 				"title": events[i].title,
 				"room_id": events[i].room_id,
-				"start": events[i].start,
-				"end": events[i].end
+				"start": new Date(events[i].start),
+				"end": new Date(events[i].end)
 			})
 
 			anggotas.push({

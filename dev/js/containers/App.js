@@ -68,10 +68,10 @@ class App extends Component {
       }
       else{
           return(
-              <div><SCRIPT LANGUAGE='JavaScript'>
+              <div><script>
     window.alert('Anda tidak memiliki izin akses.')
     window.location.href='/';
-    </SCRIPT></div>
+    </script></div>
           )
 
       }
