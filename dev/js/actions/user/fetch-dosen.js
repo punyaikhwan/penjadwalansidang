@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {nodeURL} from '../config.js'
 
 export const fetchDosen= () => {
     return function(dispatch) {
@@ -7,7 +8,7 @@ export const fetchDosen= () => {
             type: "FETCH DOSEN",
             payload: []
         })
-        axios.get('http://localhost:3001/node/user').then(function (data) {
+        axios.get(nodeURL+'/user').then(function (data) {
             var dosen = []
             data.data.forEach(function(item) {
                 if (item.peran == 1) {

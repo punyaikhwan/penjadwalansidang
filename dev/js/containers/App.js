@@ -28,7 +28,7 @@ class App extends Component {
   }
 
   // getUser(token){
-  //   return axios.post('http://localhost:3001/getUserInfo', {
+  //   return axios.post(nodeURL+'/getUserInfo', {
   //     token: token
   //   })
   // }

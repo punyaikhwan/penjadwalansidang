@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {nodeURL} from '../config.js'
 
 export const newKP= () => {
     return function(dispatch) {
@@ -6,13 +7,13 @@ export const newKP= () => {
         dispatch({
             type: "NEW KP"
         })
-        axios.post('http://localhost:3001/node/kp/new').then(function (data) {
+        axios.post(nodeURL+'/kp/new').then(function (data) {
 
             dispatch({
                 type: "DONE NEW KP"
 
             })
-            axios.get('http://localhost:3001/node/kp').then(function (data) {
+            axios.get(nodeURL+'/kp').then(function (data) {
                 console.log(data.data)
 
                 dispatch({

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {nodeURL} from '../config.js'
 
 export const newUser= (nama, email, peran, nim) => {
     return function(dispatch) {
@@ -6,7 +7,7 @@ export const newUser= (nama, email, peran, nim) => {
         dispatch({
             type: "NEW USER"
         })
-        axios.post('http://localhost:3001/node/user/new', {
+        axios.post(nodeURL+'/user/new', {
             "obj":{
                 "nama": nama,
                 "email": email,
@@ -19,7 +20,7 @@ export const newUser= (nama, email, peran, nim) => {
                 type: "DONE NEW USER"
 
             })
-            axios.get('http://localhost:3001/node/user').then(function (data) {
+            axios.get(nodeURL+'/user').then(function (data) {
                 console.log(data.data)
 
                 dispatch({

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {nodeURL} from '../config.js'
 
 export const fetchKP= () => {
     return function(dispatch) {
@@ -7,7 +8,7 @@ export const fetchKP= () => {
             type: "FETCH KP",
             payload: []
         })
-        axios.get('http://localhost:3001/node/kp').then(function (data) {
+        axios.get(nodeURL+'/kp').then(function (data) {
             console.log(data.data)
 
             dispatch({

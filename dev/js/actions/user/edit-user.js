@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {nodeURL} from '../config.js'
 
 export const editUser= (id, nama, email, peran, nim) => {
     return function(dispatch) {
@@ -7,7 +8,7 @@ export const editUser= (id, nama, email, peran, nim) => {
             type: "EDIT USER"
         })
         console.log (id, nama, email, peran, nim)
-        axios.post('http://localhost:3001/node/user/edit', {
+        axios.post(nodeURL+'/user/edit', {
 
             "ids" : [id],
             "objs":[{
@@ -25,7 +26,7 @@ export const editUser= (id, nama, email, peran, nim) => {
                 type: "DONE EDIT USER"
 
             })
-            axios.get('http://localhost:3001/node/user').then(function (data) {
+            axios.get(nodeURL+'/user').then(function (data) {
                 console.log(data.data)
 
                 dispatch({

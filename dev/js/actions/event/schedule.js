@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {nodeURL} from '../config.js'
 
 export const schedule= (event_type, start, end, pasangans) => {
     return function(dispatch) {
@@ -7,7 +8,7 @@ export const schedule= (event_type, start, end, pasangans) => {
             type: "SCHEDULING",
             payload: []
         })
-        axios.post('http://localhost:3001/node/schedule', {
+        axios.post(nodeURL+'/schedule', {
             event_type: event_type,
             start: start,
             end: end,

@@ -1,4 +1,6 @@
 import axios from 'axios'
+import {nodeURL} from '../config.js'
+
 
 export const fetchCalendar= (id) => {
     return function(dispatch) {
@@ -7,7 +9,7 @@ export const fetchCalendar= (id) => {
             type: "FETCH CALENDAR",
             payload: []
         })
-        axios.get('http://localhost:3001/node/calendars/'+id).then(function (data) {
+        axios.get(nodeURL+'/calendars/'+id).then(function (data) {
             console.log(data.data)
 
             dispatch({

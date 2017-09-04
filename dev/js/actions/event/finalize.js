@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {nodeURL} from '../config.js'
 
 export const finalize= (event_type, events) => {
     return function(dispatch) {
@@ -7,7 +8,7 @@ export const finalize= (event_type, events) => {
             type: "FINALIZE",
             payload: []
         })
-        axios.post('http://localhost:3001/node/finalize', {
+        axios.post(nodeURL+'/finalize', {
             event_type: event_type,
             events: events
         }).then(function (data) {

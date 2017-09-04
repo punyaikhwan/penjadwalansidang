@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {nodeURL} from '../config.js'
 
 export const fetchMhsEvent= (item) => {
     return function(dispatch) {
@@ -7,7 +8,7 @@ export const fetchMhsEvent= (item) => {
             type: "FETCH MHS EVENT",
             payload: []
         })
-        axios.post('http://localhost:3001/node/eventmahasiswa/',{
+        axios.post(nodeURL+'/eventmahasiswa/',{
             id: item
         }).then(function (data) {
             console.log(data.data)
