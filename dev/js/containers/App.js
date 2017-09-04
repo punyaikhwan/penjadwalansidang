@@ -63,18 +63,15 @@ class App extends Component {
                       <Redirect to="/mhs_jadwal"/>
                   </div>
               )
-          } else {
-            return(
-              <div>
-                 <Redirect to="/"/>
-              </div>
-            )
           }
 
       }
       else{
           return(
-              <div></div>
+              <div><SCRIPT LANGUAGE='JavaScript'>
+    window.alert('Anda tidak memiliki izin akses.')
+    window.location.href='/';
+    </SCRIPT></div>
           )
 
       }
