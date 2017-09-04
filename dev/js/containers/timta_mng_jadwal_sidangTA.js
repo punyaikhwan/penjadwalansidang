@@ -202,7 +202,7 @@ class timta_mng_jadwal_sidangTA extends Component {
             <p style={{fontSize:20, fontWight:'bold'}}>Daftar Dosen</p>
             <ScrollArea
               horizontal={false}
-              style={{height: 300, borderLeftWidth: 2}}
+              style={{height: 500, borderLeftWidth: 2}}
               speed={0.8}
             >
             <Table fixedHeader={false}>
@@ -227,14 +227,7 @@ class timta_mng_jadwal_sidangTA extends Component {
           </Row>
           <Row className="containerBody">
             <Col md="6" xs="12">
-              <p style={{fontSize:20, fontWight:'bold'}}>Tambah kalender</p>
-              <TextField
-                hintText="Tempel URL google kalender dengan izin akses Publik."
-                style={{width:400}}
-                defaultValue = {this.state.additionalCalender}
-                onChange={(event)=>this.handleAdditionalCalendar(event)}
-              />
-              <br/>
+              
             </Col>
             <Col md="6" xs="12">
               <div style={{fontSize:20, fontWight:'bold'}}>Periode</div>
