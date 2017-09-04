@@ -4,16 +4,14 @@ import mngUser from '../containers/timta_mng_user';
 import mngPasanganKP from '../containers/timta_mng_pasangan_KP';
 import mngPasanganTA from '../containers/timta_mng_pasangan_TA';
 import mhsProfile from '../containers/mhs_profile';
+import mhsJadwal from '../containers/mhs_jadwal';
 import mngJadwalSeminarKP from '../containers/timta_mng_jadwal_seminarKP';
 import mngJadwalSeminarTA1 from '../containers/timta_mng_jadwal_seminarTA1';
 import mngJadwalSeminarTA2 from '../containers/timta_mng_jadwal_seminarTA2';
 import mngJadwalSidangAkhir from '../containers/timta_mng_jadwal_sidangTA';
 import mngRuangan from '../containers/timta_mng_ruangan';
-import mhsJadwal from '../containers/mhs_jadwal';
-import mhsJadwalSeminarTA1 from '../containers/mhs_jadwal_seminarTA1';
-import mhsJadwalSeminarTA2 from '../containers/mhs_jadwal_seminarTA2';
-import mhsJadwalSidangAkhir from '../containers/mhs_jadwal_sidangTA';
 import mngCalendar from '../containers/timta_mng_calendar';
+import mngAllCalendar from '../containers/timta_mng_allCalendars';
 import dsnSetting from '../containers/dosen_setting';
 import dsnCalendar from '../containers/dosen_calendar';
 import notFound from '../containers/not_found';
@@ -44,11 +42,9 @@ const App = () => (
         <Route exact path="/timta_mng_jadwal_sidangTA" component={mngJadwalSidangAkhir}/>
         <Route exact path="/timta_mng_ruangan" component={mngRuangan}/>
         <Route exact path="/mhs_jadwal" component={mhsJadwal}/>
-        <Route exact path="/mhs_jadwal_seminarTA1" component={mhsJadwalSeminarTA1}/>
-        <Route exact path="/mhs_jadwal_seminarTA2" component={mhsJadwalSeminarTA2}/>
-        <Route exact path="/mhs_jadwal_sidangTA" component={mngJadwalSidangAkhir}/>
 	      <Route exact path="/mhs_profile" component={mhsProfile}/>
 	      <Route exact path="/timta_calendar" component={mngCalendar}/>
+        <Route exact path="/timta_allcalendars" component={mngAllCalendar}/>
         <Route exact path="/dosen_setting" component={dsnSetting}/>
         <Route exact path="/dosen_calendar" component={dsnCalendar}/>
 	      <Route path="*" component={notFound}/>

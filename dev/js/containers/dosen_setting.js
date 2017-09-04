@@ -40,7 +40,7 @@ class dosen_setting extends Component {
   }
 
   componentDidMount(){
-    this.props.fetchCalendar(this.props.dataUser.id)
+    this.props.fetchCalendar(this.props.userInfo.id)
   }
   
   handleSelect(i){
@@ -63,7 +63,7 @@ class dosen_setting extends Component {
 
     })
       console.log("arr", arr)
-    this.props.selectCalendar(arr, this.props.dataUser.id)
+    this.props.selectCalendar(arr, this.props.userInfo.id)
     //kirim data calendarlist ke BE
   }
   
@@ -77,7 +77,7 @@ class dosen_setting extends Component {
         <AppBar
           title="Halaman Dosen - Profil dan Pengaturan"
           iconElementLeft={
-            <IconButton tooltip="Menu" onClick = {()=>this.handleToggle()}>
+            <IconButton onClick = {()=>this.handleToggle()}>
               <i className="material-icons" style={{color: 'white'}}>menu</i>
             </IconButton>
           }
@@ -98,9 +98,9 @@ class dosen_setting extends Component {
               </Col>
               <Col md="9" xs="12">
                 <Card className="infoProfile">
-                  <CardTitle title={this.props.dataUser.nama}/>
+                  <CardTitle title={this.props.userInfo.nama}/>
                   <CardText>
-                    Email: {this.props.dataUser.email}                        
+                    Email: {this.props.userInfo.email}                        
                   </CardText>
                 </Card>
                 <br/>
@@ -130,9 +130,6 @@ class dosen_setting extends Component {
           open={this.state.open}
           onRequestChange={(open) => this.setState({open})}
         >
-        <IconButton tooltip="Tutup" onClick = {()=>this.handleClose()}>
-          <i className="material-icons" style={{color: 'white'}}>close</i>
-        </IconButton>
           <div className="userProfile">
             <Row>
               <Col md="3" xs="2">
@@ -140,9 +137,9 @@ class dosen_setting extends Component {
               </Col>
               <Col md="9" xs="10" className="textProfile">
                 <Row>
-                  <Col className="nameProfile">{this.props.dataUser.nama}</Col>
-                  <Col className="emailProfile">{this.props.dataUser.email}</Col>
-                  <Col className="emailProfile">{this.props.dataUser.peran}</Col>
+                  <Col className="nameProfile">{this.props.userInfo.nama}</Col>
+                  <Col className="emailProfile">{this.props.userInfo.email}</Col>
+                  <Col className="emailProfile">{"Dosen"}</Col>
                 </Row>
               </Col>
             </Row>
@@ -160,7 +157,7 @@ class dosen_setting extends Component {
 
 function mapStateToProps(state) {
     return {
-      dataUser: state.activeUser,
+      userInfo: state.activeUser,
         calendarList: state.calendar
     };
 }

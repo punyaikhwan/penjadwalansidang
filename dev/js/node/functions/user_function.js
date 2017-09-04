@@ -15,6 +15,10 @@ var UpdateEmail = function(email, token) {
 }
 
 //===============================================================================
+var FetchOneUser = function(email){
+    return User.model.where('email', email).fetch()
+}
+//===============================================================================
 var DeleteUser = function(id){
 	return new User.model({"id": id}).destroy()
 }
@@ -37,6 +41,7 @@ var EditUser = function(ids, objs){
 var FetchUser = function(){
 	return User.model.fetchAll()
 }
+
 //===============================================================================
 var CreateUserObj = function(nama, email, peran, NIM=null){
 	var obj = {
@@ -48,6 +53,7 @@ var CreateUserObj = function(nama, email, peran, NIM=null){
 
 	return obj
 }
+
 //===============================================================================
 var test = async function(){
 	try{
@@ -103,7 +109,8 @@ module.exports = {
   NewUser,
   EditUser,
   FetchUser,
-  UpdateEmail
+  FetchOneUser,
+  UpdateEmail,
 }
 
 

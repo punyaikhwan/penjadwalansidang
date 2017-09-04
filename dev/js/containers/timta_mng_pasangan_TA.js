@@ -11,7 +11,6 @@ import '../../scss/timTA.scss';
 import Row from 'muicss/lib/react/row';
 import Col from 'muicss/lib/react/col';
 import {List, ListItem} from 'material-ui/List';
-import Subheader from 'material-ui/Subheader';
 import ScrollArea from 'react-scrollbar';
 import SelectField from 'material-ui/SelectField';
 import TextField from 'material-ui/TextField';
@@ -233,6 +232,7 @@ class timta_mng_pasangan_TA extends Component {
     ];
 
     return (
+
       <MuiThemeProvider>
       <div>
         <RaisedButton
@@ -251,7 +251,7 @@ class timta_mng_pasangan_TA extends Component {
         <AppBar
           title="Dashboard Tim TA - Daftar Pasangan Tugas Akhir"
           iconElementLeft={
-            <IconButton tooltip="Menu" onClick = {()=>this.handleToggle()}>
+            <IconButton onClick = {()=>this.handleToggle()}>
               <i className="material-icons" style={{color: 'white'}}>menu</i>
             </IconButton>
           }
@@ -268,7 +268,7 @@ class timta_mng_pasangan_TA extends Component {
           <Row>
             <Col md="4" xs="12">
               <div>
-                <Subheader>Daftar Mahasiswa Tugas Akhir</Subheader>
+                Daftar Mahasiswa Tugas Akhir
                 <Row>
                   <FlatButton
                     label="Tambah mahasiswa"
@@ -331,7 +331,7 @@ class timta_mng_pasangan_TA extends Component {
                   </Row>
                   <Row>
                     <Col md="6" xs="12">
-                      <Subheader>Dosen Pembimbing</Subheader>
+                      Dosen Pembimbing
                       {this.props.dataTA[this.state.selectedMhs].pembimbing.length < 2 &&
                         <RaisedButton
                           label="Tambah Dosen"
@@ -373,7 +373,7 @@ class timta_mng_pasangan_TA extends Component {
                 <div>
                   <Row>
                     <Col md="6" xs="12">
-                      <Subheader>Daftar Dosen Penguji TA 1</Subheader>
+                      Daftar Dosen Penguji TA 1
                       {this.props.dataTA[this.state.selectedMhs].penguji.length < 2 &&
                         <RaisedButton
                           label="Tambah Dosen Penguji TA 1"
@@ -409,7 +409,7 @@ class timta_mng_pasangan_TA extends Component {
                       }
                     </Col>
                     <Col md="6" xs="12">
-                      <Subheader>Daftar Dosen Penguji Sidang Akhir</Subheader>
+                      Daftar Dosen Penguji Sidang Akhir
                       {this.props.dataTA[this.state.selectedMhs].akhir.length < 2 &&
                         <RaisedButton
                           label="Tambah Dosen Penguji Sidang Akhir"
@@ -457,9 +457,6 @@ class timta_mng_pasangan_TA extends Component {
           open={this.state.open}
           onRequestChange={(open) => this.setState({open})}
         >
-        <IconButton tooltip="Tutup" onClick = {()=>this.handleClose()}>
-          <i className="material-icons" style={{color: 'white'}}>close</i>
-        </IconButton>
           <div className="userProfile">
             <Row>
               <Col md="3" xs="2">
@@ -467,22 +464,25 @@ class timta_mng_pasangan_TA extends Component {
               </Col>
               <Col md="9" xs="10" className="textProfile">
                 <Row>
-                  <Col className="nameProfile">Ikhwanul Muslimin</Col>
-                  <Col className="emailProfile">ikhwan.m1996@gmail.com</Col>
+                  <Col className="nameProfile">{this.props.userInfo.nama}</Col>
+                  <Col className="emailProfile">{this.props.userInfo.email}</Col>
+                  <Col className="emailProfile">{"Tim TA"}</Col>
                 </Row>
               </Col>
             </Row>
           </div>
           <hr/>
           <p className="menuTitle">Manajemen Pengguna</p>
-          <MenuItem insetChildren={true} href="/timta_mng_">Daftar Pengguna</MenuItem>
-          <MenuItem insetChildren={true}style={{backgroundColor:'#b0bec5'}} >Daftar Pasangan</MenuItem>
+          <MenuItem insetChildren={true} href="/timta_mng_user">Daftar Pengguna</MenuItem>
+          <MenuItem insetChildren={true} style={{backgroundColor:'#b0bec5'}} href="/timta_mng_pasangan_TA">Daftar Pasangan TA</MenuItem>
           <br/>
           <p className="menuTitle">Manajemen Jadwal</p>
-          <MenuItem insetChildren={true} href="/timta_mng_jadwal_seminarKP">Seminar KP</MenuItem>
           <MenuItem insetChildren={true} href="/timta_mng_jadwal_seminarTA1">Seminar TA 1</MenuItem>
           <MenuItem insetChildren={true} href="/timta_mng_jadwal_seminarTA2">Seminar TA 2</MenuItem>
           <MenuItem insetChildren={true} href="/timta_mng_jadwal_sidangTA">Sidang Akhir</MenuItem>
+          <hr/>
+          <MenuItem insetChildren={true} href="/timta_allcalendars">Manajemen Kalender</MenuItem>
+          <MenuItem insetChildren={true} href="/timta_mng_ruangan">Manajemen Ruangan</MenuItem>
         </Drawer>
 
         <Dialog
@@ -613,6 +613,7 @@ function mapStateToProps(state) {
         mahasiswa: state.mahasiswaTA,
         dosen: state.dosen,
         dataTA: state.dataTA,
+        userInfo: state.activeUser
     };
 }
 

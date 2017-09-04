@@ -47,11 +47,6 @@ class dosen_calendar extends Component {
       selectedDate: null,
       modalEvent: false,
       openSnackbar: false,
-      dataUser: {
-        nama: "Dessi Puji Lestari",
-        email: "dessipuji@informatika.org",
-        peran: "Dosen"
-      }
     };
 
   }
@@ -88,7 +83,7 @@ class dosen_calendar extends Component {
      console.log(event);
     var backgroundColor = '204FA7';
      for (var i=0; i< event.dosen.length; i++) {
-      if (event.dosen[i].nama === this.state.dataUser.nama) {
+      if (event.dosen[i].user.email === this.props.userInfo.email) {
         console.log("halooo");
         backgroundColor = '#247510';
       }
@@ -116,7 +111,7 @@ class dosen_calendar extends Component {
         <AppBar
           title="Halaman Dosen - Kalender"
           iconElementLeft={
-            <IconButton tooltip="Menu" onClick = {()=>this.handleToggle()}>
+            <IconButton onClick = {()=>this.handleToggle()}>
               <i className="material-icons" style={{color: 'white'}}>menu</i>
             </IconButton>
           }
@@ -135,9 +130,6 @@ class dosen_calendar extends Component {
           open={this.state.open}
           onRequestChange={(open) => this.setState({open})}
         >
-        <IconButton tooltip="Tutup" onClick = {()=>this.handleClose()}>
-          <i className="material-icons" style={{color: 'white'}}>close</i>
-        </IconButton>
           <div className="userProfile">
             <Row>
               <Col md="3" xs="2">
@@ -145,9 +137,9 @@ class dosen_calendar extends Component {
               </Col>
               <Col md="9" xs="10" className="textProfile">
                 <Row>
-                  <Col className="nameProfile">{this.state.dataUser.nama}</Col>
-                  <Col className="emailProfile">{this.state.dataUser.email}</Col>
-                  <Col className="emailProfile">{this.state.dataUser.peran}</Col>
+                  <Col className="nameProfile">{this.props.userInfo.nama}</Col>
+                  <Col className="emailProfile">{this.props.userInfo.email}</Col>
+                  <Col className="emailProfile">{"Dosen"}</Col>
                 </Row>
               </Col>
             </Row>
@@ -186,28 +178,32 @@ class dosen_calendar extends Component {
           >
             <Table selectable={false}>
               <TableBody displayRowCheckbox={false}>
-              <TableRow displayBorder={false}>
-                <TableRowColumn className="attributeTable">Hari</TableRowColumn>
-                <TableRowColumn>{dateFormat(this.state.selectedEvent.start, "dddd, dd mmmm yyyy")}</TableRowColumn>
-              </TableRow>
+                <TableRow displayBorder={false}>
+                  <TableRowColumn className="attributeTable">Hari</TableRowColumn>
+                  <TableRowColumn>{dateFormat(this.state.selectedEvent.start, "dddd, dd mmmm yyyy")}</TableRowColumn>
+                </TableRow>
                 <TableRow displayBorder={false}>
                   <TableRowColumn className="attributeTable">Waktu</TableRowColumn>
                   <TableRowColumn>{dateFormat(this.state.selectedEvent.start, "HH.MM")}</TableRowColumn>
                 </TableRow>
                 <TableRow displayBorder={false}>
+                    <TableRowColumn className="attributeTable">Ruang</TableRowColumn>
+                    <TableRowColumn>{this.state.selectedEvent.ruangan.nama}</TableRowColumn>
+                  </TableRow>
+                <TableRow displayBorder={false}>
                   <TableRowColumn className="attributeTable">Topik</TableRowColumn>
                   <TableRowColumn>{this.state.selectedEvent.topik}</TableRowColumn>
                 </TableRow>
-                {this.state.selectedEvent.anggota.map((item, i) => (
+                {this.state.selectedEvent.mahasiswa.map((item, i) => (
                   <TableRow key={i} displayBorder={false}>
                     <TableRowColumn className="attributeTable">{i===0 ? "Mahasiswa":""}</TableRowColumn>
-                    <TableRowColumn>{item.nim+" "+item.nama}</TableRowColumn>
+                    <TableRowColumn>{item.user.NIM+" "+item.user.nama}</TableRowColumn>
                   </TableRow>
                 ))}
                 {this.state.selectedEvent.dosen.map((item, i) => (
                 <TableRow key={i} displayBorder={false}>
                   <TableRowColumn className="attributeTable">{i === 0 ? "Dosen": ""}</TableRowColumn>
-                  <TableRowColumn>{item.nama}</TableRowColumn>
+                  <TableRowColumn>{item.user.nama}</TableRowColumn>
                 </TableRow>
                 ))}
               </TableBody>
@@ -223,7 +219,8 @@ class dosen_calendar extends Component {
 function mapStateToProps(state) {
   console.log(state.events)
   return {
-        events: state.events
+        events: state.events,
+        userInfo: state.activeUser
     };
 }
 

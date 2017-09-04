@@ -7,7 +7,7 @@ export const fetchTA= () => {
             type: "FETCH TA",
             payload: []
         })
-        axios.get('http://localhost:3001/ta').then(function (data) {
+        axios.get('http://localhost:3001/node/ta').then(function (data) {
             console.log(data.data)
 
             dispatch({

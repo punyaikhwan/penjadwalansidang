@@ -1,17 +1,19 @@
 import axios from 'axios'
 
-export const fetchUser= () => {
+export const save= (events) => {
     return function(dispatch) {
 
         dispatch({
-            type: "FETCH USER",
+            type: "SAVE",
             payload: []
         })
-        axios.get('http://localhost:3001/node/user').then(function (data) {
+        axios.post('http://localhost:3001/node/overwrite', {
+            events: events
+        }).then(function (data) {
             console.log(data.data)
 
             dispatch({
-                type: "DONE FETCH USER",
+                type: "DONE SAVE",
                 payload: data.data
 
             })

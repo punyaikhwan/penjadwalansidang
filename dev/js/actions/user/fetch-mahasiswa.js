@@ -7,10 +7,10 @@ export const fetchMahasiswa= () => {
             type: "FETCH MAHASISWA",
             payload: []
         })
-        axios.get('http://localhost:3001/user').then(function (data) {
+        axios.get('http://localhost:3001/node/user').then(function (data) {
             var mhs = []
             data.data.forEach(function(item) {
-                if (item.peran == 1) {
+                if (item.peran == 0) {
                     mhs.push(item);
                 }
             })

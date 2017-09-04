@@ -39,6 +39,8 @@ class timta_mng_user extends Component {
       listperan: ['Mahasiswa', 'Dosen', 'Tim TA'],
       modalTambahUser: false,
       modalEditUser: false,
+      modalConfirmDelete: false,
+      selectedUser: "",
       nama: "",
       email: "",
       peran: "",
@@ -63,9 +65,15 @@ class timta_mng_user extends Component {
     this.props.newUser(this.state.nama, this.state.email, this.state.peran, this.state.nim)
     this.handleCloseTambahUser();
   }
+  handleOpenConfirmDelete(i){
+    this.setState({selectedUser: i});
+    this.setState({modalConfirmDelete:true})
+  };
+  handleCloseConfirmDelete(){this.setState({modalConfirmDelete:false})};
 
-  handleDeleteUser(i) {
-    this.props.deleteUser(i.id);
+  handleDeleteUser() {
+    this.props.deleteUser(this.state.selectedUser.id);
+    this.handleCloseConfirmDelete();
   }
 
   handleOpenEditUser(user){
@@ -112,7 +120,7 @@ class timta_mng_user extends Component {
   render() {
     const actionsTambahUser = [
       <FlatButton
-        label="Cancel"
+        label="Batal"
         primary={true}
         onClick={()=>this.handleCloseTambahUser()}
       />,
@@ -126,7 +134,7 @@ class timta_mng_user extends Component {
 
     const actionsEditUser = [
       <FlatButton
-        label="Cancel"
+        label="Batal"
         primary={true}
         onClick={()=>this.handleCloseEditUser()}
       />,
@@ -138,13 +146,26 @@ class timta_mng_user extends Component {
       />,
     ];
 
+    const actionsConfirmDelete = [
+      <FlatButton
+        label="Batal"
+        primary={true}
+        onClick={()=>this.handleCloseConfirmDelete()}
+      />,
+      <FlatButton
+        label="Hapus"
+        primary={true}
+        onClick={()=>this.handleDeleteUser()}
+      />,
+    ];
+
     return (
       <MuiThemeProvider>
       <div>
         <AppBar
           title="Dashboard Tim TA - Manajemen Pengguna"
           iconElementLeft={
-            <IconButton tooltip="Menu" onClick = {()=>this.handleToggle()}>
+            <IconButton onClick = {()=>this.handleToggle()}>
               <i className="material-icons" style={{color: 'white'}}>menu</i>
             </IconButton>
           }
@@ -171,7 +192,7 @@ class timta_mng_user extends Component {
                 <TableHeaderColumn>Nama</TableHeaderColumn>
                 <TableHeaderColumn>NIM</TableHeaderColumn>
                 <TableHeaderColumn>Email</TableHeaderColumn>
-                <TableHeaderColumn>Refresh Token</TableHeaderColumn>
+                <TableHeaderColumn>Akses Kalender</TableHeaderColumn>
                 <TableHeaderColumn>Peran</TableHeaderColumn>
                 <TableHeaderColumn></TableHeaderColumn>
               </TableRow>
@@ -185,14 +206,16 @@ class timta_mng_user extends Component {
                   <TableRowColumn>{user.nama}</TableRowColumn>
                   <TableRowColumn>{user.NIM}</TableRowColumn>
                   <TableRowColumn>{user.email}</TableRowColumn>
-                  <TableRowColumn>{user.token}</TableRowColumn>
+                  <TableRowColumn>{(user.token !== null && user.peran === 1) ? "OK" : (
+                    (user.token === null && user.peran === 1) ? <div style={{color: '#ff0000'}}>Belum</div> : "Tidak perlu"
+                    )}</TableRowColumn>
                   <TableRowColumn>{this.state.listperan[user.peran]}</TableRowColumn>
                       {user.nama !== "Ruangan" &&
                       <TableRowColumn>
                         <IconButton style={{color: 'blue'}} onClick={() => this.handleOpenEditUser(user)}>
                           <i className="material-icons">edit</i>
                         </IconButton>
-                        <IconButton style={{color: 'red'}} onClick={() => this.handleDeleteUser(user)}>
+                        <IconButton style={{color: 'red'}} onClick={() => this.handleOpenConfirmDelete(user)}>
                           <i className="material-icons">delete</i>
                         </IconButton>
                       </TableRowColumn>
@@ -208,9 +231,6 @@ class timta_mng_user extends Component {
           open={this.state.open}
           onRequestChange={(open) => this.setState({open})}
         >
-        <IconButton tooltip="Tutup" onClick = {()=>this.handleClose()}>
-          <i className="material-icons" style={{color: 'white'}}>close</i>
-        </IconButton>
           <div className="userProfile">
             <Row>
               <Col md="3" xs="2">
@@ -218,22 +238,25 @@ class timta_mng_user extends Component {
               </Col>
               <Col md="9" xs="10" className="textProfile">
                 <Row>
-                  <Col className="nameProfile">Ikhwanul Muslimin</Col>
-                  <Col className="emailProfile">ikhwan.m1996@gmail.com</Col>
+                  <Col className="nameProfile">{this.props.userInfo.nama}</Col>
+                  <Col className="emailProfile">{this.props.userInfo.email}</Col>
+                  <Col className="emailProfile">{"Tim TA"}</Col>
                 </Row>
               </Col>
             </Row>
           </div>
           <hr/>
           <p className="menuTitle">Manajemen Pengguna</p>
-          <MenuItem insetChildren={true} style={{backgroundColor:'#b0bec5'}}>Daftar Pengguna</MenuItem>
-          <MenuItem insetChildren={true} href="/timta_mng_pasangan">Daftar Pasangan</MenuItem>
+          <MenuItem insetChildren={true} style={{backgroundColor:'#b0bec5'}} href="/timta_mng_user">Daftar Pengguna</MenuItem>
+          <MenuItem insetChildren={true} href="/timta_mng_pasangan_TA">Daftar Pasangan TA</MenuItem>
           <br/>
           <p className="menuTitle">Manajemen Jadwal</p>
-          <MenuItem insetChildren={true} href="/timta_mng_jadwal_seminarKP">Seminar KP</MenuItem>
           <MenuItem insetChildren={true} href="/timta_mng_jadwal_seminarTA1">Seminar TA 1</MenuItem>
           <MenuItem insetChildren={true} href="/timta_mng_jadwal_seminarTA2">Seminar TA 2</MenuItem>
           <MenuItem insetChildren={true} href="/timta_mng_jadwal_sidangTA">Sidang Akhir</MenuItem>
+          <hr/>
+          <MenuItem insetChildren={true} href="/timta_allcalendars">Manajemen Kalender</MenuItem>
+          <MenuItem insetChildren={true} href="/timta_mng_ruangan">Manajemen Ruangan</MenuItem>
         </Drawer>
 
         <Dialog
@@ -290,7 +313,8 @@ class timta_mng_user extends Component {
             hintText="Email (untuk login)"
             floatingLabelText="Email"
             floatingLabelFixed={true}
-            errorText = {this.isErrorEmail(this.state.email) ? "Email tidak valid" : ""}
+            errorText = {this.isEmpty(this.state.email) ? "Email tidak boleh kosong" : (
+              this.isErrorEmail(this.state.email) ? "Email tidak valid" : "")}
             onChange = {(event)=>this.handleChangeEmail(event)}
             style = {{width: 350}}
           />
@@ -360,7 +384,16 @@ class timta_mng_user extends Component {
             style = {{width: 350}}
           />
           <br />
-          
+        </Dialog>
+        <Dialog
+          title="Konfirmasi Hapus"
+          actions= {actionsConfirmDelete}
+          modal={false}
+          contentStyle={{width: 400}}
+          open={this.state.modalConfirmDelete}
+          onRequestClose={()=>this.handleCloseConfirmDelete()}
+        >
+          Anda yakin ingin menghapus pengguna ini?
         </Dialog>
       </div>
       </MuiThemeProvider>
@@ -370,7 +403,8 @@ class timta_mng_user extends Component {
 
 function mapStateToProps(state) {
     return {
-        user: state.user
+        user: state.user,
+        userInfo: state.activeUser
     };
 }
 

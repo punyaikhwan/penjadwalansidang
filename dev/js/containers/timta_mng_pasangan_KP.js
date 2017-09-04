@@ -11,7 +11,6 @@ import '../../scss/timTA.scss';
 import Row from 'muicss/lib/react/row';
 import Col from 'muicss/lib/react/col';
 import {List, ListItem} from 'material-ui/List';
-import Subheader from 'material-ui/Subheader';
 import ScrollArea from 'react-scrollbar';
 import SelectField from 'material-ui/SelectField';
 import Dialog from 'material-ui/Dialog';
@@ -73,7 +72,7 @@ class timta_mng_pasangan_KP extends Component {
 
   handleDeleteDosen(i) {
     let tempDataKelompok = this.props.kelompok;
-    tempDataKelompok[this.state.selectedKelompok].dosen.splice(i,1);
+    tempDataKelompok[this.state.selectedKelompok].pembimbing.splice(i,1);
     console.log("data Kelompok:", tempDataKelompok);
     this.props.edit(tempDataKelompok, this.state.selectedKelompok);
     this.forceUpdate();
@@ -81,7 +80,7 @@ class timta_mng_pasangan_KP extends Component {
 
   handleDeleteMahasiswa(i) {
       let tempDataKelompok = this.props.kelompok;
-      tempDataKelompok[this.state.selectedKelompok].anggota.splice(i,1);
+      tempDataKelompok[this.state.selectedKelompok].mahasiswa.splice(i,1);
       console.log("data Kelompok:", tempDataKelompok);
       this.props.edit(tempDataKelompok, this.state.selectedKelompok);
       this.forceUpdate();
@@ -97,6 +96,7 @@ class timta_mng_pasangan_KP extends Component {
   }
 
   handleTambahKelompok() {
+    console.log("KELOMPOKKK", this.props.kelompok)
     this.props.newKP();
   }
 
@@ -110,7 +110,7 @@ class timta_mng_pasangan_KP extends Component {
     let tempNewMhs = {
       user : this.state.values
     }
-    tempDataKelompok[this.state.selectedKelompok].anggota.push(tempNewMhs);
+    tempDataKelompok[this.state.selectedKelompok].mahasiswa.push(tempNewMhs);
       this.props.edit(tempDataKelompok, this.state.selectedKelompok);
     this.handleCloseTambahMahasiswa();
   }
@@ -121,7 +121,7 @@ class timta_mng_pasangan_KP extends Component {
       let tempNewDosen = {
           user : this.state.dosen
       }
-    tempDataKelompok[this.state.selectedKelompok].dosen.push(tempNewDosen);
+    tempDataKelompok[this.state.selectedKelompok].pembimbing.push(tempNewDosen);
     console.log("data Kelompok:", tempDataKelompok);
     this.props.edit(tempDataKelompok, this.state.selectedKelompok);
     this.setState({dosen: ""});
@@ -155,7 +155,7 @@ class timta_mng_pasangan_KP extends Component {
       <FlatButton
         label="Cancel"
         primary={true}
-        onClick={this.handleCloseEditTopic}
+        onClick={()=>this.handleCloseEditTopic()}
       />,
       <FlatButton
         label="Submit"
@@ -169,7 +169,7 @@ class timta_mng_pasangan_KP extends Component {
       <FlatButton
         label="Cancel"
         primary={true}
-        onClick={this.handleCloseTambahDosen}
+        onClick={()=>this.handleCloseTambahDosen()}
       />,
       <FlatButton
         label="Submit"
@@ -197,7 +197,7 @@ class timta_mng_pasangan_KP extends Component {
         <AppBar
           title="Dashboard Tim TA - Daftar Pasangan Kerja Praktik"
           iconElementLeft={
-            <IconButton tooltip="Menu" onClick = {()=>this.handleToggle()}>
+            <IconButton onClick = {()=>this.handleToggle()}>
               <i className="material-icons" style={{color: 'white'}}>menu</i>
             </IconButton>
           }
@@ -214,7 +214,7 @@ class timta_mng_pasangan_KP extends Component {
           <Row>
             <Col md="4" xs="12">
               <div>
-                <Subheader>Daftar Kelompok</Subheader>
+                Daftar Kelompok
                 <RaisedButton
                   label="Tambah kelompok"
                   labelPosition="after"
@@ -275,7 +275,7 @@ class timta_mng_pasangan_KP extends Component {
                     />
 
                     <List>
-                    {this.props.kelompok[this.state.selectedKelompok].anggota.map((item, i)=> (
+                    {this.props.kelompok[this.state.selectedKelompok].mahasiswa.map((item, i)=> (
                         <Row>
                           <Col md="8" xs="8">
                             <ListItem key={i}>
@@ -311,7 +311,7 @@ class timta_mng_pasangan_KP extends Component {
                 <br/>
                 <br/>
                 <p style={{fontSize:16}}>Dosen Pembimbing</p>
-                {this.props.kelompok[this.state.selectedKelompok].dosen.length < 2 &&
+                {this.props.kelompok[this.state.selectedKelompok].pembimbing.length < 2 &&
                   <RaisedButton
                     label="Tambah Dosen"
                     labelPosition="after"
@@ -320,9 +320,9 @@ class timta_mng_pasangan_KP extends Component {
                     onClick={()=>this.handleOpenTambahDosen()}
                   />
                 }
-                {this.props.kelompok[this.state.selectedKelompok].dosen.length > 0 &&
+                {this.props.kelompok[this.state.selectedKelompok].pembimbing.length > 0 &&
                   <List>
-                    {this.props.kelompok[this.state.selectedKelompok].dosen.map((item, i) =>(
+                    {this.props.kelompok[this.state.selectedKelompok].pembimbing.map((item, i) =>(
                       <Row>
                         <Col md="8" xs="8">
                           <ListItem key={i}>
@@ -339,7 +339,7 @@ class timta_mng_pasangan_KP extends Component {
                     ))}
                   </List>
                 }
-                {this.props.kelompok[this.state.selectedKelompok].dosen.length == 0 &&
+                {this.props.kelompok[this.state.selectedKelompok].pembimbing.length == 0 &&
                     <p style={{fontSize:14}}><i>Belum ada dosen.</i></p>
                 }
               </div>
@@ -353,9 +353,6 @@ class timta_mng_pasangan_KP extends Component {
           open={this.state.open}
           onRequestChange={(open) => this.setState({open})}
         >
-        <IconButton tooltip="Tutup" onClick = {()=>this.handleClose()}>
-          <i className="material-icons" style={{color: 'white'}}>close</i>
-        </IconButton>
           <div className="userProfile">
             <Row>
               <Col md="3" xs="2">
@@ -363,22 +360,25 @@ class timta_mng_pasangan_KP extends Component {
               </Col>
               <Col md="9" xs="10" className="textProfile">
                 <Row>
-                  <Col className="nameProfile">Ikhwanul Muslimin</Col>
-                  <Col className="emailProfile">ikhwan.m1996@gmail.com</Col>
+                  <Col className="nameProfile">{this.props.userInfo.nama}</Col>
+                  <Col className="emailProfile">{this.props.userInfo.email}</Col>
+                  <Col className="emailProfile">{"Tim TA"}</Col>
                 </Row>
               </Col>
             </Row>
           </div>
           <hr/>
           <p className="menuTitle">Manajemen Pengguna</p>
-          <MenuItem insetChildren={true} href="/timta_mng_">Daftar Pengguna</MenuItem>
-          <MenuItem insetChildren={true}style={{backgroundColor:'#b0bec5'}} >Daftar Pasangan</MenuItem>
+          <MenuItem insetChildren={true} href="/timta_mng_user">Daftar Pengguna</MenuItem>
+          <MenuItem insetChildren={true} href="/timta_mng_pasangan_TA">Daftar Pasangan TA</MenuItem>
           <br/>
           <p className="menuTitle">Manajemen Jadwal</p>
-          <MenuItem insetChildren={true} href="/timta_mng_jadwal_seminarKP">Seminar KP</MenuItem>
           <MenuItem insetChildren={true} href="/timta_mng_jadwal_seminarTA1">Seminar TA 1</MenuItem>
           <MenuItem insetChildren={true} href="/timta_mng_jadwal_seminarTA2">Seminar TA 2</MenuItem>
           <MenuItem insetChildren={true} href="/timta_mng_jadwal_sidangTA">Sidang Akhir</MenuItem>
+          <hr/>
+          <MenuItem insetChildren={true} href="/timta_allcalendars">Manajemen Kalender</MenuItem>
+          <MenuItem insetChildren={true} href="/timta_mng_ruangan">Manajemen Ruangan</MenuItem>
         </Drawer>
 
         <Dialog
@@ -456,6 +456,7 @@ function mapStateToProps(state) {
         mahasiswa: state.mahasiswaKP,
         dosen: state.dosen,
         kelompok: state.kelompokKP,
+        userInfo: state.activeUser
     };
 }
 

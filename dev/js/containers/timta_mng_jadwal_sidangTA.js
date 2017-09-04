@@ -22,7 +22,6 @@ import {
   TableRowColumn,
 } from 'material-ui/Table';
 import DatePicker from 'material-ui/DatePicker';
-import SubHeader from 'material-ui/SubHeader';
 import CircularProgress from 'material-ui/CircularProgress';
 import Dialog from 'material-ui/Dialog';
 
@@ -160,14 +159,15 @@ class timta_mng_jadwal_sidangTA extends Component {
   }
 
   render() {
-    if (this.props.calonEvent.length === 0){
       return (
         <MuiThemeProvider>
+        <div>
+        {this.props.calonEvent.length === 0 &&
         <div>
           <AppBar
             title="Dashboard Tim TA - Manajemen Jadwal Sidang Akhir"
             iconElementLeft={
-              <IconButton tooltip="Menu" onClick = {()=>this.handleToggle()}>
+              <IconButton onClick = {()=>this.handleToggle()}>
                 <i className="material-icons" style={{color: 'white'}}>menu</i>
               </IconButton>
             }
@@ -217,7 +217,7 @@ class timta_mng_jadwal_sidangTA extends Component {
                       <TableRow key={i}>
                         <TableRowColumn></TableRowColumn>
                         <TableRowColumn>{item.user.nama}</TableRowColumn>
-                        <TableRowColumn>{item.user.status_kalender}</TableRowColumn>
+                        <TableRowColumn>{item.user.token !== null ? "Sudah" : <div style={{color: '#ff0000'}}>Belum</div>}</TableRowColumn>
                       </TableRow>
                     ))}
                 </TableBody>
@@ -240,7 +240,7 @@ class timta_mng_jadwal_sidangTA extends Component {
               <div style={{fontSize:20, fontWight:'bold'}}>Periode</div>
               <Row>
                 <Col md="5" xs="5">
-                  <SubHeader>Tanggal mulai</SubHeader>
+                  Tanggal mulai
                   <DatePicker
                     hintText="Pilih tanggal mulai"
                     mode="landscape"
@@ -254,7 +254,7 @@ class timta_mng_jadwal_sidangTA extends Component {
 
                 </Col>
                 <Col md="5" xs="5">
-                  <SubHeader>Tanggal akhir</SubHeader>
+                  Tanggal akhir
                   <DatePicker
                     hintText="Pilih tanggal akhir"
                     mode="landscape"
@@ -284,9 +284,6 @@ class timta_mng_jadwal_sidangTA extends Component {
             open={this.state.open}
             onRequestChange={(open) => this.setState({open})}
           >
-          <IconButton tooltip="Tutup" onClick = {()=>this.handleClose()}>
-            <i className="material-icons" style={{color: 'white'}}>close</i>
-          </IconButton>
             <div className="userProfile">
               <Row>
                 <Col md="3" xs="2">
@@ -294,8 +291,9 @@ class timta_mng_jadwal_sidangTA extends Component {
                 </Col>
                 <Col md="9" xs="10" className="textProfile">
                   <Row>
-                    <Col className="nameProfile">Ikhwanul Muslimin</Col>
-                    <Col className="emailProfile">ikhwan.m1996@gmail.com</Col>
+                    <Col className="nameProfile">{this.props.userInfo.nama}</Col>
+                    <Col className="emailProfile">{this.props.userInfo.email}</Col>
+                    <Col className="emailProfile">{"Tim TA"}</Col>
                   </Row>
                 </Col>
               </Row>
@@ -303,13 +301,15 @@ class timta_mng_jadwal_sidangTA extends Component {
             <hr/>
             <p className="menuTitle">Manajemen Pengguna</p>
             <MenuItem insetChildren={true} href="/timta_mng_user">Daftar Pengguna</MenuItem>
-            <MenuItem insetChildren={true} href="/timta_mng_pasangan" >Daftar Pasangan</MenuItem>
+            <MenuItem insetChildren={true} href="/timta_mng_pasangan_TA">Daftar Pasangan TA</MenuItem>
             <br/>
             <p className="menuTitle">Manajemen Jadwal</p>
-            <MenuItem insetChildren={true} href="/timta_mng_jadwal_seminarKP" style={{backgroundColor:'#b0bec5'}}>Seminar KP</MenuItem>
             <MenuItem insetChildren={true} href="/timta_mng_jadwal_seminarTA1">Seminar TA 1</MenuItem>
             <MenuItem insetChildren={true} href="/timta_mng_jadwal_seminarTA2">Seminar TA 2</MenuItem>
-            <MenuItem insetChildren={true} href="/timta_mng_jadwal_sidangTA">Sidang Akhir</MenuItem>
+            <MenuItem insetChildren={true} style={{backgroundColor:'#b0bec5'}}  href="/timta_mng_jadwal_sidangTA">Sidang Akhir</MenuItem>
+            <hr/>
+            <MenuItem insetChildren={true} href="/timta_allcalendars">Manajemen Kalender</MenuItem>
+            <MenuItem insetChildren={true} href="/timta_mng_ruangan">Manajemen Ruangan</MenuItem>
           </Drawer>
 
           <Dialog
@@ -322,16 +322,15 @@ class timta_mng_jadwal_sidangTA extends Component {
 
           </Dialog>
         </div>
+        }
+        {this.props.calonEvent.length !== 0 &&
+        <div>
+        <Redirect to="/timta_calendar" />
+        </div>
+        }
+        </div>
         </MuiThemeProvider>
       );
-  } else {
-    return(
-      <div>
-      {console.log(JSON.stringify(this.props.calonEvent))}
-      <Redirect to="/timta_calendar" />
-      </div>
-      )
-      }
   }
 }
 function mapStateToProps(state) {
@@ -339,6 +338,7 @@ function mapStateToProps(state) {
         dataTA: state.dataTA,
         loading: state.loading,
         calonEvent: state.calonEvent,
+        userInfo: state.activeUser
     };
 }
 

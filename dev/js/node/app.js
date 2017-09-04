@@ -80,24 +80,22 @@ function getAuthUrl () {
 }
 
 //GOOGLE====================================================================
-app.use('/googleLogin', function(request, response){
+app.use('/node/googleLogin', function(request, response){
 	var url = getAuthUrl();
-	console.log(url);
+	// console.log(url);
+	console.log('url generated: ' + url);
 	response.send(url)
 });
 
 
-app.use('/logout', function(request, response){
+app.use('/node/logout', function(request, response){
 	var oauth2Client = getOAuthClient();
-	var session = request.session;
-	oauth2Client.signOut().then(function() {
-		request.session.reset();
+		request.session.destroy();
 		response.redirect('/');
 		console.log('User signed out.')
-	})
 });
 
-app.use('/getUserInfo', function(request, response){
+app.use('/node/getUserInfo', function(request, response){
 	var oauth2Client = getOAuthClient();
 	var session = request.session;
 	var code = request.body.token;
@@ -117,9 +115,19 @@ app.use('/getUserInfo', function(request, response){
 			}).then(function (data) {
 				let email = data.emails[0].value;
 				user.UpdateEmail(email, tokens.refresh_token).then(function(result){
+					// console.log('this is update email result' + result);
 					if (result != 'gagal') {
 						// response.status(200).send({status: "SUCCESS", session: session});
-						response.status(200).send({status: "SUCCESS"});
+						user.FetchOneUser(email).then(function(data){
+							session["userInfo"] = data;
+							console.log("THIS IS USER INFO : " + data);
+							response.status(200).send({status: "SUCCESS", userInfo: session["userInfo"]});
+						}).catch(function(err) {
+							console.log("ERROR when fetching user by email: " + err);							
+							response.status(404).send({status: "FAILED"});
+						});
+						// console.log("THIS IS USER SESSION : " + session["userInfo"]);
+						
 					} else {
 						// response.status(404).send({status: "FAILED", session: session});
 						response.status(404).send({status: "FAILED"});
@@ -127,6 +135,7 @@ app.use('/getUserInfo', function(request, response){
 					
 					console.log(data.emails[0].value);	
 				});
+
 			})
 		} else {
 			// response.status(404).send({status: "FAILED", session: session});
@@ -141,7 +150,7 @@ app.use('/getUserInfo', function(request, response){
 })
 
 //Ruangan====================================================================
-app.get('/ruangan', function(request, response){
+app.get('/node/ruangan', function(request, response){
 	Room.FetchRoom().then(function(result){
 		response.send(result)
 	}).catch(function(err){
@@ -155,7 +164,7 @@ app.get('/ruangan', function(request, response){
 	"nama": 
 }
 */
-app.post('/ruangan/new', function(request, response){
+app.post('/node/ruangan/new', function(request, response){
 	Room.NewRoom({"nama": request.body.nama}).then(function(result){
 		response.send('success')
 	}).catch(function(err){
@@ -174,7 +183,7 @@ app.post('/ruangan/new', function(request, response){
 	]]
 }
 */
-app.post('/ruangan/edit', function(request, response){
+app.post('/node/ruangan/edit', function(request, response){
 	Room.EditRoom(request.body.ids, request.body.objs).then(function(result){
 		response.send('success')
 	}).catch(function(err){
@@ -188,7 +197,7 @@ app.post('/ruangan/edit', function(request, response){
 	"id": 1,
 }
 */
-app.post('/ruangan/delete', function(request, response){
+app.post('/node/ruangan/delete', function(request, response){
 	Room.DeleteRoom(request.body.id).then(function(result){
 		response.send('success')
 	}).catch(function(err){
@@ -197,7 +206,7 @@ app.post('/ruangan/delete', function(request, response){
 	})
 })
 //Calendar====================================================================
-app.get('/calendars/:id', function(request, response){
+app.get('/node/calendars/:id', function(request, response){
 	let id = request.params.id;
 	console.log(id)
 	CalendarList.GetCalendarList(id).then(function(result) {
@@ -212,7 +221,7 @@ app.get('/calendars/:id', function(request, response){
 
 })
 
-app.post('/calendars', function(request, response) {
+app.post('/node/calendars', function(request, response) {
 	let user_id = request.body.user_id;
 	let calendarList = request.body.calendarList;
 	let mode = 2 // mode 2 adalah update checklist user
@@ -227,7 +236,7 @@ app.post('/calendars', function(request, response) {
 })
 
 //Event====================================================================
-app.post('/schedule', function(request, response){
+app.post('/node/schedule', function(request, response){
 	let event_type = request.body.event_type
 	let start = request.body.start
 	let end = request.body.end
@@ -240,7 +249,7 @@ app.post('/schedule', function(request, response){
 	})
 })
 
-app.get('/events', function(request, response){
+app.get('/node/events', function(request, response){
 	Event.FetchEvent().then(function(result){
 		response.send(result)
 	}).catch(function(err){
@@ -249,7 +258,16 @@ app.get('/events', function(request, response){
 	})
 })
 
-app.post('/eventmahasiswa', function(request, response){
+app.get('/node/events/new', function(request, response){
+	Event.NewEvent(request.body.event).then(function(result){
+		response.send('success')
+	}).catch(function(err){
+		console.log(err)
+		response.send(err)
+	})
+})
+
+app.post('/node/eventmahasiswa', function(request, response){
 	Event.FetchEventMahasiswa(request.body.id).then(function(result){
 		response.send(result)
 	}).catch(function(err){
@@ -258,7 +276,7 @@ app.post('/eventmahasiswa', function(request, response){
 	})
 })
 
-app.post('/finalize', function(request, response){
+app.post('/node/finalize', function(request, response){
 	Event.FinalizeEvent(request.body.events, request.body.event_type).then(function(result){
 		response.send("success")
 	}).catch(function(err){
@@ -267,8 +285,17 @@ app.post('/finalize', function(request, response){
 	})
 })
 
+app.post('/node/overwrite', function(request, response){
+	Event.OverwriteEvent(request.body.events).then(function(result){
+		response.send("success")
+	}).catch(function(err){
+		console.log(err)
+		response.send(err)
+	})
+})
+
 //USER====================================================================
-app.get('/user', function(request, response){
+app.get('/node/user', function(request, response){
 	user.FetchUser().then(function(result){
 		response.send(result)
 	}).catch(function(err){
@@ -287,7 +314,7 @@ app.get('/user', function(request, response){
 	}
 }
 */
-app.post('/user/new', function(request, response){
+app.post('/node/user/new', function(request, response){
 	user.NewUser(request.body.obj).then(function(result){
 		response.send('success')
 	}).catch(function(err){
@@ -306,7 +333,7 @@ app.post('/user/new', function(request, response){
 	}]
 }
 */
-app.post('/user/edit', function(request, response){
+app.post('/node/user/edit', function(request, response){
 	user.EditUser(request.body.ids, request.body.objs).then(function(result){
 		response.send('success')
 	}).catch(function(err){
@@ -319,7 +346,7 @@ app.post('/user/edit', function(request, response){
 	"id": 1
 }
 */
-app.post('/user/delete', function(request, response){
+app.post('/node/user/delete', function(request, response){
 	user.DeleteUser(request.body.id).then(function(result){
 		response.send('success')
 	}).catch(function(err){
@@ -328,7 +355,7 @@ app.post('/user/delete', function(request, response){
 	})
 })
 //KP====================================================================
-app.get('/kp', function(request, response){
+app.get('/node/kp', function(request, response){
 	KP.FetchKP().then(function(result){
 		response.send(result)
 	}).catch(function(err){
@@ -337,7 +364,7 @@ app.get('/kp', function(request, response){
 	})
 })
 
-app.post('/kp/new', function(request, response){
+app.post('/node/kp/new', function(request, response){
 	KP.NewKP().then(function(result){
 		response.send('success')
 	}).catch(function(err){
@@ -346,7 +373,7 @@ app.post('/kp/new', function(request, response){
 	})
 })
 
-app.post('/kp/edit', function(request, response){
+app.post('/node/kp/edit', function(request, response){
 	KP.EditKP(request.body.ids, request.body.objs).then(function(result){
 		response.send('success')
 	}).catch(function(err){
@@ -355,7 +382,7 @@ app.post('/kp/edit', function(request, response){
 	})
 })
 
-app.post('/kp/delete', function(request, response){
+app.post('/node/kp/delete', function(request, response){
 	KP.DeleteKP(request.body.id).then(function(result){
 		response.send('success')
 	}).catch(function(err){
@@ -364,7 +391,7 @@ app.post('/kp/delete', function(request, response){
 	})
 })
 //TA====================================================================
-app.get('/ta', function(request, response){
+app.get('/node/ta', function(request, response){
 	TA.FetchTA().then(function(result){
 		response.send(result)
 	}).catch(function(err){
@@ -378,7 +405,7 @@ app.get('/ta', function(request, response){
 	"mahasiswa_id": 1
 }
 */
-app.post('/ta/new', function(request, response){
+app.post('/node/ta/new', function(request, response){
 	TA.NewTA(request.body.mahasiswa_id).then(function(result){
 		response.send('success')
 	}).catch(function(err){
@@ -387,7 +414,7 @@ app.post('/ta/new', function(request, response){
 	})
 })
 
-app.post('/ta/edit', function(request, response){
+app.post('/node/ta/edit', function(request, response){
 	TA.EditTA(request.body.ids, request.body.objs).then(function(result){
 		response.send('success')
 	}).catch(function(err){
@@ -396,7 +423,7 @@ app.post('/ta/edit', function(request, response){
 	})
 })
 
-app.post('/ta/delete', function(request, response){
+app.post('/node/ta/delete', function(request, response){
 	TA.DeleteTA(request.body.id).then(function(result){
 		response.send('success')
 	}).catch(function(err){
@@ -407,11 +434,11 @@ app.post('/ta/delete', function(request, response){
 
 
 
-app.post('/', function(request, response){
+app.post('/node/', function(request, response){
 	response.send('hello world')
 })
 
-app.get('/', function(request, response){
+app.get('/node/', function(request, response){
 	response.send('hello world')
 })
 

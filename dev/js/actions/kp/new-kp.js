@@ -6,13 +6,13 @@ export const newKP= () => {
         dispatch({
             type: "NEW KP"
         })
-        axios.post('http://localhost:3001/kp/new').then(function (data) {
+        axios.post('http://localhost:3001/node/kp/new').then(function (data) {
 
             dispatch({
                 type: "DONE NEW KP"
 
             })
-            axios.get('http://localhost:3001/kp').then(function (data) {
+            axios.get('http://localhost:3001/node/kp').then(function (data) {
                 console.log(data.data)
 
                 dispatch({
