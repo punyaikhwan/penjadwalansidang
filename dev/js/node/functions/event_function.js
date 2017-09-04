@@ -7,7 +7,7 @@ let Anggota = require('../db/models/anggota_pasangan_event.js')
 let axios = require('axios')
 let Promise = require('bluebird')
 let knex = require('../db/models/db.js')
-import {schedulerURL} from '../config.js'
+let schedulerURL = require('../config.js')
 let moment = require('moment')
 
 let shared_email = 'ruang.labtek5@gmail.com'

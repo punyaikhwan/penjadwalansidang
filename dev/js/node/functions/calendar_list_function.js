@@ -3,7 +3,7 @@ let CalendarList = require('../db/models/calendar_list.js')
 let axios = require('axios')
 let Promise = require('bluebird')
 let knex = require('../db/models/db.js')
-import {schedulerURL} from '../config.js'
+let schedulerURL = require('../config.js')
 //===============================================================================
 // ini khusus buat 1 id aja
 var GetCalendarListGoogle = async function(id){
