@@ -19,6 +19,9 @@ const responseGoogle = (response) => {
   console.log(response);
 }
 
+// const clientID = "806339176753-cmb1mv9g8itmir0p4ucqh0ibuhbl6s0k.apps.googleusercontent.com";
+const clientID = "1031302495796-7vb2i3hqj2q5o632ggreuca6cvsuvjn9.apps.googleusercontent.com";
+
 class App extends Component {
   componentDidMount(){
     console.log("wawa", this.props.location)
@@ -91,7 +94,7 @@ class App extends Component {
                   <img src={logo} className="logoApp" />
                   <p style={{fontFamily: "Lato", fontSize: 30, paddingTop: 20, paddingLeft: 20}}>APLIKASI PENJADWALAN SIDANG</p>
                   <RaisedButton
-                      href="https://accounts.google.com/o/oauth2/auth?access_type=offline&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fplus.me%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&response_type=code&client_id=1031302495796-7vb2i3hqj2q5o632ggreuca6cvsuvjn9.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2F"
+                      href={"https://accounts.google.com/o/oauth2/auth?access_type=offline&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fplus.me%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&response_type=code&client_id="+clientID+"&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2F"}
                       labelPosition="before"
                       target="_self"
                       label="Masuk dengan Google"
