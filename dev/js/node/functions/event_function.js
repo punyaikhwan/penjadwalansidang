@@ -234,6 +234,7 @@ var ScheduleEvent = async function(event_type, start, end, pasangans){
 
 		//request scheduling
 		console.log("scheduling===================")
+		console.log("events");
 		events = await RequestScheduling(events)
 
 		//delete events
@@ -284,6 +285,7 @@ var ScheduleEvent = async function(event_type, start, end, pasangans){
 }
 //===============================================================================
 var FinalizeEvent = async function(events, event_type){
+	console.log(events);
 	try{
 		//bikin record kosong
 		await Event.model.where('tipe_event', 99).destroy()
