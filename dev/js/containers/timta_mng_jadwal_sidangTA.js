@@ -159,9 +159,10 @@ class timta_mng_jadwal_sidangTA extends Component {
   }
 
   render() {
-    if (this.props.calonEvent.length === 0){
       return (
         <MuiThemeProvider>
+        <div>
+        {this.props.calonEvent.length === 0 &&
         <div>
           <AppBar
             title="Dashboard Tim TA - Manajemen Jadwal Sidang Akhir"
@@ -321,16 +322,15 @@ class timta_mng_jadwal_sidangTA extends Component {
 
           </Dialog>
         </div>
+        }
+        {this.props.calonEvent.length !== 0 &&
+        <div>
+        <Redirect to="/timta_calendar" />
+        </div>
+        }
+        </div>
         </MuiThemeProvider>
       );
-  } else {
-    return(
-      <div>
-      {console.log(JSON.stringify(this.props.calonEvent))}
-      <Redirect to="/timta_calendar" />
-      </div>
-      )
-      }
   }
 }
 function mapStateToProps(state) {
