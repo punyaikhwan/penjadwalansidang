@@ -5,7 +5,7 @@ module.exports = [
     {
         devServer: {
             inline: true,
-            contentBase: './src',
+            contentBase: './html',
             port: 3000,
             historyApiFallback: true
         },
@@ -40,7 +40,7 @@ module.exports = [
             ],
         },
         output: {
-            path: 'src',
+            path: '/var/www/html',
             filename: 'js/bundle.min.js'
         },
         plugins: [
