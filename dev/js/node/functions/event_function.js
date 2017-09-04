@@ -542,7 +542,7 @@ var NewEvent = async function(objs, anggotas){
 			task.push(new Event.model(objs[i]).save().then(function(result){
 				var id = result.get('id')
 				//masukin mahasiswa
-				task.push(new mahasiswa.model({
+				task.push(new Anggota.model({
 					"user_id": anggotas[gloi].idStudent,
 					"peran_pasangan": 0,
 					"pasangan_id": id
