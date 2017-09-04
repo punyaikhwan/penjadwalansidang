@@ -21,6 +21,8 @@ import {
 import imgProfile from '../../scss/public/images/imgprofile.jpg';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import {logout} from '../actions/auth/logout'
+import {Router, Redirect} from 'react-router'
 
 class mhs_profile extends Component {
 
@@ -51,7 +53,12 @@ class mhs_profile extends Component {
 
   handleClose() {this.setState({open: false})};
 
-  render() {
+    handleLogout(){
+        this.props.logout();
+        window.location.href = "/";
+    }
+
+    render() {
     return (
       <MuiThemeProvider>
       <div>
@@ -67,6 +74,7 @@ class mhs_profile extends Component {
               label="Logout"
               backgroundColor="#F44336"
               labelColor= "#fff"
+              onTouchTap = {()=>this.handleLogout()}
             />
           }
         />
@@ -197,7 +205,7 @@ function mapStateToProps(state) {
 
 function matchDispatchToProps(dispatch){
     return bindActionCreators({
-
+      logout: logout
     }, dispatch);
 }
 export default connect(mapStateToProps, matchDispatchToProps)(mhs_profile);

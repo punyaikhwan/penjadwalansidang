@@ -34,6 +34,8 @@ import {editKP} from '../actions/kp/edit-kp'
 import {fetchMahasiswa} from '../actions/user/fetch-mahasiswa'
 import {fetchDosen} from '../actions/user/fetch-dosen'
 import {tempEditKP} from '../actions/kp/temp-edit-kp'
+import {logout} from '../actions/auth/logout'
+import {Router, Redirect} from 'react-router'
 
 class timta_mng_pasangan_KP extends Component {
   constructor(props) {
@@ -136,6 +138,11 @@ class timta_mng_pasangan_KP extends Component {
     this.props.editKP(this.props.kelompok);
   }
 
+    handleLogout(){
+        this.props.logout();
+        window.location.href = "/";
+    }
+
   render() {
     const actionsTambahMahasiswa = [
       <FlatButton
@@ -206,6 +213,7 @@ class timta_mng_pasangan_KP extends Component {
               label="Logout"
               backgroundColor="#F44336"
               labelColor= "#fff"
+              onTouchTap = {()=>this.handleLogout()}
             />
           }
         />
@@ -469,6 +477,7 @@ function matchDispatchToProps(dispatch){
         fetchMahasiswa: fetchMahasiswa,
         fetchDosen: fetchDosen,
         edit: tempEditKP,
+        logout: logout
     }, dispatch);
 }
 

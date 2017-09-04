@@ -37,6 +37,9 @@ import {moveEvent} from '../actions/event/move-event'
 import {fetchEvent} from '../actions/event/fetch-events'
 import {finalize} from '../actions/event/finalize'
 import {Router, Redirect} from 'react-router'
+import {logout} from '../actions/auth/logout'
+
+
 BigCalendar.setLocalizer(
   BigCalendar.momentLocalizer(moment)
 );
@@ -105,7 +108,12 @@ class timta_mng_calendar extends Component {
     }, 1000);
   }
 
-  render() {
+    handleLogout(){
+        this.props.logout();
+        window.location.href = "/";
+    }
+
+    render() {
     if (this.state.statusJadwal === 0) {
       const actionsModalEvent = [
         <FlatButton
@@ -130,6 +138,7 @@ class timta_mng_calendar extends Component {
                 label="Logout"
                 backgroundColor="#F44336"
                 labelColor= "#fff"
+                onTouchTap = {()=>this.handleLogout()}
               />
             }
           />
@@ -269,7 +278,8 @@ function matchDispatchToProps(dispatch){
     return bindActionCreators({
         move: moveEvent,
         fetchEvent: fetchEvent,
-        finalize: finalize
+        finalize: finalize,
+        logout: logout
     }, dispatch);
 }
 

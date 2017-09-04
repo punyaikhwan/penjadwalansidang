@@ -16,6 +16,9 @@ import SelectField from 'material-ui/SelectField';
 import TextField from 'material-ui/TextField';
 import Dialog from 'material-ui/Dialog';
 import windowDimensions from 'react-window-dimensions';
+
+import {logout} from '../actions/auth/logout'
+import {Router, Redirect} from 'react-router'
 import {
   Table,
   TableBody,
@@ -88,13 +91,19 @@ class timta_mng_pasangan_TA extends Component {
 
   }
 
+
   componentDidMount(){
     this.props.fetchTA();
     this.props.fetchMahasiswa();
     this.props.fetchDosen();
   }
 
-  handleDeleteMahasiswa(i) {
+    handleLogout(){
+        this.props.logout();
+        window.location.href = "/";
+    }
+
+    handleDeleteMahasiswa(i) {
     this.props.deleteTA(i)
   }
 
@@ -260,6 +269,7 @@ class timta_mng_pasangan_TA extends Component {
               label="Logout"
               backgroundColor="#F44336"
               labelColor= "#fff"
+              onTouchTap = {()=>this.handleLogout()}
             />
           }
         />
@@ -625,7 +635,8 @@ function matchDispatchToProps(dispatch){
         editTA: editTA,
         fetchMahasiswa: fetchMahasiswa,
         fetchDosen: fetchDosen,
-        edit: tempEditTA
+        edit: tempEditTA,
+        logout: logout
     }, dispatch);
 }
 

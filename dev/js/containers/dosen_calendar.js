@@ -32,6 +32,8 @@ import dateFormat from 'dateformat';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {fetchEvent} from '../actions/event/fetch-events';
+import {logout} from '../actions/auth/logout'
+import {Router, Redirect} from 'react-router'
 
 BigCalendar.setLocalizer(
   BigCalendar.momentLocalizer(moment)
@@ -96,7 +98,12 @@ class dosen_calendar extends Component {
     };
   }
 
-  render() {
+    handleLogout(){
+        this.props.logout();
+        window.location.href = "/";
+    }
+
+    render() {
     const actionsModalEvent = [
       <FlatButton
         label="OK"
@@ -120,6 +127,7 @@ class dosen_calendar extends Component {
               label="Logout"
               backgroundColor="#F44336"
               labelColor= "#fff"
+              onTouchTap= {()=>this.handleLogout()}
             />
           }
         />
@@ -226,7 +234,8 @@ function mapStateToProps(state) {
 
 function matchDispatchToProps(dispatch){
     return bindActionCreators({
-      fetchEvent: fetchEvent
+      fetchEvent: fetchEvent,
+        logout:logout
     }, dispatch);
 }
 

@@ -34,6 +34,7 @@ import {fetchTA} from '../actions/ta/fetch-ta'
 import {schedule} from '../actions/event/schedule'
 import {Router, Redirect} from 'react-router'
 import {tipeEvent} from '../actions/event/tipe-event'
+import {logout} from '../actions/auth/logout'
 
 class timta_mng_jadwal_sidangTA extends Component {
 
@@ -143,6 +144,11 @@ class timta_mng_jadwal_sidangTA extends Component {
     this.setState({endDate: date})
   }
 
+    handleLogout(){
+        this.props.logout();
+        window.location.href = "/";
+    }
+
   handleRequestSchedule() {
       let kel = []
       let check = this.state.checkBoxTA;
@@ -176,6 +182,7 @@ class timta_mng_jadwal_sidangTA extends Component {
                 label="Logout"
                 backgroundColor="#F44336"
                 labelColor= "#fff"
+                onTouchTap = {()=>this.handleLogout()}
               />
             }
           />
@@ -343,6 +350,11 @@ function mapStateToProps(state) {
 }
 
 function matchDispatchToProps(dispatch){
-    return bindActionCreators({fetchTA:fetchTA, schedule:schedule, tipe:tipeEvent}, dispatch);
+    return bindActionCreators({
+        fetchTA:fetchTA,
+        schedule:schedule,
+        tipe:tipeEvent,
+        logout: logout
+    }, dispatch);
 }
 export default connect(mapStateToProps, matchDispatchToProps)(windowDimensions()(timta_mng_jadwal_sidangTA));

@@ -29,6 +29,8 @@ import {fetchUser} from '../actions/user/fetch-user'
 import {newUser} from '../actions/user/new-user'
 import {editUser} from '../actions/user/edit-user'
 import {deleteUser} from '../actions/user/delete-user'
+import {logout} from '../actions/auth/logout'
+import {Router, Redirect} from 'react-router'
 
 class timta_mng_user extends Component {
 
@@ -117,6 +119,11 @@ class timta_mng_user extends Component {
     this.setState({peran});
   }
 
+    handleLogout(){
+        this.props.logout();
+        window.location.href = "/";
+    }
+
   render() {
     const actionsTambahUser = [
       <FlatButton
@@ -174,6 +181,7 @@ class timta_mng_user extends Component {
               label="Logout"
               backgroundColor="#F44336"
               labelColor= "#fff"
+              onTouchTap= {()=>this.handleLogout()}
             />
           }
         />
@@ -414,6 +422,7 @@ function matchDispatchToProps(dispatch){
         newUser: newUser,
         deleteUser: deleteUser,
         editUser: editUser,
+        logout: logout
     }, dispatch);
 }
 

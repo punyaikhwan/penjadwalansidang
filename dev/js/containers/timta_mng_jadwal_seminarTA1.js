@@ -34,6 +34,7 @@ import {fetchTA} from '../actions/ta/fetch-ta'
 import {schedule} from '../actions/event/schedule'
 import {Router, Redirect} from 'react-router'
 import {tipeEvent} from '../actions/event/tipe-event'
+import {logout} from '../actions/auth/logout'
 
 class timta_mng_jadwal_seminarTA1 extends Component {
 
@@ -159,6 +160,11 @@ class timta_mng_jadwal_seminarTA1 extends Component {
       this.props.tipe(2)
   }
 
+    handleLogout(){
+        this.props.logout();
+        window.location.href = "/";
+    }
+
   render() {
     return (
         <MuiThemeProvider>
@@ -177,6 +183,7 @@ class timta_mng_jadwal_seminarTA1 extends Component {
                       label="Logout"
                       backgroundColor="#F44336"
                       labelColor= "#fff"
+                      onTouchTap = {()=>this.handleLogout()}
                   />
                 }
             />
@@ -339,7 +346,8 @@ function mapStateToProps(state) {
         dataTA: state.dataTA,
         calonEvent: state.calonEvent,
         loading: state.loading,
-        userInfo: state.activeUser
+        userInfo: state.activeUser,
+        logout: logout
     };
 }
 

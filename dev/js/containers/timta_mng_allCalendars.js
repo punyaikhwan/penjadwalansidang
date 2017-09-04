@@ -40,6 +40,8 @@ import {fetchTA} from '../actions/ta/fetch-ta';
 import {fetchRuangan} from '../actions/ruangan/fetch-ruangan';
 import {moveEvent} from '../actions/event/move-event';
 import {save} from '../actions/event/save';
+import {logout} from '../actions/auth/logout'
+import {Router, Redirect} from 'react-router'
 
 BigCalendar.setLocalizer(
   BigCalendar.momentLocalizer(moment)
@@ -266,7 +268,13 @@ class timta_mng_allCalendars extends Component {
     this.setState({disabled: true});
     //Add function to change events in DB
   }
-  render() {
+
+    handleLogout(){
+        this.props.logout();
+        window.location.href = "/";
+    }
+
+    render() {
     console.log("this ",this)
     const actionsModalEvent = [
       <IconButton onClick = {()=>this.handleOpenEditEvent()}>
@@ -330,6 +338,7 @@ class timta_mng_allCalendars extends Component {
               label="Logout"
               backgroundColor="#F44336"
               labelColor= "#fff"
+              onTouchTap = {()=>this.handleLogout()}
             />
           }
         />
@@ -687,6 +696,7 @@ function matchDispatchToProps(dispatch){
       fetchRuangan: fetchRuangan,
       schedule: schedule,
       save: save,
+      logout:logout
     }, dispatch);
 }
 

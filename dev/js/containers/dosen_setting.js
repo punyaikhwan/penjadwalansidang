@@ -29,6 +29,8 @@ import Checkbox from 'material-ui/Checkbox';
 import {fetchCalendar} from '../actions/calendar/fetch-calendar'
 import {selectCalendar} from '../actions/calendar/select-calendar'
 import {changeStatus} from '../actions/calendar/change-status'
+import {logout} from '../actions/auth/logout'
+import {Router, Redirect} from 'react-router'
 
 class dosen_setting extends Component {
 
@@ -70,7 +72,13 @@ class dosen_setting extends Component {
   handleToggle() {this.setState({open: !this.state.open})};
 
   handleClose() {this.setState({open: false})};
-  render() {
+
+    handleLogout(){
+        this.props.logout();
+        window.location.href = "/";
+    }
+
+    render() {
     return (
       <MuiThemeProvider>
       <div>
@@ -86,6 +94,7 @@ class dosen_setting extends Component {
               label="Logout"
               backgroundColor="#F44336"
               labelColor= "#fff"
+              onTouchTap = {()=>this.handleLogout()}
             />
           }
         />
@@ -166,7 +175,8 @@ function matchDispatchToProps(dispatch){
     return bindActionCreators({
         fetchCalendar: fetchCalendar,
         selectCalendar: selectCalendar,
-        changeStatus: changeStatus
+        changeStatus: changeStatus,
+        logout: logout
     }, dispatch);
 }
 

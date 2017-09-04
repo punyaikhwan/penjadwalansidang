@@ -36,6 +36,10 @@ import {newRuangan} from '../actions/ruangan/new-ruangan'
 import {editRuangan} from '../actions/ruangan/edit-ruangan'
 import {tempEditRuangan} from '../actions/ruangan/temp-edit-ruangan'
 
+
+import {logout} from '../actions/auth/logout'
+import {Router, Redirect} from 'react-router'
+
 class timta_mng_ruangan extends Component {
   constructor(props) {
     super(props);
@@ -84,8 +88,12 @@ class timta_mng_ruangan extends Component {
       // ]
     };
   }
+    handleLogout(){
+        this.props.logout();
+        window.location.href = "/";
+    }
 
-  componentDidMount(){
+    componentDidMount(){
     this.props.fetchRuangan();
   }
   handleToggle() {this.setState({open: !this.state.open})};
@@ -253,6 +261,7 @@ class timta_mng_ruangan extends Component {
               label="Logout"
               backgroundColor="#F44336"
               labelColor= "#fff"
+              onTouchTap = {()=>this.handleLogout()}
             />
           }
         />
@@ -565,6 +574,7 @@ function matchDispatchToProps(dispatch){
         newRuangan: newRuangan,
         editRuangan: editRuangan,
         edit: tempEditRuangan,
+        logout: logout
     }, dispatch);
 }
 

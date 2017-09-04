@@ -24,7 +24,8 @@ import imgProfile from '../../scss/public/images/imgprofile.jpg';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {fetchMhsEvent} from '../actions/event/fetch-mhs-event'
-
+import {logout} from '../actions/auth/logout'
+import {Router, Redirect} from 'react-router'
 
 class mhs_jadwal extends Component {
 
@@ -43,7 +44,12 @@ class mhs_jadwal extends Component {
 
   handleClose() {this.setState({open: false})};
 
-  renderEvent(event){
+    handleLogout(){
+        this.props.logout();
+        window.location.href = "/";
+    }
+
+    renderEvent(event){
     if (event.tipe_event == 1){
       return (
           (<div>
@@ -347,6 +353,7 @@ class mhs_jadwal extends Component {
                           label="Logout"
                           backgroundColor="#F44336"
                           labelColor= "#fff"
+                          onTouchTap = {()=>this.handleLogout()}
                       />
                     }
                 />
@@ -454,7 +461,7 @@ function mapStateToProps(state) {
 function matchDispatchToProps(dispatch){
     return bindActionCreators({
         fetchMhsEvent: fetchMhsEvent,
-
+        logout: logout
     }, dispatch);
 }
 export default connect(mapStateToProps, matchDispatchToProps)(mhs_jadwal);
