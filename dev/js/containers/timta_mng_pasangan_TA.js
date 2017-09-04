@@ -11,7 +11,6 @@ import '../../scss/timTA.scss';
 import Row from 'muicss/lib/react/row';
 import Col from 'muicss/lib/react/col';
 import {List, ListItem} from 'material-ui/List';
-import Subheader from 'material-ui/Subheader';
 import ScrollArea from 'react-scrollbar';
 import SelectField from 'material-ui/SelectField';
 import TextField from 'material-ui/TextField';
@@ -269,7 +268,7 @@ class timta_mng_pasangan_TA extends Component {
           <Row>
             <Col md="4" xs="12">
               <div>
-                <Subheader>Daftar Mahasiswa Tugas Akhir</Subheader>
+                Daftar Mahasiswa Tugas Akhir
                 <Row>
                   <FlatButton
                     label="Tambah mahasiswa"
@@ -332,7 +331,7 @@ class timta_mng_pasangan_TA extends Component {
                   </Row>
                   <Row>
                     <Col md="6" xs="12">
-                      <Subheader>Dosen Pembimbing</Subheader>
+                      Dosen Pembimbing
                       {this.props.dataTA[this.state.selectedMhs].pembimbing.length < 2 &&
                         <RaisedButton
                           label="Tambah Dosen"
@@ -374,7 +373,7 @@ class timta_mng_pasangan_TA extends Component {
                 <div>
                   <Row>
                     <Col md="6" xs="12">
-                      <Subheader>Daftar Dosen Penguji TA 1</Subheader>
+                      Daftar Dosen Penguji TA 1
                       {this.props.dataTA[this.state.selectedMhs].penguji.length < 2 &&
                         <RaisedButton
                           label="Tambah Dosen Penguji TA 1"
@@ -410,7 +409,7 @@ class timta_mng_pasangan_TA extends Component {
                       }
                     </Col>
                     <Col md="6" xs="12">
-                      <Subheader>Daftar Dosen Penguji Sidang Akhir</Subheader>
+                      Daftar Dosen Penguji Sidang Akhir
                       {this.props.dataTA[this.state.selectedMhs].akhir.length < 2 &&
                         <RaisedButton
                           label="Tambah Dosen Penguji Sidang Akhir"
