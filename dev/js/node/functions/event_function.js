@@ -679,6 +679,34 @@ var FetchEventMahasiswa = function(id){
 	})
 }
 //===============================================================================
+var FetchFixedTAEvent = function(){
+	return Event.model.where('tipe_event', '!=', 99).fetchAll({withRelated:['kelompok_TA.anggota.user', 'kelompok_TA.mahasiswa']})
+}
+//===============================================================================
+var FetchFixedKPEvent = function(){
+	return Event.model.where('tipe_event', '!=', 99).fetchAll({withRelated:['kelompok_KP.anggota.user']})
+}
+//===============================================================================
+var FetchFixedEvent = function(){
+	return Event.model.where('tipe_event', '!=', 99).fetchAll({withRelated:['mahasiswa.user', 'dosen.user', 'ruangan']})
+}//===============================================================================
+var FetchFixedEventMahasiswa = function(id){
+	return Event.model.where('tipe_event', '!=', 99).fetchAll({withRelated:['mahasiswa.user', 'dosen.user']}).then(function(result){
+		result = result.toJSON()
+		let events = []
+
+		for(var i=0; i<result.length; i++){
+			for(var j=0; j<result[i].mahasiswa.length; j++){
+				if(result[i].mahasiswa[j].user.id == id){
+					events.push(result[i])
+				}
+			}	
+		}
+
+		return events
+	})
+}
+//===============================================================================
 var FormatEvent = function(events){
 	var formatted = []
 
@@ -729,6 +757,10 @@ var FormatEvent = function(events){
 //===============================================================================
 var test = async function(){
 	try{
+
+		var result = await FetchFixedEvent()
+		console.log(JSON.stringify(result))
+		return
 
 		var newStuff = {
 			event_id: 'yyyyyy',
@@ -920,7 +952,7 @@ var test = async function(){
 }
 //===============================================================================
 //main program
-//test()
+// test()
 
 module.exports = {
   DeleteEvent, 
