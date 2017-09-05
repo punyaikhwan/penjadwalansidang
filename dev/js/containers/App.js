@@ -41,11 +41,9 @@ class App extends Component {
 
       let token = this.props.location.search.substring(6)
       let tokenlagi = token.substring(0,token.length)
-      console.log(tokenlagi)
       this.props.checkToken(tokenlagi)
       
-      if(this.props.check){
-        console.log(this.props.user)
+      setTimeout(()=>{if(this.props.check){
         if (this.props.user.peran == 2){
             return(
                 <div>
@@ -73,6 +71,7 @@ class App extends Component {
            )
 
       }
+                     }, 1000);
     }
 
 
