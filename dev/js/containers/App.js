@@ -43,41 +43,36 @@ class App extends Component {
       let tokenlagi = token.substring(0,token.length)
       console.log(tokenlagi)
       this.props.checkToken(tokenlagi)
-
-      setTimeout(()=> {
-        if(this.props.check){
-          console.log(this.props.user)
-          if (this.props.user.peran == 2){
-              return(
-                  <div>
-                      <Redirect to="/timta_mng_user"/>
-                  </div>
-              )
-          } else if (this.props.user.peran == 1) {
-              return (
-                  <div>
-                      <Redirect to="/dosen_calendar"/>
-                  </div>
-              )
-          } else if (this.props.user.peran == 0) {
-              return (
-                  <div>
-                      <Redirect to="/mhs_jadwal"/>
-                  </div>
-              )
-          }
+      
+      if(this.props.check){
+        console.log(this.props.user)
+        if (this.props.user.peran == 2){
+            return(
+                <div>
+                    <Redirect to="/timta_mng_user"/>
+                </div>
+            )
+        } else if (this.props.user.peran == 1) {
+            return (
+                <div>
+                    <Redirect to="/dosen_calendar"/>
+                </div>
+            )
+        } else if (this.props.user.peran == 0) {
+            return (
+                <div>
+                    <Redirect to="/mhs_jadwal"/>
+                </div>
+            )
+        }
 
       }
       else{
           return(
-              <div><script>
-              window.alert('Anda tidak memiliki izin akses.')
-              window.location.href='/';
-              </script></div>
+              <div></div>
            )
 
-        }
-      }, 500);
+      }
     }
 
 
