@@ -281,6 +281,7 @@ class timta_mng_pasangan_TA extends Component {
                                     label="Logout"
                                     backgroundColor="#F44336"
                                     labelColor= "#fff"
+                                    onTouchTap = {()=>this.handleLogout()}
                                 />
                             }
                         />

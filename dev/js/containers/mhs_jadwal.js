@@ -353,6 +353,7 @@ class mhs_jadwal extends Component {
             label="Logout"
             backgroundColor="#F44336"
             labelColor= "#fff"
+            onTouchTap = {()=>this.handleLogout()}
         />
     }
     />
