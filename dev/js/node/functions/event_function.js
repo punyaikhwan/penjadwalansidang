@@ -959,9 +959,13 @@ module.exports = {
   NewEvent,
   FetchTAEvent,
   FetchKPEvent,
+  FetchFixedTAEvent,
+  FetchFixedKPEvent,
   ScheduleEvent,
   FetchEvent,
   FetchEventMahasiswa,
+  FetchFixedEvent,
+  FetchFixedEventMahasiswa,
   FinalizeEvent,
   OverwriteEvent
 }

@@ -254,7 +254,7 @@ app.post('/node/schedule', function(request, response){
 })
 
 app.get('/node/events', function(request, response){
-	Event.FetchEvent().then(function(result){
+	Event.FetchFixedEvent().then(function(result){
 		response.send(result)
 	}).catch(function(err){
 		console.log(err)
@@ -272,7 +272,7 @@ app.get('/node/events/new', function(request, response){
 })
 
 app.post('/node/eventmahasiswa', function(request, response){
-	Event.FetchEventMahasiswa(request.body.id).then(function(result){
+	Event.FetchEventFixedMahasiswa(request.body.id).then(function(result){
 		response.send(result)
 	}).catch(function(err){
 		console.log(err)
