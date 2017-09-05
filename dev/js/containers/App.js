@@ -45,6 +45,7 @@ class App extends Component {
       this.props.checkToken(tokenlagi)
 
       if(this.props.check){
+          console.log(this.props.user)
           if (this.props.user.peran == 2){
               return(
                   <div>
