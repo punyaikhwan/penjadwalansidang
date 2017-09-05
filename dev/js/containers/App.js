@@ -44,7 +44,8 @@ class App extends Component {
       console.log(tokenlagi)
       this.props.checkToken(tokenlagi)
 
-      if(this.props.check){
+      setTimeout(()=> {
+        if(this.props.check){
           console.log(this.props.user)
           if (this.props.user.peran == 2){
               return(
@@ -70,12 +71,13 @@ class App extends Component {
       else{
           return(
               <div><script>
-    window.alert('Anda tidak memiliki izin akses.')
-    window.location.href='/';
-    </script></div>
-          )
+              window.alert('Anda tidak memiliki izin akses.')
+              window.location.href='/';
+              </script></div>
+           )
 
-      }
+        }
+      }, 500);
     }
 
 
