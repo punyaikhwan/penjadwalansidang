@@ -234,6 +234,7 @@ var ScheduleEvent = async function(event_type, start, end, pasangans){
 
 		//request scheduling
 		console.log("scheduling===================")
+		console.log("events to schedule:", JSON.stringify(events));
 		events = await RequestScheduling(events)
 
 		//delete events
@@ -478,8 +479,8 @@ var OverwriteEvent = async function(events){
 var NotifyEvent = async function(event_type, shared_email, shared_token){
 	try{
 		let events = await Event.model.where("tipe_event", event_type ).fetchAll({withRelated: ['mahasiswa.user', 'dosen.user']})
-		console.log("Event to notify ", events);
-		events = events.toJSON()
+		events = events.toJSON();
+		console.log("event to notif ", JSON.stringify(events));
 		let notifRequest = {
 			data: []
 		}
@@ -491,7 +492,30 @@ var NotifyEvent = async function(event_type, shared_email, shared_token){
 				email: shared_email,
 				refreshToken: shared_token
 			})
+			
+			//notif dosen
+			let tempEmail = "";
+			let tempToken = "";
+			for (var j=0; j<events[i].dosen.length; j++) {
+				tempEmail = events[i].dosen[j].user.email;
+				tempToken = events[i].dosen[j].user.token;
+				if ( tempEmail!= "" && tempToken !="") {
+					accounts.push({
+						email: tempEmail,
+						refreshToken: tempToken,
+					})
+				}
+			}
 
+			//notif mahasiswa
+			tempEmail = events[i].mahasiswa[0].user.email;
+			tempToken = events[i].mahasiswa[0].user.token;
+			if ( tempEmail!= "" && tempToken !="") {
+				accounts.push({
+					email: tempEmail,
+					refreshToken: tempToken,
+				})
+			}
 
 			notifRequest.data.push({
 				period:{
@@ -504,7 +528,7 @@ var NotifyEvent = async function(event_type, shared_email, shared_token){
 		}
 		
 
-
+		console.log("notifRequest ", JSON.stringify(notifRequest));
 		axios.post(schedulerURL+'/events/create', notifRequest)
 		.catch(function (error) {
 			console.log(error);
