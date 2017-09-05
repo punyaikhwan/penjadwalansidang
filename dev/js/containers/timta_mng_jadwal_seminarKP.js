@@ -25,7 +25,7 @@ import DatePicker from 'material-ui/DatePicker';
 import CircularProgress from 'material-ui/CircularProgress';
 import Dialog from 'material-ui/Dialog';
 
-import imgProfile from '../../scss/public/images/imgprofile.jpg';
+import imgProfile from '../../scss/public/images/admin.png';
 
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -197,77 +197,72 @@ class timta_mng_jadwal_seminarKP extends Component {
                             }
                         />
 
-                        <Row className="containerBody" style={{marginTop: 20}}>
-                          <Col md="6" xs="12">
-                            <p style={{fontSize:20, fontWight:'bold'}}>Pilih Kelompok</p>
-                            <ScrollArea
-                                horizontal={false}
-                                style={{height: 300, borderLeftWidth: 2}}
-                                speed={0.8}
-                            >
-                              <List>
-                                <ListItem leftCheckbox={<Checkbox checked={this.state.selectAll}/>} primaryText="Pilih semua" onClick={()=>this.handleSelectAll()}/>
-                              </List>
-                              <List>
-                                  {this.props.kelompok.map((item, i) => (
-                                      <ListItem key={i} primaryText={"Kelompok "+ item.id} leftCheckbox={<Checkbox checked={this.state.checkBoxKelompok[i] === 1 ? true:false} onCheck={()=>this.handleSelectKelompok(i)}/>}/>
-                                  ))}
-                              </List>
-                            </ScrollArea>
-                          </Col>
-                          <Col md="6" xs="12">
-                            <p style={{fontSize:20, fontWight:'bold'}}>Daftar Dosen</p>
-                            <ScrollArea
-                                horizontal={false}
-                                style={{height: 300, borderLeftWidth: 2}}
-                                speed={0.8}
-                            >
-                              <Table fixedHeader={false}>
-                                <TableHeader displaySelectAll={false} enableSelectAll={false}>
-                                  <TableRow>
-                                    <TableHeaderColumn>Nama dosen</TableHeaderColumn>
-                                    <TableHeaderColumn>Sudah beri akses?</TableHeaderColumn>
-                                  </TableRow>
-                                </TableHeader>
-                                <TableBody displayRowCheckbox={false}>
-                                    {this.state.listDosen.map((item, i) => (
-                                        <TableRow key={i}>
-                                          <TableRowColumn></TableRowColumn>
-                                          <TableRowColumn>{item.user.nama}</TableRowColumn>
-                                          <TableRowColumn>{item.user.token !== null ? "Sudah" : <div style={{color: '#ff0000'}}>Belum</div>}</TableRowColumn>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                              </Table>
-                            </ScrollArea>
-                          </Col>
-                        </Row>
-                        <Row className="containerBody">
-                          <Col md="6" xs="12">
-                            <p style={{fontSize:20, fontWight:'bold'}}>Tambah kalender</p>
-                            <TextField
-                                hintText="Tempel URL google kalender dengan izin akses Publik."
-                                style={{width:400}}
-                                defaultValue = {this.state.additionalCalender}
-                                onChange={(event)=>this.handleAdditionalCalendar(event)}
-                            />
-                            <br/>
-                          </Col>
-                          <Col md="6" xs="12">
-                            <div style={{fontSize:20, fontWight:'bold'}}>Periode</div>
-                            <Row>
-                              <Col md="5" xs="5">
-                                Tanggal mulai
-                                <DatePicker
-                                    hintText="Pilih tanggal mulai"
-                                    mode="landscape"
-                                    minDate= {new Date()}
-                                    maxDate = {this.state.endDate !== null ? this.state.endDate : null}
-                                    value={this.state.startDate}
-                                    onChange={(event, date)=>this.handleChangeStartDate(event, date)}
-                                />
+
+                          <Row className="containerBody" style={{marginTop: 20}}>
+                              <Col md="6" xs="12">
+                                  <p style={{fontSize:20, fontWight:'bold'}}>Pilih Kelompok</p>
+                                  <ScrollArea
+                                      horizontal={false}
+                                      style={{height: 300, borderLeftWidth: 2}}
+                                      speed={0.8}
+                                  >
+                                      <List>
+                                          <ListItem leftCheckbox={<Checkbox checked={this.state.selectAll}/>} primaryText="Pilih semua" onClick={()=>this.handleSelectAll()}/>
+                                      </List>
+                                      <List>
+                                          {this.props.kelompok.map((item, i) => (
+                                              <ListItem key={i} primaryText={"Kelompok "+ item.id} leftCheckbox={<Checkbox checked={this.state.checkBoxKelompok[i] === 1 ? true:false} onCheck={()=>this.handleSelectKelompok(i)}/>}/>
+                                          ))}
+                                      </List>
+                                  </ScrollArea>
                               </Col>
-                              <Col md="2" xs="2">
+                              <Col md="6" xs="12">
+                                  <p style={{fontSize:20, fontWight:'bold'}}>Daftar Dosen</p>
+                                  <ScrollArea
+                                      horizontal={false}
+                                      style={{height: 500, borderLeftWidth: 2}}
+                                      speed={0.8}
+                                  >
+                                      <Table fixedHeader={false}>
+                                          <TableHeader displaySelectAll={false} enableSelectAll={false}>
+                                              <TableRow>
+                                                  <TableHeaderColumn>Nama dosen</TableHeaderColumn>
+                                                  <TableHeaderColumn>Sudah beri akses?</TableHeaderColumn>
+                                              </TableRow>
+                                          </TableHeader>
+                                          <TableBody displayRowCheckbox={false}>
+                                              {this.state.listDosen.map((item, i) => (
+                                                  <TableRow key={i}>
+                                                      <TableRowColumn></TableRowColumn>
+                                                      <TableRowColumn>{item.user.nama}</TableRowColumn>
+                                                      <TableRowColumn>{item.user.token !== null ? "Sudah" : <div style={{color: '#ff0000'}}>Belum</div>}</TableRowColumn>
+                                                  </TableRow>
+                                              ))}
+                                          </TableBody>
+                                      </Table>
+                                  </ScrollArea>
+                              </Col>
+                          </Row>
+                          <Row className="containerBody">
+                              <Col md="6" xs="12">
+
+                                  <br/>
+                              </Col>
+                              <Col md="6" xs="12">
+                                  <div style={{fontSize:20, fontWight:'bold'}}>Periode</div>
+                                  <Row>
+                                      <Col md="5" xs="5">
+                                          Tanggal mulai
+                                          <DatePicker
+                                              hintText="Pilih tanggal mulai"
+                                              mode="landscape"
+                                              minDate= {new Date()}
+                                              maxDate = {this.state.endDate !== null ? this.state.endDate : null}
+                                              value={this.state.startDate}
+                                              onChange={(event, date)=>this.handleChangeStartDate(event, date)}
+                                          />
+                                      </Col>
+                                      <Col md="2" xs="2">
 
                               </Col>
                               <Col md="5" xs="5">

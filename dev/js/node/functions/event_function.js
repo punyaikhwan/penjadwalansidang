@@ -7,6 +7,7 @@ let Anggota = require('../db/models/anggota_pasangan_event.js')
 let axios = require('axios')
 let Promise = require('bluebird')
 let knex = require('../db/models/db.js')
+let schedulerURL = require('../config.js')
 let moment = require('moment')
 
 let shared_email = 'ruang.labtek5@gmail.com'
@@ -35,7 +36,7 @@ var GetRawEvent = function(start, end){
 		}
 		
 		//request to python
-		return axios.post('http://localhost:5000/events', request_param)
+		return axios.post(schedulerURL+'/events', request_param)
 		.catch(function (error) {
 			console.log(error);
 			return error
@@ -129,7 +130,7 @@ var RawEventToPre = function(raw, start, end){
 }
 //===============================================================================
 var RequestScheduling = function(body){
-	return axios.post('http://localhost:5000/schedule', body)
+	return axios.post(schedulerURL+'/schedule', body)
 	.catch(function (error) {
 		console.log(error);
 		return error
@@ -240,6 +241,7 @@ var ScheduleEvent = async function(event_type, start, end, pasangans){
 
 		//save events
 		console.log("saving schedule===================")
+		console.log("Event log:", events.data.log);
 		var temp = FormatForSave(events.data.result, event_type, pasangan)
 		await NewEvent(temp, events.data.result)
 		//await NewAnggotaEvent(events.data.result)
@@ -297,8 +299,8 @@ var FinalizeEvent = async function(events, event_type){
 				"topik": events[i].topik,
 				"title": events[i].title,
 				"room_id": events[i].room_id,
-				"start": events[i].start,
-				"end": events[i].end
+				"start": new Date(events[i].start),
+				"end": new Date(events[i].end)
 			})
 
 			anggotas.push({
@@ -377,7 +379,7 @@ var FinalizeEvent = async function(events, event_type){
 			
 		}
 
-		NotifyEvent(1, shared_email, shared_token)
+		NotifyEvent(event_type, shared_email, shared_token)
 		
 		
 		
@@ -475,9 +477,9 @@ var OverwriteEvent = async function(events){
 //===============================================================================
 var NotifyEvent = async function(event_type, shared_email, shared_token){
 	try{
-		let events = await Event.model.where("tipe_event", 1 ).fetchAll({withRelated: ['mahasiswa.user', 'dosen.user']})
+		let events = await Event.model.where("tipe_event", event_type ).fetchAll({withRelated: ['mahasiswa.user', 'dosen.user']})
+		console.log("Event to notify ", events);
 		events = events.toJSON()
-
 		let notifRequest = {
 			data: []
 		}
@@ -503,7 +505,7 @@ var NotifyEvent = async function(event_type, shared_email, shared_token){
 		
 
 
-		axios.post('http://localhost:5000/events/create', notifRequest)
+		axios.post(schedulerURL+'/events/create', notifRequest)
 		.catch(function (error) {
 			console.log(error);
 			return error

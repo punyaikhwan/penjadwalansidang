@@ -22,7 +22,7 @@ import Col from 'muicss/lib/react/col';
 import {List, ListItem} from 'material-ui/List';
 import Dialog from 'material-ui/Dialog';
 import windowDimensions from 'react-window-dimensions';
-import imgProfile from '../../scss/public/images/dosenprofile.jpg';
+import imgProfile from '../../scss/public/images/lecturer.PNG';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import Checkbox from 'material-ui/Checkbox';

@@ -25,7 +25,7 @@ import BigCalendar from 'react-big-calendar'
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.less';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import imgProfile from '../../scss/public/images/dosenprofile.jpg';
+import imgProfile from '../../scss/public/images/lecturer.PNG';
 import '../../scss/timTA.scss';
 import moment from 'moment';
 import dateFormat from 'dateformat';

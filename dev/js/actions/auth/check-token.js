@@ -1,8 +1,9 @@
 import axios from 'axios'
+import {nodeURL} from '../config.js'
 
 export const checkToken= (token) => {
     return function(dispatch) {
-        axios.post('http://localhost:3001/node/getUserInfo', {
+        axios.post(nodeURL+'/getUserInfo', {
             "token": token
         }).then(function(result){
             console.log("masuk gan")

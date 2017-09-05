@@ -1,5 +1,6 @@
 import axios from 'axios'
 
+import {nodeURL} from '../config.js'
 export const selectCalendar= (calendar, id) => {
     return function(dispatch) {
 
@@ -8,7 +9,7 @@ export const selectCalendar= (calendar, id) => {
             payload: []
         })
         console.log(JSON.stringify(id))
-        axios.post('http://localhost:3001/node/calendars', {
+        axios.post(nodeURL+'/calendars', {
             calendarList: calendar,
             user_id: id
         }).then(function (data) {

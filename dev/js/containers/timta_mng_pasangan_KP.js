@@ -26,7 +26,7 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
-import imgProfile from '../../scss/public/images/imgprofile.jpg';
+import imgProfile from '../../scss/public/images/admin.png';
 import {fetchKP} from '../actions/kp/fetch-kp'
 import {deleteKP} from '../actions/kp/delete-kp'
 import {newKP} from '../actions/kp/new-kp'

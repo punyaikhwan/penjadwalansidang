@@ -18,7 +18,7 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
-import imgProfile from '../../scss/public/images/imgprofile.jpg';
+import imgProfile from '../../scss/public/images/student.PNG';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {logout} from '../actions/auth/logout'

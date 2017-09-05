@@ -3,6 +3,7 @@ let CalendarList = require('../db/models/calendar_list.js')
 let axios = require('axios')
 let Promise = require('bluebird')
 let knex = require('../db/models/db.js')
+let schedulerURL = require('../config.js')
 //===============================================================================
 // ini khusus buat 1 id aja
 var GetCalendarListGoogle = async function(id){
@@ -25,7 +26,7 @@ var GetCalendarListGoogle = async function(id){
         // we need to update the database periodically
 
         let res
-        axios.post('http://localhost:5000/calendars', request_param).then(
+        axios.post(schedulerURL+'/calendars', request_param).then(
             function(temp_result) {
                 res = temp_result.data.result[0];
                 // console.log(res);
