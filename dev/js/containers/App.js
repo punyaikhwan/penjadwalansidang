@@ -45,6 +45,7 @@ class App extends Component {
       this.props.checkToken(tokenlagi)
 
       if(this.props.check){
+          console.log("PEran ",this.props.user.peran)
           if (this.props.user.peran == 2){
               return(
                   <div>
@@ -63,15 +64,15 @@ class App extends Component {
                       <Redirect to="/mhs_jadwal"/>
                   </div>
               )
-          } else{
-              return(
-                  <div><script>
-                      window.alert('Anda tidak memiliki izin akses.')
-                      window.location.href='/';
-                  </script></div>
-              )
-
           }
+
+      } else{
+          return(
+              <div><script>
+                  window.alert('Anda tidak memiliki izin akses.')
+                  window.location.href='/';
+              </script></div>
+          )
 
       }
 
