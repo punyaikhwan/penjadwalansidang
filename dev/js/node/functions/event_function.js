@@ -499,10 +499,11 @@ var NotifyEvent = async function(event_type, shared_email, shared_token){
 				tempEmail = events[i].dosen[j].user.email;
 				tempToken = events[i].dosen[j].user.token;
 				if ( tempEmail!= "" && tempToken !="") {
-				account.push({
-					email: tempEmail,
-					refreshToken: tempToken,
-				})
+					account.push({
+						email: tempEmail,
+						refreshToken: tempToken,
+					})
+				}
 			}
 
 			//notif mahasiswa
