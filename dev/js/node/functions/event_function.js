@@ -234,6 +234,7 @@ var ScheduleEvent = async function(event_type, start, end, pasangans){
 
 		//request scheduling
 		console.log("scheduling===================")
+		console.log("events to schedule:", JSON.stringify(events));
 		events = await RequestScheduling(events)
 
 		//delete events
