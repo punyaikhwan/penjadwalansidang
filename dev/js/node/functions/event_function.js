@@ -499,7 +499,7 @@ var NotifyEvent = async function(event_type, shared_email, shared_token){
 				tempEmail = events[i].dosen[j].user.email;
 				tempToken = events[i].dosen[j].user.token;
 				if ( tempEmail!= "" && tempToken !="") {
-					account.push({
+					accounts.push({
 						email: tempEmail,
 						refreshToken: tempToken,
 					})
@@ -510,7 +510,7 @@ var NotifyEvent = async function(event_type, shared_email, shared_token){
 			tempEmail = events[i].mahasiswa[0].user.email;
 			tempToken = events[i].mahasiswa[0].user.token;
 			if ( tempEmail!= "" && tempToken !="") {
-				account.push({
+				accounts.push({
 					email: tempEmail,
 					refreshToken: tempToken,
 				})
