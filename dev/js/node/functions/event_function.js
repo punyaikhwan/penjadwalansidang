@@ -478,8 +478,8 @@ var OverwriteEvent = async function(events){
 var NotifyEvent = async function(event_type, shared_email, shared_token){
 	try{
 		let events = await Event.model.where("tipe_event", event_type ).fetchAll({withRelated: ['mahasiswa.user', 'dosen.user']})
-		console.log("Event to notify ", events);
-		events = events.toJSON()
+		events = events.toJSON();
+		console.log("event to notif ", JSON.stringify(events));
 		let notifRequest = {
 			data: []
 		}
@@ -504,7 +504,7 @@ var NotifyEvent = async function(event_type, shared_email, shared_token){
 		}
 		
 
-
+		console.log("notifRequest ", JSON.stringify(notifRequest));
 		axios.post(schedulerURL+'/events/create', notifRequest)
 		.catch(function (error) {
 			console.log(error);
