@@ -491,7 +491,29 @@ var NotifyEvent = async function(event_type, shared_email, shared_token){
 				email: shared_email,
 				refreshToken: shared_token
 			})
+			
+			//notif dosen
+			let tempEmail = "";
+			let tempToken = "";
+			for (var j=0; j<events[i].dosen.length; j++) {
+				tempEmail = events[i].dosen[j].user.email;
+				tempToken = events[i].dosen[j].user.token;
+				if ( tempEmail!= "" && tempToken !="") {
+				account.push({
+					email: tempEmail,
+					refreshToken: tempToken,
+				})
+			}
 
+			//notif mahasiswa
+			tempEmail = events[i].mahasiswa[0].user.email;
+			tempToken = events[i].mahasiswa[0].user.token;
+			if ( tempEmail!= "" && tempToken !="") {
+				account.push({
+					email: tempEmail,
+					refreshToken: tempToken,
+				})
+			}
 
 			notifRequest.data.push({
 				period:{
