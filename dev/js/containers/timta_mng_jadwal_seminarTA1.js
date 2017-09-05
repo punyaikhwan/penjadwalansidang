@@ -138,7 +138,8 @@ class timta_mng_jadwal_seminarTA1 extends Component {
   }
 
   handleChangeStartDate(event, date) {
-    this.setState({startDate: date})
+    let dateTemp = new Date(date.setHours(7, 0, 0, 0));
+    this.setState({startDate: dateTemp})
   }
 
   handleChangeEndDate(event, date) {
