@@ -29,7 +29,6 @@ class mhs_profile extends Component {
 
   constructor(props) {
     super(props);
-    this.props.fetchProfile(this.props.userInfo.NIM);
     console.log(this.props);
     this.state = {
       open: false,
@@ -51,7 +50,10 @@ class mhs_profile extends Component {
       }
     };
   }
-
+  componentDidMount() {
+    this.props.fetchProfile(this.props.userInfo.NIM);
+    this.forceUpdate();
+  }
 
   componentWillUpdate(){
     let daftarPembimbing = []
@@ -154,6 +156,7 @@ class mhs_profile extends Component {
                       </Col>
                       <Col md="12" xs="12">
                         <br/>
+                        {this.props.profileInfo.TA !== undefined &&
                         <Card>
                           <CardTitle title="Informasi Tugas Akhir"/>
                           <CardText>
@@ -192,6 +195,7 @@ class mhs_profile extends Component {
                             </Table>
                           </CardText>
                         </Card>
+                        }
                       </Col>
                     </Row>
                     <Drawer
