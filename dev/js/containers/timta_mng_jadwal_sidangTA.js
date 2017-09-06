@@ -167,18 +167,18 @@ class timta_mng_jadwal_sidangTA extends Component {
   }
 
     renderContent(){
-        if(this.props.userInfo.peran == 0){
+        if(this.props.userInfo.peran === 0){
             <div>
                 <Redirect to="/mhs_jadwal"/>
             </div>
-        } else if(this.props.userInfo.peran == 1){
+        } else if(this.props.userInfo.peran === 1){
             return(
                 <div>
                     <Redirect to="/dosen_calendar"/>
                 </div>
             )
         }
-        else if(this.props.userInfo.peran == 2){
+        else if(this.props.userInfo.peran === 2){
             return (
                 <MuiThemeProvider>
                     <div>
