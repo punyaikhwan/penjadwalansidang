@@ -156,7 +156,7 @@ class timta_mng_jadwal_sidangTA extends Component {
       let check = this.state.checkBoxTA;
       this.props.dataTA.forEach(function (item, i) {
           console.log(item.id)
-          if (check[i] == 1){
+          if (check[i] === 1){
               console.log(item.id)
               kel.push(item.id)
           }
