@@ -43,20 +43,20 @@ class App extends Component {
       let tokenlagi = token.substring(0,token.length)
       this.props.checkToken(tokenlagi)
       
-      setTimeout(()=>{if(this.props.check){
-        if (this.props.user.peran == 2){
+      if(this.props.check){
+        if (this.props.user.peran === 2){
             return(
                 <div>
                     <Redirect to="/timta_mng_user"/>
                 </div>
             )
-        } else if (this.props.user.peran == 1) {
+        } else if (this.props.user.peran === 1) {
             return (
                 <div>
                     <Redirect to="/dosen_calendar"/>
                 </div>
             )
-        } else if (this.props.user.peran == 0) {
+        } else if (this.props.user.peran === 0) {
             return (
                 <div>
                     <Redirect to="/mhs_jadwal"/>
@@ -71,7 +71,6 @@ class App extends Component {
            )
 
       }
-                     }, 2000);
     }
 
 
