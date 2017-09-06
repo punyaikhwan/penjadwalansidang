@@ -44,20 +44,23 @@ var FetchUser = function(){
 //===============================================================================
 var FetchMahasiswa = function(NIM){
 	return User.model.where('NIM', '=', NIM).fetch({withRelated: ['TA.pembimbing.user', 'TA.penguji.user', 'TA.akhir.user']}).then(function(data){
-		if(Object.keys(data.TA).length === 0){
-			data = data.toJSON()
-			data.TA = {
-				"pembimbing": [],
-				"penguji": [],
-				"akhir": [],
-				"topik": ""
+		if(data){
+			if(Object.keys(data.TA).length === 0){
+				data = data.toJSON()
+				data.TA = {
+					"pembimbing": [],
+					"penguji": [],
+					"akhir": [],
+					"topik": ""
+				}
 			}
-			console.log()
-			return data
+			else{
+				
+			}
 		}
-		else{
-			return data
-		}
+
+		return data
+		
 	})
 }
 //===============================================================================
@@ -123,7 +126,7 @@ var test = async function(){
 }
 //===============================================================================
 //main program
-test()
+//test()
 
 module.exports = {
   DeleteUser, 
