@@ -156,6 +156,7 @@ class mhs_profile extends Component {
                       </Col>
                       <Col md="12" xs="12">
                         <br/>
+                        {this.props.profileInfo !== undefined &&
                         <Card>
                           <CardTitle title="Informasi Tugas Akhir"/>
                           <CardText>
@@ -187,6 +188,7 @@ class mhs_profile extends Component {
                             </Table>
                           </CardText>
                         </Card>
+                        }
                       </Col>
                     </Row>
                     <Drawer
