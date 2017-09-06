@@ -6,7 +6,7 @@ export const fetchProfile = (NIM) => {
         axios.post(nodeURL+'/mahasiswa', {"NIM": NIM}).then(function (data) {
             dispatch({
                 type: "DONE PROFILE",
-                payload: data
+                payload: data.data
 
             })
         })
