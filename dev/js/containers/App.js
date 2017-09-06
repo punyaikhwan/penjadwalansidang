@@ -80,10 +80,10 @@ class App extends Component {
               <div>
                 <div className="barTop">
                   <Row>
-                    <Col md="1" xs="1">
+                    <Col md="1" xs="3">
                       <img src={itbLogo} className="logoItb"/>
                     </Col>
-                    <Col md="11" xs="1">
+                    <Col md="11" xs="9">
                       <p style={{fontFamily: "Lato", fontSize: 30, paddingTop: 20, paddingLeft: 20}}>Program Studi Teknik Informatika</p>
                       <p style={{fontFamily: "Lato", fontSize: 20, paddingLeft: 20}}>Institut Teknologi Bandung</p>
                     </Col>
