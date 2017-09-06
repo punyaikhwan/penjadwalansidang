@@ -6,7 +6,7 @@ export const editRuangan= (item) => {
         var id = []
         var obj = []
         item.forEach(function (kelompok) {
-            if (kelompok.isEdit == 1){
+            if (kelompok.isEdit === 1){
                 id.push(kelompok.id);
                 obj.push(kelompok.event)
             }
