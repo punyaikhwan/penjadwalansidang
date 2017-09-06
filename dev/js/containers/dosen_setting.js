@@ -51,6 +51,8 @@ class dosen_setting extends Component {
       // this.setState({calendarList: tempCalList});
       this.props.changeStatus(tempCalList);
       console.log(this.props.calendarList);
+      this.handleSave();
+      this.forceUpdate();
   }
 
   handleSave(){
@@ -128,13 +130,7 @@ class dosen_setting extends Component {
                                 <ListItem key={i} primaryText={item.calendar_name} leftCheckbox={<Checkbox checked={this.props.calendarList[i].status} onCheck={()=>this.handleSelect(i)}/>}/>
                             ))}
                         </List>
-                        <RaisedButton
-                            backgroundColor="#F1D600"
-                            label="SAVE"
-                            labelPosition="after"
-                            icon={<i className="material-icons" style={{color:'black'}}>save</i>}
-                            onTouchTap={()=>this.handleSave()}
-                        />
+                        
                       </Col>
                     </Row>
 
