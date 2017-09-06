@@ -34,8 +34,8 @@ var EditRoom = async function(ids, objs){
 				task.push(
 					new Event.model({
 						title: objs[i][k].title,
-						start: objs[i][k].start,
-						end: objs[i][k].end,
+						start: new Date(objs[i][k].start),
+						end: new Date(objs[i][k].end),
 						room_id: ids[i]
 					}).save()
 				)
