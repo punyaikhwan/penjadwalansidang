@@ -8,7 +8,7 @@ Model = helper.bookshelf.Model.extend({
 	    return this.hasMany('CalendarList', 'user_id');
 	},
 	TA: function() {
-	    return this.hasMany('PasanganTA', 'mahasiswa_id');
+	    return this.hasOne('PasanganTA', 'mahasiswa_id');
 	},
 });	
 model = helper.bookshelf.model('User', Model);
