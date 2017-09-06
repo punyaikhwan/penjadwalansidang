@@ -31,6 +31,28 @@ class mhs_profile extends Component {
     super(props);
     this.props.fetchProfile(this.props.userInfo.NIM);
     console.log(this.props);
+    this.state = {
+      open: false,
+      dataUser: {
+        nama: "Ikhwanul Muslimin",
+        nim: 13514020,
+        email: "13514020@std.stei.itb.ac.id",
+        dataKP: {
+          id: 1,
+          topik: "Implementasi X untuk Y",
+          dosen: ['Rinaldi Munir']
+        },
+        dataTA: {
+          topik: "Pemanfaatan Algoritma X untuk Y",
+          dosenPembimbing: ['Rinaldi Munir', 'Mesayu'],
+          dosenPengujiTA1: ['Inggriani Liem', 'Bayu Hendrajaya'],
+          dosenPengujiAkhir: ['Dosen X', 'Dosen Y']
+        }
+      }
+    };
+  }
+
+  componentWillUpdate(){
     let daftarPembimbing = []
     let daftarPenguji = []
     let daftarAkhir = []
@@ -68,7 +90,6 @@ class mhs_profile extends Component {
       }
     };
   }
-
 
 
   handleToggle() {this.setState({open: !this.state.open})};
