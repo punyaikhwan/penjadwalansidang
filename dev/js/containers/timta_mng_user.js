@@ -234,9 +234,11 @@ class timta_mng_user extends Component {
                                       <IconButton style={{color: 'blue'}} onClick={() => this.handleOpenEditUser(user)}>
                                         <i className="material-icons">edit</i>
                                       </IconButton>
+                                      {user.email !== this.prop.userInfo.email && 
                                       <IconButton style={{color: 'red'}} onClick={() => this.handleOpenConfirmDelete(user)}>
                                         <i className="material-icons">delete</i>
                                       </IconButton>
+                                      }
                                     </TableRowColumn>
                                     }
                                 </TableRow>
