@@ -43,7 +43,22 @@ var FetchUser = function(){
 }
 //===============================================================================
 var FetchMahasiswa = function(NIM){
-	return User.model.where('NIM', '=', NIM).fetch({withRelated: ['TA.pembimbing.user', 'TA.penguji.user', 'TA.akhir.user']})
+	return User.model.where('NIM', '=', NIM).fetch({withRelated: ['TA.pembimbing.user', 'TA.penguji.user', 'TA.akhir.user']}).then(function(data){
+		if(Object.keys(data.TA).length === 0){
+			data = data.toJSON()
+			data.TA = {
+				"pembimbing": [],
+				"penguji": [],
+				"akhir": [],
+				"topik": ""
+			}
+			console.log()
+			return data
+		}
+		else{
+			return data
+		}
+	})
 }
 //===============================================================================
 var CreateUserObj = function(nama, email, peran, NIM=null){
@@ -62,7 +77,7 @@ var test = async function(){
 	try{
 		var myobj = CreateUserObj("mama", "mama@mama.com", 1, "098654")
 
-		var result = await FetchMahasiswa()
+		var result = await FetchMahasiswa("435-799-2642")
 		console.log(JSON.stringify(result))
 		return
 		//test updateEmail
@@ -108,7 +123,7 @@ var test = async function(){
 }
 //===============================================================================
 //main program
-//test()
+test()
 
 module.exports = {
   DeleteUser, 
