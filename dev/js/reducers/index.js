@@ -14,6 +14,7 @@ import ruangan from './ruangan'
 import tipe from './tipe_event'
 import eventMhs from './event-mhs'
 import checkToken from './check-token'
+import profile from './profile-user'
 
 /*
  * We combine all reducers into a single object before updated data is dispatched (sent) to store
@@ -35,7 +36,8 @@ const allReducers = combineReducers({
     ruangan: ruangan,
     tipeEvent: tipe,
     eventMhs: eventMhs,
-    checkToken:checkToken
+    checkToken:checkToken, 
+    profile: profile
 });
 
 export default allReducers

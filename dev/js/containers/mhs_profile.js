@@ -22,12 +22,15 @@ import imgProfile from '../../scss/public/images/student.PNG';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {logout} from '../actions/auth/logout'
+import {fetchProfile} from '../actions/user/fetch-mahasiswa-profile'
 import {Router, Redirect} from 'react-router'
 
 class mhs_profile extends Component {
 
   constructor(props) {
     super(props);
+    this.props.fetchProfile();
+    console.log(this.props);
     this.state = {
       open: false,
       dataUser: {
@@ -203,13 +206,15 @@ class mhs_profile extends Component {
 
 function mapStateToProps(state) {
     return {
-        userInfo: state.activeUser
+        userInfo: state.activeUser,
+        profileInfo: state.profile
     };
 }
 
 function matchDispatchToProps(dispatch){
     return bindActionCreators({
-      logout: logout
+      logout: logout,
+      fetchProfile: fetchProfile
     }, dispatch);
 }
 export default connect(mapStateToProps, matchDispatchToProps)(mhs_profile);
