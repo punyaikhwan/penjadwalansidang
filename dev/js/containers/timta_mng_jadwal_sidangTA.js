@@ -142,7 +142,8 @@ class timta_mng_jadwal_sidangTA extends Component {
   }
 
   handleChangeEndDate(event, date) {
-    this.setState({endDate: date})
+    let dateTemp = new Date(date.setHours(17, 0, 0, 0));
+    this.setState({endDate: dateTemp})
   }
 
     handleLogout(){
