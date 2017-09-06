@@ -324,7 +324,7 @@ class timta_mng_ruangan extends Component {
                         <Col md="10" xs="12">
                             {this.props.dataRuangan.length !== 0 &&
                             <div>
-                              <p style={{fontSize:20, fontWight:'bold', textAlign: 'center'}}>{"Ruangan "+(this.props.dataRuangan[this.state.selectedRuangan].id)}</p>
+                              <p style={{fontSize:20, fontWight:'bold', textAlign: 'center'}}>{"Ruangan "+(this.props.dataRuangan[this.state.selectedRuangan].nama)}</p>
 
                               <br/>
                               <p style={{fontSize:16}}>Daftar Event</p>
