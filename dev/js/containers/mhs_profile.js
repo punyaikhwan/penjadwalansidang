@@ -51,7 +51,7 @@ class mhs_profile extends Component {
     this.state = {
       open: false,
       dataUser: {
-        nama: this.props.profileInfo[0].nama?this.props.profileInfo[0].nama:'-' ,
+        nama: typeof this.props.profileInfo[0].nama == 'undefined' ?this.props.profileInfo[0].nama:'-' ,
         nim: this.props.profileInfo[0].NIM?this.props.profileInfo[0].NIM:'-',
         email: this.props.profileInfo[0].Email?this.props.profileInfo[0].Email:'-',
         dataKP: {
