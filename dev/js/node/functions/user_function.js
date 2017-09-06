@@ -44,7 +44,7 @@ var FetchUser = function(){
 //===============================================================================
 var FetchMahasiswa = function(NIM){
 	return User.model.where('NIM', '=', NIM).fetch({withRelated: ['TA.pembimbing.user', 'TA.penguji.user', 'TA.akhir.user']}).then(function(data){
-		if(data.TA == {}){
+		if(data.TA.pembimbing === undefined){
 			data = data.toJSON()
 			data.TA = {
 				"pembimbing": [],
