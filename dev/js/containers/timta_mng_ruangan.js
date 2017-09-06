@@ -144,6 +144,7 @@ class timta_mng_ruangan extends Component {
     // this.setState({dataRuangan: tempDataRuangan});
 //       this.props.edit(tempDataRuangan, this.state.selectedRuangan)
     tempDataRuangan[this.state.selectedRuangan].isEdit = 1
+    console.log(tempDataRuangan);
     this.props.editRuangan(tempDataRuangan)
     this.handleCloseTambahEvent();
   }
