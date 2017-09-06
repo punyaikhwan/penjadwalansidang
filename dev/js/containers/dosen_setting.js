@@ -51,6 +51,7 @@ class dosen_setting extends Component {
       // this.setState({calendarList: tempCalList});
       this.props.changeStatus(tempCalList);
       console.log(this.props.calendarList);
+      this.forceUpdate();
   }
 
   handleSave(){
