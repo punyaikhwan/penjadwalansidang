@@ -53,7 +53,8 @@ class mhs_profile extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchProfile()
+    this.props.fetchProfile();
+    this.forceUpdate();
   }
   componentWillUpdate(){
     let daftarPembimbing = []
@@ -156,7 +157,7 @@ class mhs_profile extends Component {
                       </Col>
                       <Col md="12" xs="12">
                         <br/>
-                        {this.props.profileInfo !== undefined &&
+                        {this.props.profileInfo.TA !== undefined &&
                         <Card>
                           <CardTitle title="Informasi Tugas Akhir"/>
                           <CardText>

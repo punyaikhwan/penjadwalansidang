@@ -256,19 +256,7 @@ class timta_mng_ruangan extends Component {
           return (
                 <MuiThemeProvider>
                   <div>
-                    <RaisedButton
-                        style={{
-                            position: 'fixed',
-                            marginTop: this.props.height-50,
-                            marginLeft: this.props.width-200,
-                            alignItems: 'center'
-                        }}
-                        backgroundColor="#F1D600"
-                        label="SAVE"
-                        labelPosition="after"
-                        icon={<i className="material-icons" style={{color:'black'}}>save</i>}
-                        onTouchTap={()=>this.handleSave()}
-                    />
+                    
                     <AppBar
                         title="Dashboard Tim TA - Manajemen Ruangan"
                         iconElementLeft={
