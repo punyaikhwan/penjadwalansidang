@@ -109,32 +109,9 @@ class mhs_profile extends Component {
                         </Col>
                       </Col>
                       <Col md="12" xs="12">
-                        <Card>
-                          <CardTitle title="Info Kerja Praktik"/>
-                          <CardText>
-                            <Table selectable={false}>
-                              <TableBody displayRowCheckbox={false}>
-                                <TableRow>
-                                  <TableRowColumn className="attributeTable">Kelompok</TableRowColumn>
-                                  <TableRowColumn>{this.state.dataUser.dataKP.id}</TableRowColumn>
-                                </TableRow>
-                                <TableRow>
-                                  <TableRowColumn className="attributeTable">Topik Kerja Praktik</TableRowColumn>
-                                  <TableRowColumn>{this.state.dataUser.dataKP.topik}</TableRowColumn>
-                                </TableRow>
-                                  {this.state.dataUser.dataKP.dosen.map((item, i) => (
-                                      <TableRow>
-                                        <TableRowColumn className="attributeTable">{"Pembimbing "+(i+1)}</TableRowColumn>
-                                        <TableRowColumn>{item}</TableRowColumn>
-                                      </TableRow>
-                                  ))}
-                              </TableBody>
-                            </Table>
-                          </CardText>
-                        </Card>
                         <br/>
                         <Card>
-                          <CardTitle title="Info Tugas Akhir"/>
+                          <CardTitle title="Informasi Tugas Akhir"/>
                           <CardText>
                             <Table selectable={false}>
                               <TableBody displayRowCheckbox={false}>
