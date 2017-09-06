@@ -137,7 +137,7 @@ class timta_mng_jadwal_sidangTA extends Component {
   }
 
   handleChangeStartDate(event, date) {
-    let dateTemp = new Date(date.setHours(14, 0, 0, 0));
+    let dateTemp = new Date(date.setHours(7, 0, 0, 0));
     this.setState({startDate: dateTemp})
   }
 
