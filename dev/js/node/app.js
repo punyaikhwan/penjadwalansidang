@@ -358,6 +358,15 @@ app.post('/node/user/delete', function(request, response){
 		response.send(err)
 	})
 })
+
+app.post('/node/mahasiswa', function(request, response){
+	user.FetchMahasiswa(request.body.NIM).then(function(result){
+		response.send(result)
+	}).catch(function(err){
+		console.log(err)
+		response.send(err)
+	})
+})
 //KP====================================================================
 app.get('/node/kp', function(request, response){
 	KP.FetchKP().then(function(result){

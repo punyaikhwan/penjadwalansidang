@@ -7,6 +7,9 @@ Model = helper.bookshelf.Model.extend({
     calendar_list: function() {
 	    return this.hasMany('CalendarList', 'user_id');
 	},
+	TA: function() {
+	    return this.hasMany('PasanganTA', 'mahasiswa_id');
+	},
 });	
 model = helper.bookshelf.model('User', Model);
 

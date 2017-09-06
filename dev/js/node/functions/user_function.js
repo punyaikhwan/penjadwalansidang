@@ -41,7 +41,10 @@ var EditUser = function(ids, objs){
 var FetchUser = function(){
 	return User.model.fetchAll()
 }
-
+//===============================================================================
+var FetchMahasiswa = function(NIM){
+	return User.model.where('NIM', '=', NIM).fetchAll({withRelated: ['TA.pembimbing.user', 'TA.penguji.user', 'TA.akhir.user']})
+}
 //===============================================================================
 var CreateUserObj = function(nama, email, peran, NIM=null){
 	var obj = {
@@ -59,6 +62,9 @@ var test = async function(){
 	try{
 		var myobj = CreateUserObj("mama", "mama@mama.com", 1, "098654")
 
+		var result = await FetchMahasiswa()
+		console.log(JSON.stringify(result))
+		return
 		//test updateEmail
 		console.log("EMAILTOKEN===============================")
 		await UpdateEmail('Carmel.Cronin90@hotmail.com', 'awawawawaw')
@@ -102,7 +108,7 @@ var test = async function(){
 }
 //===============================================================================
 //main program
-// test()
+//test()
 
 module.exports = {
   DeleteUser, 
@@ -111,6 +117,7 @@ module.exports = {
   FetchUser,
   FetchOneUser,
   UpdateEmail,
+  FetchMahasiswa
 }
 
 
