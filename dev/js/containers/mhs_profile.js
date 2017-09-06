@@ -51,16 +51,16 @@ class mhs_profile extends Component {
     this.state = {
       open: false,
       dataUser: {
-        nama: typeof this.props.profileInfo[0].nama == 'undefined' ?this.props.profileInfo[0].nama:'-' ,
-        nim: this.props.profileInfo[0].NIM?this.props.profileInfo[0].NIM:'-',
-        email: this.props.profileInfo[0].Email?this.props.profileInfo[0].Email:'-',
+        nama: this.props.profileInfo[0]?this.props.profileInfo[0].nama:'-' ,
+        nim: this.props.profileInfo[0]?this.props.profileInfo[0].NIM:'-',
+        email: this.props.profileInfo[0]?this.props.profileInfo[0].Email:'-',
         dataKP: {
           id: 1,
           topik: "Implementasi X untuk Y",
           dosen: ['Rinaldi Munir']
         },
         dataTA: {
-          topik: this.props.profileInfo[0].TA[0].topik?this.props.profileInfo[0].TA[0].topik:'-',
+          topik: this.props.profileInfo[0]?this.props.profileInfo[0].TA[0].topik:'-',
           dosenPembimbing: daftarPembimbing,
           dosenPengujiTA1: daftarPenguji,
           dosenPengujiAkhir: daftarAkhir
