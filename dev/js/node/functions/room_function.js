@@ -14,6 +14,8 @@ var NewRoom = function(obj){
 //===============================================================================
 var EditRoom = async function(ids, objs){
 	try{
+		console.log("ID ruangan yg diedit: ",ids);
+		console.log("Events: ",objs);
 		var task = []
 		for(var i=0; i<ids.length; i++){
 			//delete event lama
