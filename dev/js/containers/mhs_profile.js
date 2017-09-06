@@ -31,26 +31,41 @@ class mhs_profile extends Component {
     super(props);
     this.props.fetchProfile(this.props.userInfo.NIM);
     console.log(this.props);
+    let daftarPembimbing = []
+    let daftarPenguji = []
+    let daftarAkhir = []
+
+    for(var i=0; i<this.props.profileInfo[0].pembimbing.length; i++){
+      daftarPembimbing.push(this.props.profileInfo[0].pembimbing.user.nama)
+    }
+    for(var i=0; i<this.props.profileInfo[0].penguji.length; i++){
+      daftarPenguji.push(this.props.profileInfo[0].penguji.user.nama)
+    }
+    for(var i=0; i<this.props.profileInfo[0].akhir.length; i++){
+      daftarAkhir.push(this.props.profileInfo[0].akhir.user.nama)
+    }
     this.state = {
       open: false,
       dataUser: {
-        nama: "Ikhwanul Muslimin",
-        nim: 13514020,
-        email: "13514020@std.stei.itb.ac.id",
+        nama: this.props.profileInfo[0].nama,
+        nim: this.props.profileInfo[0].NIM,
+        email: this.props.profileInfo[0].Email,
         dataKP: {
           id: 1,
           topik: "Implementasi X untuk Y",
           dosen: ['Rinaldi Munir']
         },
         dataTA: {
-          topik: "Pemanfaatan Algoritma X untuk Y",
-          dosenPembimbing: ['Rinaldi Munir', 'Mesayu'],
-          dosenPengujiTA1: ['Inggriani Liem', 'Bayu Hendrajaya'],
-          dosenPengujiAkhir: ['Dosen X', 'Dosen Y']
+          topik: this.props.profileInfo[0].TA[0].topik,
+          dosenPembimbing: daftarPembimbing,
+          dosenPengujiTA1: daftarPenguji,
+          dosenPengujiAkhir: daftarAkhir
         }
       }
     };
   }
+
+
 
   handleToggle() {this.setState({open: !this.state.open})};
 
