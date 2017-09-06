@@ -272,7 +272,7 @@ app.get('/node/events/new', function(request, response){
 })
 
 app.post('/node/eventmahasiswa', function(request, response){
-	Event.FetchEventFixedMahasiswa(request.body.id).then(function(result){
+	Event.FetchFixedEventMahasiswa(request.body.id).then(function(result){
 		response.send(result)
 	}).catch(function(err){
 		console.log(err)
