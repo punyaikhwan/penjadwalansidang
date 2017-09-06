@@ -132,17 +132,17 @@ class mhs_profile extends Component {
                         </Col>
                         <Col md="9" xs="12">
                           <Card className="infoProfile">
-                            <CardTitle title={this.state.dataUser.nama}/>
+                            <CardTitle title={this.props.profileInfo.nama}/>
                             <CardText>
                               <Table selectable={false}>
                                 <TableBody displayRowCheckbox={false}>
                                   <TableRow>
                                     <TableRowColumn className="attributeTable">NIM</TableRowColumn>
-                                    <TableRowColumn>{this.state.dataUser.nim}</TableRowColumn>
+                                    <TableRowColumn>{this.props.profileInfo.NIM}</TableRowColumn>
                                   </TableRow>
                                   <TableRow>
                                     <TableRowColumn className="attributeTable">Email</TableRowColumn>
-                                    <TableRowColumn>{this.state.dataUser.email}</TableRowColumn>
+                                    <TableRowColumn>{this.props.profileInfo.email}</TableRowColumn>
                                   </TableRow>
                                 </TableBody>
                               </Table>
@@ -160,21 +160,21 @@ class mhs_profile extends Component {
                               <TableBody displayRowCheckbox={false}>
                                 <TableRow>
                                   <TableRowColumn className="attributeTable">Topik Tugas Akhir</TableRowColumn>
-                                  <TableRowColumn>{this.state.dataUser.dataTA.topik}</TableRowColumn>
+                                  <TableRowColumn>{this.props.profileInfo.TA.topik}</TableRowColumn>
                                 </TableRow>
-                                  {this.state.dataUser.dataTA.dosenPembimbing.map((item, i) => (
+                                  {this.props.profileInfo.TA.pembimbing.map((item, i) => (
                                       <TableRow>
                                         <TableRowColumn className="attributeTable">{"Pembimbing "+(i+1)}</TableRowColumn>
                                         <TableRowColumn>{item}</TableRowColumn>
                                       </TableRow>
                                   ))}
-                                  {this.state.dataUser.dataTA.dosenPengujiTA1.map((item, i) => (
+                                  {this.props.profileInfo.TA.penguji.map((item, i) => (
                                       <TableRow>
                                         <TableRowColumn className="attributeTable">{"Penguji "+(i+1)+ " Seminar TA1"}</TableRowColumn>
                                         <TableRowColumn>{item}</TableRowColumn>
                                       </TableRow>
                                   ))}
-                                  {this.state.dataUser.dataTA.dosenPengujiAkhir.map((item, i) => (
+                                  {this.props.profileInfo.TA.akhir.map((item, i) => (
                                       <TableRow>
                                         <TableRowColumn className="attributeTable">{"Penguji "+(i+1)+ " Sidang Akhir"}</TableRowColumn>
                                         <TableRowColumn>{item}</TableRowColumn>

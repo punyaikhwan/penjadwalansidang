@@ -43,7 +43,7 @@ var FetchUser = function(){
 }
 //===============================================================================
 var FetchMahasiswa = function(NIM){
-	return User.model.where('NIM', '=', NIM).fetchAll({withRelated: ['TA.pembimbing.user', 'TA.penguji.user', 'TA.akhir.user']})
+	return User.model.where('NIM', '=', NIM).fetch({withRelated: ['TA.pembimbing.user', 'TA.penguji.user', 'TA.akhir.user']})
 }
 //===============================================================================
 var CreateUserObj = function(nama, email, peran, NIM=null){
