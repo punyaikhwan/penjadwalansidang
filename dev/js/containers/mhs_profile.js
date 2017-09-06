@@ -35,28 +35,32 @@ class mhs_profile extends Component {
     let daftarPenguji = []
     let daftarAkhir = []
 
-    for(var i=0; i<this.props.profileInfo[0].pembimbing.length; i++){
+    if(this.props.profileInfo[0])
+    {
+      for(var i=0; i<this.props.profileInfo[0].pembimbing.length; i++){
       daftarPembimbing.push(this.props.profileInfo[0].pembimbing.user.nama)
+      }
+      for(var i=0; i<this.props.profileInfo[0].penguji.length; i++){
+        daftarPenguji.push(this.props.profileInfo[0].penguji.user.nama)
+      }
+      for(var i=0; i<this.props.profileInfo[0].akhir.length; i++){
+        daftarAkhir.push(this.props.profileInfo[0].akhir.user.nama)
+      }
     }
-    for(var i=0; i<this.props.profileInfo[0].penguji.length; i++){
-      daftarPenguji.push(this.props.profileInfo[0].penguji.user.nama)
-    }
-    for(var i=0; i<this.props.profileInfo[0].akhir.length; i++){
-      daftarAkhir.push(this.props.profileInfo[0].akhir.user.nama)
-    }
+    
     this.state = {
       open: false,
       dataUser: {
-        nama: this.props.profileInfo[0].nama,
-        nim: this.props.profileInfo[0].NIM,
-        email: this.props.profileInfo[0].Email,
+        nama: this.props.profileInfo[0].nama?this.props.profileInfo[0].nama:'-' ,
+        nim: this.props.profileInfo[0].NIM?this.props.profileInfo[0].NIM:'-',
+        email: this.props.profileInfo[0].Email?this.props.profileInfo[0].Email:'-',
         dataKP: {
           id: 1,
           topik: "Implementasi X untuk Y",
           dosen: ['Rinaldi Munir']
         },
         dataTA: {
-          topik: this.props.profileInfo[0].TA[0].topik,
+          topik: this.props.profileInfo[0].TA[0].topik?this.props.profileInfo[0].TA[0].topik:'-',
           dosenPembimbing: daftarPembimbing,
           dosenPengujiTA1: daftarPenguji,
           dosenPengujiAkhir: daftarAkhir
