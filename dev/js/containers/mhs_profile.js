@@ -29,7 +29,7 @@ class mhs_profile extends Component {
 
   constructor(props) {
     super(props);
-    this.props.fetchProfile();
+    this.props.fetchProfile(this.props.userInfo.NIM);
     console.log(this.props);
     this.state = {
       open: false,
