@@ -142,7 +142,9 @@ class timta_mng_ruangan extends Component {
     // console.log(tempDataRuangan[this.state.selectedRuangan].event);
       tempDataRuangan[this.state.selectedRuangan].event.push(dataEvent);
     // this.setState({dataRuangan: tempDataRuangan});
-      this.props.edit(tempDataRuangan, this.state.selectedRuangan)
+//       this.props.edit(tempDataRuangan, this.state.selectedRuangan)
+    tempDataRuangan[this.state.selectedRuangan].isEdit = 1
+    this.props.editRuangan(tempDataRuangan)
     this.handleCloseTambahEvent();
   }
 
@@ -151,7 +153,9 @@ class timta_mng_ruangan extends Component {
     tempDataRuangan[this.state.selectedRuangan].event.splice(i,1);
     console.log("data Ruangan:", tempDataRuangan);
     // this.setState({dataRuangan: tempDataRuangan});
-      this.props.edit(tempDataRuangan, this.state.selectedRuangan)
+//       this.props.edit(tempDataRuangan, this.state.selectedRuangan)
+    tempDataRuangan[this.state.selectedRuangan].isEdit = 1
+    this.props.editRuangan(tempDataRuangan)
   }
 
   handleOpenEditEvent(i) {
@@ -174,7 +178,9 @@ class timta_mng_ruangan extends Component {
     tempDataRuangan[this.state.selectedRuangan].event[i].end = this.state.endDate;
     console.log(tempDataRuangan[this.state.selectedRuangan].event[i])
     console.log(tempDataRuangan[this.state.selectedRuangan])
-    this.props.edit(tempDataRuangan, this.state.selectedRuangan)
+//     this.props.edit(tempDataRuangan, this.state.selectedRuangan)
+    tempDataRuangan[this.state.selectedRuangan].isEdit = 1
+    this.props.editRuangan(tempDataRuangan)
       this.handleCloseEditEvent();
   }
 
