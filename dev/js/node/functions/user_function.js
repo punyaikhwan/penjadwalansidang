@@ -44,19 +44,17 @@ var FetchUser = function(){
 //===============================================================================
 var FetchMahasiswa = function(NIM){
 	return User.model.where('NIM', '=', NIM).fetch({withRelated: ['TA.pembimbing.user', 'TA.penguji.user', 'TA.akhir.user']}).then(function(data){
-		if(data){
-			if(Object.keys(data.TA).length === 0){
-				data = data.toJSON()
-				data.TA = {
-					"pembimbing": [],
-					"penguji": [],
-					"akhir": [],
-					"topik": ""
-				}
+		if(data.TA == {}){
+			data = data.toJSON()
+			data.TA = {
+				"pembimbing": [],
+				"penguji": [],
+				"akhir": [],
+				"topik": ""
 			}
-			else{
-				
-			}
+		}
+		else{
+			
 		}
 
 		return data
@@ -80,7 +78,8 @@ var test = async function(){
 	try{
 		var myobj = CreateUserObj("mama", "mama@mama.com", 1, "098654")
 
-		var result = await FetchMahasiswa("435-799-2642")
+		var result = await FetchMahasiswa("846-066-4078")
+		//var result = await FetchMahasiswa("435-799-2642")
 		console.log(JSON.stringify(result))
 		return
 		//test updateEmail
