@@ -56,7 +56,7 @@ var FetchMahasiswa = function(NIM){
 		else{
 			
 		}
-
+		console.log(JSON.stringify(data))
 		return data
 		
 	})
