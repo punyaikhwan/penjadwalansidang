@@ -168,28 +168,28 @@ class mhs_profile extends Component {
                                 </TableRow>
                                 <TableRow>
                                   <TableRowColumn className="attributeTable">{"Pembimbing 1"}</TableRowColumn>
-                                  <TableRowColumn>{this.props.profileInfo.TA.pembimbing[0] !== undefined ? this.props.profileInfo.TA.pembimbing[0] : ""}</TableRowColumn>
+                                  <TableRowColumn>{this.props.profileInfo.TA.pembimbing[0] !== undefined ? this.props.profileInfo.TA.pembimbing[0].user.nama : ""}</TableRowColumn>
                                 </TableRow>
                                 <TableRow>
                                   <TableRowColumn className="attributeTable">{"Pembimbing 2"}</TableRowColumn>
-                                  <TableRowColumn>{this.props.profileInfo.TA.pembimbing[1] !== undefined ? this.props.profileInfo.TA.pembimbing[1] : ""}</TableRowColumn>
+                                  <TableRowColumn>{this.props.profileInfo.TA.pembimbing[1] !== undefined ? this.props.profileInfo.TA.pembimbing[1].user.nama : ""}</TableRowColumn>
                                 </TableRow>
                                 
                                 <TableRow>
                                   <TableRowColumn className="attributeTable">{"Penguji 1 Seminar TA 1"}</TableRowColumn>
-                                  <TableRowColumn>{this.props.profileInfo.TA.penguji[0] !== undefined ? this.props.profileInfo.TA.penguji[0] : ""}</TableRowColumn>
+                                  <TableRowColumn>{this.props.profileInfo.TA.penguji[0] !== undefined ? this.props.profileInfo.TA.penguji[0].user.nama : ""}</TableRowColumn>
                                 </TableRow>
                                 <TableRow>
                                   <TableRowColumn className="attributeTable">{"Penguji 2 Seminar TA 1"}</TableRowColumn>
-                                  <TableRowColumn>{this.props.profileInfo.TA.penguji[1] !== undefined ? this.props.profileInfo.TA.penguji[1] : ""}</TableRowColumn>
+                                  <TableRowColumn>{this.props.profileInfo.TA.penguji[1] !== undefined ? this.props.profileInfo.TA.penguji[1].user.nama : ""}</TableRowColumn>
                                 </TableRow>
                                 <TableRow>
                                   <TableRowColumn className="attributeTable">{"Penguji 1 Sidang Akhir"}</TableRowColumn>
-                                  <TableRowColumn>{this.props.profileInfo.TA.akhir[0] !== undefined ? this.props.profileInfo.TA.akhir[0] : ""}</TableRowColumn>
+                                  <TableRowColumn>{this.props.profileInfo.TA.akhir[0] !== undefined ? this.props.profileInfo.TA.akhir[0].user.nama : ""}</TableRowColumn>
                                 </TableRow>
                                 <TableRow>
                                   <TableRowColumn className="attributeTable">{"Penguji 2 Sidang Akhir"}</TableRowColumn>
-                                  <TableRowColumn>{this.props.profileInfo.TA.akhir[1] !== undefined ? this.props.profileInfo.TA.akhir[1] : ""}</TableRowColumn>
+                                  <TableRowColumn>{this.props.profileInfo.TA.akhir[1] !== undefined ? this.props.profileInfo.TA.akhir[1].user.nama : ""}</TableRowColumn>
                                 </TableRow>
                               </TableBody>
                             </Table>
