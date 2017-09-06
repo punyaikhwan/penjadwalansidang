@@ -137,12 +137,13 @@ class timta_mng_jadwal_sidangTA extends Component {
   }
 
   handleChangeStartDate(event, date) {
-    let dateTemp = new Date(date.setHours(14, 0, 0, 0));
+    let dateTemp = new Date(date.setHours(7, 0, 0, 0));
     this.setState({startDate: dateTemp})
   }
 
   handleChangeEndDate(event, date) {
-    this.setState({endDate: date})
+    let dateTemp = new Date(date.setHours(17, 0, 0, 0));
+    this.setState({endDate: dateTemp})
   }
 
     handleLogout(){
@@ -155,7 +156,7 @@ class timta_mng_jadwal_sidangTA extends Component {
       let check = this.state.checkBoxTA;
       this.props.dataTA.forEach(function (item, i) {
           console.log(item.id)
-          if (check[i] == 1){
+          if (check[i] === 1){
               console.log(item.id)
               kel.push(item.id)
           }
@@ -166,18 +167,18 @@ class timta_mng_jadwal_sidangTA extends Component {
   }
 
     renderContent(){
-        if(this.props.userInfo.peran == 0){
+        if(this.props.userInfo.peran === 0){
             <div>
                 <Redirect to="/mhs_jadwal"/>
             </div>
-        } else if(this.props.userInfo.peran == 1){
+        } else if(this.props.userInfo.peran === 1){
             return(
                 <div>
                     <Redirect to="/dosen_calendar"/>
                 </div>
             )
         }
-        else if(this.props.userInfo.peran == 2){
+        else if(this.props.userInfo.peran === 2){
             return (
                 <MuiThemeProvider>
                     <div>
