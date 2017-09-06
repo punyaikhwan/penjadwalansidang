@@ -151,7 +151,7 @@ class mhs_jadwal extends Component {
                             ))}
                             {event.dosen.map((item, i)=>(
                                 <TableRow key={i}>
-                                  <TableRowColumn className="attributeTable">{item.user.peran_pasangan === 1 ? "Pembimbing" : "Penguji"}</TableRowColumn>
+                                  <TableRowColumn className="attributeTable">{item.peran_pasangan === 1 ? "Pembimbing" : "Penguji"}</TableRowColumn>
                                   <TableRowColumn>{item.user.nama}</TableRowColumn>
                                 </TableRow>
                             ))}
@@ -285,7 +285,7 @@ class mhs_jadwal extends Component {
                             ))}
                             {event.dosen.map((item, i)=>(
                                 <TableRow key={i}>
-                                  <TableRowColumn className="attributeTable">{item.user.peran_pasangan === 1 ? "Pembimbing" : "Penguji"}</TableRowColumn>
+                                  <TableRowColumn className="attributeTable">{item.peran_pasangan === 1 ? "Pembimbing" : "Penguji"}</TableRowColumn>
                                   <TableRowColumn>{item.user.nama}</TableRowColumn>
                                 </TableRow>
                             ))}
