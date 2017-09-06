@@ -52,10 +52,7 @@ class mhs_profile extends Component {
     };
   }
 
-  componentDidMount() {
-    this.props.fetchProfile();
-    this.forceUpdate();
-  }
+
   componentWillUpdate(){
     let daftarPembimbing = []
     let daftarPenguji = []
