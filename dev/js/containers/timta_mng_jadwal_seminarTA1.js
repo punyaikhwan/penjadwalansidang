@@ -53,6 +53,7 @@ class timta_mng_jadwal_seminarTA1 extends Component {
   }
 
   componentDidMount() {
+    document.title = "Manajemen Jadwal Seminar TA1"
     this.props.fetchTA();
     setTimeout(()=> {
       let tempcheckBoxTA = [];
