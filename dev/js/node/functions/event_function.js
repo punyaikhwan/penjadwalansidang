@@ -163,7 +163,7 @@ var FormatForSave = function(events, event_type, pasangan){
 	for(var i=0; i<events.length; i++){
 		var additionalInfo = GetPasanganFromMahasiswa(event_type, events[i].idStudent, pasangan)
 		var temp = {}
-		temp.event_id = i
+		temp.event_id = 
 		temp.tipe_event = 99
 
 		if(event_type == 1){
@@ -380,7 +380,9 @@ var FinalizeEvent = async function(events, event_type){
 			
 		}
 
-		NotifyEvent(event_type, shared_email, shared_token)
+		var notifyResult = await NotifyEvent(event_type, shared_email, shared_token)
+		notifyResult = notifyResult.toJSON()
+		console.log(notifyResult)
 		
 		
 		
@@ -548,6 +550,7 @@ var DeleteEvent = async function(id){
 
 		//delete pasangan ta
 		task.push(new Event.model({"id": id}).destroy())
+		axios.post(axios.post(schedulerURL+'/events/delete', )
 		
 		
 	}catch(err){
