@@ -552,7 +552,7 @@ var NotifyEvent = async function(event_type, shared_email, shared_token){
 					start: events[i].start,
 					end: events[i].end,
 					name: events[i].title,
-					id: events[i].id
+					id: events[i].event_id
 				},
 				accounts: accounts
 			})
