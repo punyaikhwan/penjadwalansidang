@@ -181,8 +181,8 @@ var FormatForSave = function(events, event_type, pasangan){
 			
 		temp.topik = additionalInfo.topik
 		temp.room_id = events[i].idRoom
-		temp.start = events[i].start
-		temp.end = events[i].end
+		temp.start = new Date(events[i].start)
+		temp.end = new Date(events[i].end)
 
 		result.push(temp)
 	}

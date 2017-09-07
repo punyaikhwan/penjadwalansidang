@@ -151,13 +151,7 @@ class mhs_jadwal extends Component {
                             ))}
                             {event.dosen.map((item, i)=>(
                                 <TableRow key={i}>
-                                  <TableRowColumn className="attributeTable">{"Pembimbing "+(i+1)}</TableRowColumn>
-                                  <TableRowColumn>{item.user.nama}</TableRowColumn>
-                                </TableRow>
-                            ))}
-                            {event.dosen.map((item, i)=>(
-                                <TableRow key={i}>
-                                  <TableRowColumn className="attributeTable">{"Penguji "+(i+1)}</TableRowColumn>
+                                  <TableRowColumn className="attributeTable">{item.peran_pasangan === 1 ? "Pembimbing" : "Penguji"}</TableRowColumn>
                                   <TableRowColumn>{item.user.nama}</TableRowColumn>
                                 </TableRow>
                             ))}
@@ -291,16 +285,11 @@ class mhs_jadwal extends Component {
                             ))}
                             {event.dosen.map((item, i)=>(
                                 <TableRow key={i}>
-                                  <TableRowColumn className="attributeTable">{"Pembimbing "+(i+1)}</TableRowColumn>
+                                  <TableRowColumn className="attributeTable">{item.peran_pasangan === 1 ? "Pembimbing" : "Penguji"}</TableRowColumn>
                                   <TableRowColumn>{item.user.nama}</TableRowColumn>
                                 </TableRow>
                             ))}
-                            {event.dosen.map((item, i)=>(
-                                <TableRow key={i}>
-                                  <TableRowColumn className="attributeTable">{"Penguji "+(i+1)}</TableRowColumn>
-                                  <TableRowColumn>{item.user.nama}</TableRowColumn>
-                                </TableRow>
-                            ))}
+                            
                         </TableBody>
                       </Table>
                     </CardText>
