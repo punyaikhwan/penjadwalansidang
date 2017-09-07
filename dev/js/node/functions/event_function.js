@@ -175,7 +175,7 @@ var FormatForSave = function(events, event_type, pasangan){
 	for(var i=0; i<events.length; i++){
 		var additionalInfo = GetPasanganFromMahasiswa(event_type, events[i].idStudent, pasangan)
 		var temp = {}
-		temp.event_id = randomID++;
+		temp.event_id = makeid()
 		temp.tipe_event = 99
 
 		if(event_type == 1){
