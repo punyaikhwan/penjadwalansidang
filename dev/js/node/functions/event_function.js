@@ -12,6 +12,18 @@ let moment = require('moment')
 
 let shared_email = 'bimawansatrianto@gmail.com'
 let shared_token = '1/0vnmzOgnuAasklvQjVPVh0Ye3WWRGouAuWWiCR4EbDk'
+
+function makeid() {
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  for (var i = 0; i < 5; i++)
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+  return text;
+}
+
+let randomID = makeid()
 //===============================================================================
 var GetRawEvent = function(start, end){
 	return User.model.fetchAll().then(function(result){
@@ -163,7 +175,7 @@ var FormatForSave = function(events, event_type, pasangan){
 	for(var i=0; i<events.length; i++){
 		var additionalInfo = GetPasanganFromMahasiswa(event_type, events[i].idStudent, pasangan)
 		var temp = {}
-		temp.event_id = 
+		temp.event_id = randomID++;
 		temp.tipe_event = 99
 
 		if(event_type == 1){
