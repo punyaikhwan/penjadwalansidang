@@ -25,7 +25,7 @@ const clientID = "1031302495796-qndkfqd9b7lngq820um04pdorudtvj9t.apps.googleuser
 
 class App extends Component {
   componentDidMount(){
-    console.log("wawa", this.props.location)
+    document.title = "Penjadwalan Sidang/Seminar"
   }
 
   // getUser(token){
