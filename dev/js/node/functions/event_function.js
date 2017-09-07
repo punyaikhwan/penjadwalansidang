@@ -302,6 +302,8 @@ var FinalizeEvent = async function(events, event_type){
 		//bikin record kosong
 		await Event.model.where('tipe_event', 99).destroy()
 
+
+
 		//format json
 		let objs = []
 		let anggotas = []
@@ -422,9 +424,30 @@ var UpdateGoogleEventId = function(data){
 //===============================================================================
 var OverwriteEvent = async function(events){
 	try{
+		//hapus event
+		var allevent = Event.model.fetchAll()
+		allevent = allevent.toJSON()
+
+		var alleventID = []
+		for(var i=0; i<allevent.length; i++){
+			alleventID.push(allevent[i].event_id)
+		}
+
+		var deleteRequest = {
+			"data":[ 
+		   	{ 
+		      "email": shared_email, 
+		      "refreshToken": shared_token, 
+		      "eventIds": alleventID
+		    }] 
+		}
+
+		await axios.post(axios.post(schedulerURL+'/events/delete', deleteRequest))
+
 		await knex.emptyTable('event')
 		console.log("events", JSON.stringify(events))
 		console.log(moment(events[0].start).toString())
+
 		//format json
 		let objs = []
 		let anggotas = []
@@ -577,11 +600,25 @@ var NotifyEvent = async function(event_type, shared_email, shared_token){
 //===============================================================================
 var DeleteEvent = async function(id){
 	try{
-		var task = []
+		var deleted = await Event.model.where({"id": id}).fetch()
+		deleted = deleted.toJSON()
+		var deleteRequest = {
+			"data":[ 
+		    { 
+		      "email": shared_email, 
+		      "refreshToken": shared_token, 
+		      "eventIds":[ 
+		        deleted.event_id
+		      ] 
+		    }
+		  ]
+		}
 
 		//delete pasangan ta
-		task.push(new Event.model({"id": id}).destroy())
-		//	axios.post(axios.post(schedulerURL+'/events/delete', )
+		new Event.model({"id": id}).destroy()
+
+		axios.post(axios.post(schedulerURL+'/events/delete', deleteRequest))
+		
 		
 		
 	}catch(err){
