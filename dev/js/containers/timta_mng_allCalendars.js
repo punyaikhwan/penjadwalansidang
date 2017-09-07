@@ -257,6 +257,7 @@ class timta_mng_allCalendars extends Component {
     let idx = this.props.events.indexOf(this.state.selectedEvent);
 
     events.splice(idx, 1);
+    console.log("New events:", events);
     this.props.move(events);
     this.setState({disabled: false});
     this.handleCloseConfirmDelete();
