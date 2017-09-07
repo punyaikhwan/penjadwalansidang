@@ -75,8 +75,10 @@ class App extends Component {
       }
       else{
           return(
-              <div>Mengalihkan...</div>
-              <div>Jika ada masalah, hubungi tim TA.</div>
+              <div>
+                <p>Mengalihkan...</p>
+                <p>Jika ada masalah, hubungi tim TA.</p>
+              </div>
            )
 
       }
