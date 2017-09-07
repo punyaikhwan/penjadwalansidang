@@ -247,10 +247,13 @@ class timta_mng_allCalendars extends Component {
   }
 
   handleOpenConfirmDelete(){
-    this.handleCloseEditEvent();
+    this.setState({modalEditEvent: false});
     this.setState({modalConfirmDelete:true})
   };
-  handleCloseConfirmDelete(){this.setState({modalConfirmDelete:false})};
+  handleCloseConfirmDelete(){
+    this.setState({modalConfirmDelete:false})
+    this.handleCloseEditEvent()
+  };
 
   handleDeleteEvent() {
     let events = this.props.events;
