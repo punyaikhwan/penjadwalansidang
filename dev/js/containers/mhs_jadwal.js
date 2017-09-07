@@ -101,7 +101,7 @@ class mhs_jadwal extends Component {
                     <Table selectable={false}>
                       <TableBody displayRowCheckbox={false}>
                         <TableRow>
-                          <TableRowColumn className="attributeTable">Tanggal Sidang</TableRowColumn>
+                          <TableRowColumn className="attributeTable">Tanggal</TableRowColumn>
                           <TableRowColumn>{dateFormat(event.start, "dddd, dd mmmm yyyy")}</TableRowColumn>
                         </TableRow>
                         <TableRow>
@@ -168,7 +168,7 @@ class mhs_jadwal extends Component {
                       <Table selectable={false}>
                         <TableBody displayRowCheckbox={false}>
                           <TableRow>
-                            <TableRowColumn className="attributeTable">Tanggal Sidang</TableRowColumn>
+                            <TableRowColumn className="attributeTable">Tanggal</TableRowColumn>
                             <TableRowColumn>{dateFormat(event.start, "dddd, dd mmmm yyyy")}</TableRowColumn>
                           </TableRow>
                           <TableRow>
@@ -235,7 +235,7 @@ class mhs_jadwal extends Component {
                       <Table selectable={false}>
                         <TableBody displayRowCheckbox={false}>
                           <TableRow>
-                            <TableRowColumn className="attributeTable">Tanggal Sidang</TableRowColumn>
+                            <TableRowColumn className="attributeTable">Tanggal</TableRowColumn>
                             <TableRowColumn>{dateFormat(event.start, "dddd, dd mmmm yyyy")}</TableRowColumn>
                           </TableRow>
                           <TableRow>
@@ -303,7 +303,7 @@ class mhs_jadwal extends Component {
                       <Table selectable={false}>
                         <TableBody displayRowCheckbox={false}>
                           <TableRow>
-                            <TableRowColumn className="attributeTable">Tanggal Sidang</TableRowColumn>
+                            <TableRowColumn className="attributeTable">Tanggal</TableRowColumn>
                             <TableRowColumn>{dateFormat(event.start, "dddd, dd mmmm yyyy")}</TableRowColumn>
                           </TableRow>
                           <TableRow>
