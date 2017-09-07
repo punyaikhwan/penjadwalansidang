@@ -413,7 +413,7 @@ var UpdateGoogleEventId = function(data){
 	for(var i=0; i<data.length; i++){
 		console.log(data[i].idOld)
 		console.log(data[i].id)
-		task.push(Event.model.where({'event_id', '=', data[i].idOld}).save({event_id: data[i].id.toString()}, {patch: true}).catch(function(err){
+		task.push(Event.model.where('event_id', '=', data[i].idOld).save({event_id: data[i].id.toString()}, {patch: true}).catch(function(err){
 			console.log(err)
 		}))
 	}
