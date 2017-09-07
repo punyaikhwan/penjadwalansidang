@@ -383,6 +383,7 @@ var FinalizeEvent = async function(events, event_type){
 		var notifyResult = await NotifyEvent(event_type, shared_email, shared_token)
 		console.log("---------------------------------------")
 		console.log(JSON.stringify(notifyResult.data))
+		UpdateGoogleEventId(notifyResult.data.result)
 		
 		
 		
@@ -395,10 +396,10 @@ var FinalizeEvent = async function(events, event_type){
 }
 
 //===============================================================================
-var UpdateGoogleEventId = function(oldids, ids){
+var UpdateGoogleEventId = function(data){
 	var task = []
-	for(var i=0; i<oldids.length; i++){
-		task.push(Event.model.where('event_id', '=', oldids[i]).save({event_id:ids[i]}, {patch: true}))
+	for(var i=0; i<data.length; i++){
+		task.push(Event.model.where('event_id', '=', data[i].idOld).save({event_id:data[i].id}, {patch: true}))
 	}
 	return Promise.each(task, function(){})
 }
