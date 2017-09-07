@@ -65,7 +65,7 @@ class timta_mng_calendar extends Component {
   }
 
   componentDidMount(){
-
+    document.title = "Finalisasi Jadwal"
 
     // setTimeout(()=> {
     //   if (this.props.events.length !== 0) 
