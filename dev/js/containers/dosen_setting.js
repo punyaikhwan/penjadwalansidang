@@ -42,6 +42,7 @@ class dosen_setting extends Component {
   }
 
   componentDidMount(){
+    document.title = "Profil dan Pengaturan Dosen"
     this.props.fetchCalendar(this.props.userInfo.id)
   }
   
