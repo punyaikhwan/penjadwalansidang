@@ -75,7 +75,8 @@ class App extends Component {
       }
       else{
           return(
-              <div>Anda tidak terdaftar. Hubungi tim TA.</div>
+              <div>Mengalihkan...</div>
+              <div>Jika ada masalah, hubungi tim TA.</div>
            )
 
       }
