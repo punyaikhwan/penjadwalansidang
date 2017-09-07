@@ -94,6 +94,7 @@ class timta_mng_ruangan extends Component {
     }
 
     componentDidMount(){
+    document.title = "Manajemen Ruangan"
     this.props.fetchRuangan();
   }
   handleToggle() {this.setState({open: !this.state.open})};
