@@ -54,6 +54,7 @@ class dosen_calendar extends Component {
   }
 
   componentDidMount(){
+    document.title = "Kalender Dosen"
     this.props.fetchEvent();
   }
 

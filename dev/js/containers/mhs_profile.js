@@ -51,6 +51,7 @@ class mhs_profile extends Component {
     };
   }
   componentDidMount() {
+    document.title = "Profil Mahasiswa";
     this.props.fetchProfile(this.props.userInfo.NIM);
     this.forceUpdate();
   }
