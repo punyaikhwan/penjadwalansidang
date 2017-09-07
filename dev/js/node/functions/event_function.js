@@ -399,9 +399,9 @@ var FinalizeEvent = async function(events, event_type){
 var UpdateGoogleEventId = function(data){
 	var task = []
 	for(var i=0; i<data.length; i++){
-		task.push(Event.model.where('event_id', '=', data[i].idOld).save({event_id:data[i].id}, {patch: true})).catch(function(err){
+		task.push(Event.model.where('event_id', '=', data[i].idOld).save({event_id:data[i].id}, {patch: true}).catch(function(err){
 			console.log(err)
-		})
+		}))
 	}
 	return Promise.each(task, function(){})
 }
