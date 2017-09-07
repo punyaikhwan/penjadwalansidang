@@ -442,7 +442,7 @@ var OverwriteEvent = async function(events){
 		    }] 
 		}
 
-		await axios.post(axios.post(schedulerURL+'/events/delete', deleteRequest))
+		await axios.post(schedulerURL+'/events/delete', deleteRequest)
 
 		await knex.emptyTable('event')
 		console.log("events", JSON.stringify(events))
@@ -617,7 +617,7 @@ var DeleteEvent = async function(id){
 		//delete pasangan ta
 		new Event.model({"id": id}).destroy()
 
-		axios.post(axios.post(schedulerURL+'/events/delete', deleteRequest))
+		axios.post(schedulerURL+'/events/delete', deleteRequest)
 		
 		
 		
