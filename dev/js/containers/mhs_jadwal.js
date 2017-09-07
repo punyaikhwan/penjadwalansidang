@@ -37,6 +37,7 @@ class mhs_jadwal extends Component {
   }
 
   componentDidMount(){
+    document.title = "Jadwal Mahasiswa"
     this.props.fetchMhsEvent(this.props.userInfo.id)
   }
 

@@ -79,6 +79,7 @@ class timta_mng_allCalendars extends Component {
   }
 
   componentDidMount(){
+    document.title = "Manajemen Kalender"
     this.props.fetchEvent();
     this.props.fetchTA();
     this.props.fetchRuangan();

@@ -51,7 +51,7 @@ class timta_mng_jadwal_seminarKP extends Component {
   }
 
   componentDidMount() {
-    console.log("DidMount")
+    document.title = "Manajemen Jadwal Seminar KP"
     this.props.fetchKP();
       setTimeout(()=> {
       let tempCheckBoxKelompok = [];
