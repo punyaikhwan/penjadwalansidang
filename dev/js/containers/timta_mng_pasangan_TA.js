@@ -93,6 +93,7 @@ class timta_mng_pasangan_TA extends Component {
 
 
   componentDidMount(){
+    document.title = "Manajemen Pasangan TA"
     this.props.fetchTA();
     this.props.fetchMahasiswa();
     this.props.fetchDosen();
