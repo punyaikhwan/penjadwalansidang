@@ -51,6 +51,7 @@ class timta_mng_user extends Component {
   }
 
   componentDidMount(){
+    document.title = "Manajemen Pengguna"
     this.props.fetchUser()
   }
 

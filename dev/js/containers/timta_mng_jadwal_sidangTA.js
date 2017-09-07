@@ -52,7 +52,7 @@ class timta_mng_jadwal_sidangTA extends Component {
   }
 
   componentDidMount() {
-    console.log("DidMount")
+    document.title = "Manajemen Jadwal Sidang Akhir"
       this.props.fetchTA();
     setTimeout(()=> {
       let tempcheckBoxTA = [];
