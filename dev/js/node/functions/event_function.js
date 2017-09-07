@@ -10,8 +10,8 @@ let knex = require('../db/models/db.js')
 let schedulerURL = require('../config.js')
 let moment = require('moment')
 
-let shared_email = 'ruang.labtek5@gmail.com'
-let shared_token = '1/QPHqu2Xu2VSvUZVoQXc8F9BMC6F7eAqEzROWIyfphyQ'
+let shared_email = 'bimawansatrianto@gmail.com'
+let shared_token = '1/0vnmzOgnuAasklvQjVPVh0Ye3WWRGouAuWWiCR4EbDk'
 //===============================================================================
 var GetRawEvent = function(start, end){
 	return User.model.fetchAll().then(function(result){
@@ -381,8 +381,8 @@ var FinalizeEvent = async function(events, event_type){
 		}
 
 		var notifyResult = await NotifyEvent(event_type, shared_email, shared_token)
-		notifyResult = notifyResult.toJSON()
-		console.log(notifyResult)
+		console.log("---------------------------------------")
+		console.log(JSON.stringify(notifyResult.data))
 		
 		
 		
@@ -394,6 +394,14 @@ var FinalizeEvent = async function(events, event_type){
 	return Promise.each(task, function(){})
 }
 
+//===============================================================================
+var UpdateGoogleEventId = function(oldids, ids){
+	var task = []
+	for(var i=0; i<oldids.length; i++){
+		task.push(Event.model.where('event_id', '=', oldids[i]).save({event_id:ids[i]}, {patch: true}))
+	}
+	return Promise.each(task, function(){})
+}
 //===============================================================================
 var OverwriteEvent = async function(events){
 	try{
@@ -510,32 +518,38 @@ var NotifyEvent = async function(event_type, shared_email, shared_token){
 			}
 
 			//notif mahasiswa
-			tempEmail = events[i].mahasiswa[0].user.email;
-			tempToken = events[i].mahasiswa[0].user.token;
-			if ( tempEmail!= "" && tempToken !="") {
-				accounts.push({
-					email: tempEmail,
-					refreshToken: tempToken,
-				})
+			if( events[i].mahasiswa.length > 0){
+				tempEmail = events[i].mahasiswa[0].user.email;
+				tempToken = events[i].mahasiswa[0].user.token;
+				if ( tempEmail!= "" && tempToken !="") {
+					accounts.push({
+						email: tempEmail,
+						refreshToken: tempToken,
+					})
+				}
 			}
+			
 
 			notifRequest.data.push({
 				period:{
 					start: events[i].start,
 					end: events[i].end,
-					name: events[i].title
+					name: events[i].title,
+					id: events[i].id
 				},
 				accounts: accounts
 			})
 		}
 		
 
-		console.log("notifRequest ", JSON.stringify(notifRequest));
-		axios.post(schedulerURL+'/events/create', notifRequest)
+		console.log("notifRequest --------")
+		console.log(JSON.stringify(notifRequest));
+		return axios.post(schedulerURL+'/events/create', notifRequest)
 		.catch(function (error) {
 			console.log(error);
 			return error
 		});
+		
 
 	}
 	catch(err){
@@ -550,7 +564,7 @@ var DeleteEvent = async function(id){
 
 		//delete pasangan ta
 		task.push(new Event.model({"id": id}).destroy())
-		axios.post(axios.post(schedulerURL+'/events/delete', )
+		//	axios.post(axios.post(schedulerURL+'/events/delete', )
 		
 		
 	}catch(err){
@@ -711,6 +725,8 @@ var FetchFixedEventMahasiswa = function(id){
 }
 //===============================================================================
 var FormatEvent = function(events){
+
+
 	var formatted = []
 
 	for(var i=0; i<events.length; i++){
@@ -760,11 +776,6 @@ var FormatEvent = function(events){
 //===============================================================================
 var test = async function(){
 	try{
-
-		var result = await FetchFixedEvent()
-		console.log(JSON.stringify(result))
-		return
-
 		var newStuff = {
 			event_id: 'yyyyyy',
 			tipe_event: 1,
@@ -930,7 +941,7 @@ var test = async function(){
   }
 ]
 		console.log("start")
-		await OverwriteEvent(testJSON)
+		await FinalizeEvent(testJSON, 1)
 		console.log("done")
 		return
 
@@ -955,7 +966,7 @@ var test = async function(){
 }
 //===============================================================================
 //main program
-// test()
+//test()
 
 module.exports = {
   DeleteEvent, 
