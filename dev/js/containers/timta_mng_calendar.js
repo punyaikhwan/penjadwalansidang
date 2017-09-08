@@ -255,10 +255,17 @@ class timta_mng_calendar extends Component {
                                         <TableRowColumn>{item.user.NIM + " " + item.user.nama}</TableRowColumn>
                                       </TableRow>
                                   ))}
-                                  {this.state.selectedEvent.dosen.map((item, i) => (
+                                  {this.state.selectedEvent.pembimbing.map((item, i) => (
                                       <TableRow key={i} displayBorder={false}>
                                         <TableRowColumn
-                                            className="attributeTable">{i === 0 ? "Dosen" : ""}</TableRowColumn>
+                                            className="attributeTable">{i === 0 ? "Pembimbing" : ""}</TableRowColumn>
+                                        <TableRowColumn>{item.user.nama}</TableRowColumn>
+                                      </TableRow>
+                                  ))}
+                                  {this.state.selectedEvent.penguji.map((item, i) => (
+                                      <TableRow key={i} displayBorder={false}>
+                                        <TableRowColumn
+                                            className="attributeTable">{i === 0 ? "Penguji" : ""}</TableRowColumn>
                                         <TableRowColumn>{item.user.nama}</TableRowColumn>
                                       </TableRow>
                                   ))}
