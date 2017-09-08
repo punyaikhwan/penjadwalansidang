@@ -273,9 +273,9 @@ var ScheduleEvent = async function(event_type, start, end, pasangans){
 		console.log("events====================")
 		console.log(events.data.result)
 		console.log("temp====================")
-		console.log(temp)
+		console.log(JSON.stringify(temp))
 		console.log("preResult====================")
-		console.log(preResult)
+		console.log(JSON.stringify(preResult))
 
 		//return event
 		var result = []
