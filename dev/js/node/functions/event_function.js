@@ -737,7 +737,7 @@ var FetchKPEvent = function(){
 }
 //===============================================================================
 var FetchEvent = function(){
-	return Event.model.fetchAll({withRelated:['mahasiswa.user', 'dosen.user', 'ruangan']})
+	return Event.model.fetchAll({withRelated: ['pembimbing.user', 'penguji.user', 'akhir.user', 'mahasiswa.user', 'ruangan']})
 }//===============================================================================
 var FetchEventMahasiswa = function(id){
 	return Event.model.fetchAll({withRelated:['mahasiswa.user', 'dosen.user']}).then(function(result){
