@@ -162,31 +162,34 @@ class timta_mng_allCalendars extends Component {
 
   handleTambahEvent() {
     let events = this.props.events;
-    let dosen = [];
+    let pembimbing = [];
+    let penguji = [];
     for (var i=0; i<this.state.selectedPasangan.pembimbing.length; i++) {
-      dosen.push(this.state.selectedPasangan.pembimbing[i])
+      pembimbing.push(this.state.selectedPasangan.pembimbing[i])
     }
-    for (var i=0; i<this.state.selectedPasangan.penguji.length; i++) {
-      dosen.push(this.state.selectedPasangan.penguji[i])
-    }
-    for (var i=0; i<this.state.selectedPasangan.akhir.length; i++) {
-      dosen.push(this.state.selectedPasangan.akhir[i])
-    }
+    
     let title ="";
     if (this.state.tipeEvent === seminarTA1) {
       title = "Seminar TA1";
+      for (var i=0; i<this.state.selectedPasangan.penguji.length; i++) {
+        penguji.push(this.state.selectedPasangan.penguji[i])
+      }
     } else
     if (this.state.tipeEvent === seminarTA2) {
       title = "Seminar TA2";
     } else
     if (this.state.tipeEvent === sidangAkhir) {
       title = "Sidang Akhir";
+      for (var i=0; i<this.state.selectedPasangan.akhir.length; i++) {
+        penguji.push(this.state.selectedPasangan.akhir[i])
+      }
     }
     console.log("DOSEN:", dosen);
     console.log("Pasangan:", this.state.selectedPasangan);
     let eventWillAdded = {
       title: title+" "+this.state.selectedPasangan.mahasiswa.nama,
-      dosen: dosen,
+      pembimbing: pembimbing,
+      penguji: penguji,
       mahasiswa: [{user:this.state.selectedPasangan.mahasiswa}],
       start: this.state.startDate,
       end: this.state.endDate,
