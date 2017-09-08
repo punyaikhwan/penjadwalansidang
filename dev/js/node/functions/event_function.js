@@ -475,14 +475,13 @@ var OverwriteEvent = async function(events){
 			})
 
 			//dosen
-			for(var j=0; j<events[i].dosen.length; j++){
-				if(events[i].dosen[j].peran_pasangan === 1){
-					anggotas[i].idPembimbing.push(events[i].dosen[j].user_id)
-				}
-				else if(events[i].dosen[j].peran_pasangan === 2){
-					anggotas[i].idPenguji.push(events[i].dosen[j].user_id)
-				}
+			for(var j=0; j<events[i].pembimbing.length; j++){
+				anggotas[i].idPembimbing.push(events[i].pembimbing[j].user_id)
 			}
+			for(var j=0; j<events[i].penguji.length; j++){
+				anggotas[i].idPenguji.push(events[i].penguji[j].user_id)
+			}
+				
 
 			//mahasiswa
 			for(var j=0; j<events[i].mahasiswa.length; j++){
