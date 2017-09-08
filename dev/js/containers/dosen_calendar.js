@@ -85,8 +85,14 @@ class dosen_calendar extends Component {
   eventStyleGetter(event, start, end, isSelected) {
      console.log(event);
     var backgroundColor = '204FA7';
-     for (var i=0; i< event.dosen.length; i++) {
-      if (event.dosen[i].user.email === this.props.userInfo.email) {
+     for (var i=0; i< event.pembimbing.length; i++) {
+      if (event.pembimbing[i].user.email === this.props.userInfo.email) {
+        console.log("halooo");
+        backgroundColor = '#247510';
+      }
+     }
+    for (var i=0; i< event.penguji.length; i++) {
+      if (event.penguji[i].user.email === this.props.userInfo.email) {
         console.log("halooo");
         backgroundColor = '#247510';
       }
@@ -213,9 +219,15 @@ class dosen_calendar extends Component {
                                     <TableRowColumn>{item.user.NIM+" "+item.user.nama}</TableRowColumn>
                                   </TableRow>
                               ))}
-                              {this.state.selectedEvent.dosen.map((item, i) => (
+                              {this.state.selectedEvent.pembimbing.map((item, i) => (
                                   <TableRow key={i} displayBorder={false}>
-                                    <TableRowColumn className="attributeTable">{i === 0 ? "Dosen": ""}</TableRowColumn>
+                                    <TableRowColumn className="attributeTable">{i === 0 ? "Pembimbing": ""}</TableRowColumn>
+                                    <TableRowColumn>{item.user.nama}</TableRowColumn>
+                                  </TableRow>
+                              ))}
+{this.state.selectedEvent.penguji.map((item, i) => (
+                                  <TableRow key={i} displayBorder={false}>
+                                    <TableRowColumn className="attributeTable">{i === 0 ? "Penguji N8": ""}</TableRowColumn>
                                     <TableRowColumn>{item.user.nama}</TableRowColumn>
                                   </TableRow>
                               ))}
