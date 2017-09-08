@@ -10,8 +10,15 @@ let knex = require('../db/models/db.js')
 let schedulerURL = require('../config.js')
 let moment = require('moment')
 
-let shared_email = 'bimawansatrianto@gmail.com'
+let shared_email = 'ruang.labtek5@gmail.com'
 let shared_token = '1/0vnmzOgnuAasklvQjVPVh0Ye3WWRGouAuWWiCR4EbDk'
+
+User.model.where('email', '=', 'ruang.labtek5@gmail.com').fetch().then(function(data){
+	shared_token = data.get('token')		 
+}).catch(function(err){
+	console.log('shared calendar error')
+	console.log(err)
+})
 
 function makeid() {
   var text = "";
