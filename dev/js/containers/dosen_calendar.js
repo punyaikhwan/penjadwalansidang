@@ -227,7 +227,7 @@ class dosen_calendar extends Component {
                               ))}
 {this.state.selectedEvent.penguji.map((item, i) => (
                                   <TableRow key={i} displayBorder={false}>
-                                    <TableRowColumn className="attributeTable">{i === 0 ? "Penguji N8": ""}</TableRowColumn>
+                                    <TableRowColumn className="attributeTable">{i === 0 ? "Penguji": ""}</TableRowColumn>
                                     <TableRowColumn>{item.user.nama}</TableRowColumn>
                                   </TableRow>
                               ))}
