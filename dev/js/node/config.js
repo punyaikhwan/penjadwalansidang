@@ -1,3 +1,3 @@
-var schedulerURL = 'http://pplk2e.if.itb.ac.id/scheduler'
+var schedulerURL = 'http://localhost:5000/scheduler'
 
 module.exports = schedulerURL
