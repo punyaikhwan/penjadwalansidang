@@ -267,7 +267,7 @@ var ScheduleEvent = async function(event_type, start, end, pasangans){
 		//await NewAnggotaEvent(events.data.result)
 		console.log("done===================")
 
-		let preResult = await Event.model.where({"tipe_event": 99}).fetchAll({withRelated: ['dosen.user', 'mahasiswa.user', 'ruangan']})
+		let preResult = await Event.model.where({"tipe_event": 99}).fetchAll({withRelated: ['pembimbing.user', 'penguji.user', 'akhir.user', 'mahasiswa.user', 'ruangan']})
 		preResult = preResult.toJSON()
 
 		console.log("events====================")
@@ -291,7 +291,8 @@ var ScheduleEvent = async function(event_type, start, end, pasangans){
 				"start": preResult[i].start,
 				"end": preResult[i].end,
 				"anggota": preResult[i].mahasiswa,
-				"dosen": preResult[i].dosen
+				"pembimbing": preResult[i].pembimbing,
+				"penguji": preResult[i].penguji.concat(preResult[i].akhir)
 			})
 		}
 

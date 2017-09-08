@@ -20,6 +20,15 @@ Model = helper.bookshelf.Model.extend({
     dosen: function(){
     	return this.hasMany('AnggotaEvent', 'pasangan_id').query({where: {peran_pasangan: 1}, orWhere: {peran_pasangan: 2}, orWhere: {peran_pasangan: 3}});
     },
+    pembimbing: function(){
+        return this.hasMany('AnggotaEvent', 'pasangan_id').query({where: {peran_pasangan: 1}});
+    },
+    penguji: function(){
+        return this.hasMany('AnggotaEvent', 'pasangan_id').query({where: {peran_pasangan: 2}});
+    },
+    akhir: function(){
+        return this.hasMany('AnggotaEvent', 'pasangan_id').query({where: {peran_pasangan: 3}});
+    },
     ruangan: function(){
         return this.belongsTo('Ruangan', 'room_id');
     }
