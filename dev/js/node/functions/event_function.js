@@ -97,11 +97,11 @@ var PreEventToReady = function(pre, rooms, pasangan, event_type){
 			)
 		}
 
-		if(event_type == 1){
+		if(event_type === 1){
 			pre.data.listStudent[i].id = pasangan[i].mahasiswa[0].user_id
 		}
 
-		if(event_type == 2 || event_type == 3 || event_type == 4 ){
+		if(event_type === 2 || event_type === 3 || event_type === 4 ){
 			pre.data.listStudent[i].id = pasangan[i].mahasiswa.id
 		}
 		
@@ -157,7 +157,7 @@ var RequestScheduling = function(body){
 }
 //===============================================================================
 var GetPasanganFromMahasiswa = function(tipe_pasangan, id_mahasiswa, pasangan){
-	if(tipe_pasangan == 1){
+	if(tipe_pasangan === 1){
 		pasangan = pasangan.toJSON()
 		for(var i=0; i<pasangan.length; i++){
 			if(pasangan[i].mahasiswa[0].user_id == id_mahasiswa){
@@ -165,7 +165,7 @@ var GetPasanganFromMahasiswa = function(tipe_pasangan, id_mahasiswa, pasangan){
 			}
 		}
 	}
-	else if(tipe_pasangan == 2 || tipe_pasangan == 3 || tipe_pasangan == 4 ){
+	else if(tipe_pasangan === 2 || tipe_pasangan === 3 || tipe_pasangan === 4 ){
 		pasangan = pasangan.toJSON()
 		for(var i=0; i<pasangan.length; i++){
 			if(pasangan[i].mahasiswa.id == id_mahasiswa){
@@ -185,16 +185,16 @@ var FormatForSave = function(events, event_type, pasangan){
 		temp.event_id = makeid()
 		temp.tipe_event = 99
 
-		if(event_type == 1){
+		if(event_type === 1){
 			temp.title = ("Seminar KP "+additionalInfo.mahasiswa[0].user.nama)
 		} else
-		if(event_type == 2){
+		if(event_type === 2){
 			temp.title = ("Seminar TA1 "+additionalInfo.mahasiswa.nama)
 		} else
-		if(event_type == 3){
+		if(event_type === 3){
 			temp.title = ("Seminar TA2 "+additionalInfo.mahasiswa.nama)
 		} else
-		if(event_type == 4){
+		if(event_type === 4){
 			temp.title = ("Sidang Akhir "+additionalInfo.mahasiswa.nama)
 		}
 			
@@ -333,10 +333,10 @@ var FinalizeEvent = async function(events, event_type){
 
 			//dosen
 			for(var j=0; j<events[i].dosen.length; j++){
-				if(events[i].dosen[j].peran_pasangan == 1){
+				if(events[i].dosen[j].peran_pasangan === 1){
 					anggotas[i].idPembimbing.push(events[i].dosen[j].user_id)
 				}
-				else if(events[i].dosen[j].peran_pasangan == 2){
+				else if(events[i].dosen[j].peran_pasangan === 2){
 					anggotas[i].idPenguji.push(events[i].dosen[j].user_id)
 				}
 			}
@@ -387,7 +387,7 @@ var FinalizeEvent = async function(events, event_type){
 
 			//ubah status
 			
-			if(event_type == 1){
+			if(event_type === 1){
 				await KP.model.where({'status_penjadwalan': 0}).save({status_penjadwalan: event_type},{method: 'update', patch: true}).catch(function(err){
 
 				})
@@ -477,10 +477,10 @@ var OverwriteEvent = async function(events){
 
 			//dosen
 			for(var j=0; j<events[i].dosen.length; j++){
-				if(events[i].dosen[j].peran_pasangan == 1){
+				if(events[i].dosen[j].peran_pasangan === 1){
 					anggotas[i].idPembimbing.push(events[i].dosen[j].user_id)
 				}
-				else if(events[i].dosen[j].peran_pasangan == 2){
+				else if(events[i].dosen[j].peran_pasangan === 2){
 					anggotas[i].idPenguji.push(events[i].dosen[j].user_id)
 				}
 			}
@@ -747,7 +747,7 @@ var FetchEventMahasiswa = function(id){
 
 		for(var i=0; i<result.length; i++){
 			for(var j=0; j<result[i].mahasiswa.length; j++){
-				if(result[i].mahasiswa[j].user.id == id){
+				if(result[i].mahasiswa[j].user.id === id){
 					events.push(result[i])
 				}
 			}	
@@ -775,7 +775,7 @@ var FetchFixedEventMahasiswa = function(id){
 
 		for(var i=0; i<result.length; i++){
 			for(var j=0; j<result[i].mahasiswa.length; j++){
-				if(result[i].mahasiswa[j].user.id == id){
+				if(result[i].mahasiswa[j].user.id === id){
 					events.push(result[i])
 				}
 			}	
@@ -807,7 +807,7 @@ var FormatEvent = function(events){
 		if(events[i].kelompok_KP){
 			for(var j=0; j<events[i].kelompok_KP.anggota.length; j++ ){
 				//masukin dosen
-				if(events[i].kelompok_KP.anggota[j].peran_pasangan == 1){
+				if(events[i].kelompok_KP.anggota[j].peran_pasangan === 1){
 					formatted[i].dosen.push(events[i].kelompok_KP.anggota[j].user)
 				}
 			}
@@ -819,12 +819,12 @@ var FormatEvent = function(events){
 		if(events[i].kelompok_TA){
 			for(var j=0; j<events[i].kelompok_TA.anggota.length; j++ ){
 				//masukin mahasiswa
-				if(events[i].kelompok_TA.anggota[j].peran_pasangan == 0){
+				if(events[i].kelompok_TA.anggota[j].peran_pasangan === 0){
 					formatted[i].anggota.push(events[i].kelompok_TA.anggota[j].user)
 				}
 				
 				//masukin dosen
-				if(events[i].kelompok_TA.anggota[j].peran_pasangan == 1){
+				if(events[i].kelompok_TA.anggota[j].peran_pasangan === 1){
 					formatted[i].dosen.push(events[i].kelompok_TA.anggota[j].user)
 				}
 			}
