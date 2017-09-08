@@ -765,7 +765,7 @@ var FetchFixedKPEvent = function(){
 }
 //===============================================================================
 var FetchFixedEvent = function(){
-	return Event.model.where('tipe_event', '!=', 99).fetchAll({withRelated:['mahasiswa.user', 'dosen.user', 'ruangan']})
+	return Event.model.where('tipe_event', '!=', 99).fetchAll({withRelated:['pembimbing.user', 'penguji.user', 'akhir.user', 'mahasiswa.user', 'ruangan']})
 }//===============================================================================
 var FetchFixedEventMahasiswa = function(id){
 	return Event.model.where('tipe_event', '!=', 99).fetchAll({withRelated:['mahasiswa.user', 'dosen.user']}).then(function(result){
