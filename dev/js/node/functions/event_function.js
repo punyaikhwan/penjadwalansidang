@@ -81,15 +81,15 @@ var PreEventToReady = function(pre, rooms, pasangan, event_type){
 				pasangan[i].pembimbing[j].user_id
 			)	
 		}
-
+		
+		pre.data.listStudent[i].idPenguji = []
 		length = pasangan[i].akhir? pasangan[i].akhir.length: 0  
 		for(var j=0; j<length; j++){
-			pre.data.listStudent[i].idPembimbing.push(
+			pre.data.listStudent[i].idPenguji.push(
 				pasangan[i].akhir[j].user_id
 			)	
 		}
 
-		pre.data.listStudent[i].idPenguji = []
 		length = pasangan[i].penguji? pasangan[i].penguji.length: 0  
 		for(var j=0; j<length; j++){
 			pre.data.listStudent[i].idPenguji.push(
