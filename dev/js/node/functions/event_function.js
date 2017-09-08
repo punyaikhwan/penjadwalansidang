@@ -218,25 +218,25 @@ var ScheduleEvent = async function(event_type, start, end, pasangans){
 		//fetch pasangan
 		console.log("preparing to schedule================")
 		//KP
-		if(event_type == 1){
+		if(event_type === 1){
 			pasangan = await KP.model.where('id','IN', pasangans).fetchAll({withRelated: ['pembimbing', 'mahasiswa.user']})
 			rooms = await Room.model.fetchAll({withRelated: 'event'})
 		}
 
 		//seminar TA-I
-		if(event_type == 2){
+		if(event_type === 2){
 			pasangan = await TA.model.where('id','IN', pasangans).fetchAll({withRelated: ['pembimbing', 'penguji', 'mahasiswa']})
 			rooms = await Room.model.fetchAll({withRelated: 'event'})
 		}
 
 		//seminar TA-II
-		if(event_type == 3){
+		if(event_type === 3){
 			pasangan = await TA.model.where('id','IN', pasangans).fetchAll({withRelated: ['pembimbing', 'mahasiswa']})
 			rooms = await Room.model.fetchAll({withRelated: 'event'})
 		}
 
 		//sidang TA
-		if(event_type == 4){
+		if(event_type === 4){
 			pasangan = await TA.model.where('id','IN', pasangans).fetchAll({withRelated: ['pembimbing', 'akhir', 'mahasiswa']})
 			rooms = await Room.model.fetchAll({withRelated: 'event'})
 		}
