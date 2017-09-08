@@ -184,7 +184,6 @@ class timta_mng_allCalendars extends Component {
         penguji.push(this.state.selectedPasangan.akhir[i])
       }
     }
-    console.log("DOSEN:", dosen);
     console.log("Pasangan:", this.state.selectedPasangan);
     let eventWillAdded = {
       title: title+" "+this.state.selectedPasangan.mahasiswa.nama,
