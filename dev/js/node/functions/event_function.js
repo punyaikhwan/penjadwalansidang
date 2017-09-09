@@ -33,7 +33,7 @@ function makeid() {
 let randomID = makeid()
 //===============================================================================
 var GetRawEvent = function(start, end){
-	return User.model.fetchAll().then(function(result){
+	return User.model.fetchAll({withRelated:'calendar_list_allowed'}).then(function(result){
 		result = result.toJSON()
 
 		var request_param = {
@@ -46,11 +46,13 @@ var GetRawEvent = function(start, end){
 			}
 		}
 
+
+
 		for(var i=0; i<result.length; i++){
 			request_param.data.accounts.push({
 				"email": result[i].id,
 				"refreshToken": result[i].token,
-				"calendarList": ['primary']
+				"calendarList": result[i].calendar_list_allowed
 			})
 		}
 		

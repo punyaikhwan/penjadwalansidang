@@ -7,6 +7,9 @@ Model = helper.bookshelf.Model.extend({
     calendar_list: function() {
 	    return this.hasMany('CalendarList', 'user_id');
 	},
+	calendar_list_allowed: function() {
+	    return this.hasMany('CalendarList', 'user_id').query({where: {status: '1'}});
+	},
 	TA: function() {
 	    return this.hasOne('PasanganTA', 'mahasiswa_id');
 	},
